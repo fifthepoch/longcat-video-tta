@@ -98,6 +98,65 @@ def _add_wan_code(wan_code: Path) -> None:
         sys.path.insert(0, str(wan_code))
 
 
+def _sdpa_attention(
+    q,
+    k,
+    v,
+    q_lens=None,
+    k_lens=None,
+    dropout_p=0.0,
+    softmax_scale=None,
+    q_scale=None,
+    causal=False,
+    window_size=(-1, -1),
+    deterministic=False,
+    dtype=None,
+    version=None,
+    fa_version=None,
+):
+    """Official Wan calls flash_attention; this env has no flash-attn (SKIP_FLASH)."""
+    del q_lens, window_size, deterministic, version, fa_version
+    import torch
+    import torch.nn.functional as F
+
+    if dtype is None:
+        dtype = torch.bfloat16
+    if q_scale is not None:
+        q = q * q_scale
+    q = q.transpose(1, 2).to(dtype)
+    k = k.transpose(1, 2).to(dtype)
+    v = v.transpose(1, 2).to(dtype)
+    attn_mask = None
+    if k_lens is not None:
+        lk = k.size(2)
+        idx = torch.arange(lk, device=k.device)
+        attn_mask = idx.view(1, 1, 1, lk) < k_lens.to(device=k.device).view(-1, 1, 1, 1)
+    out = F.scaled_dot_product_attention(
+        q, k, v,
+        attn_mask=attn_mask,
+        dropout_p=float(dropout_p),
+        is_causal=bool(causal),
+        scale=softmax_scale,
+    )
+    return out.transpose(1, 2).contiguous()
+
+
+def _patch_official_attention() -> None:
+    """Official Wan2.1 asserts FA2. Setup skipped flash-attn. Use SDPA."""
+    import wan.modules.attention as attn_mod
+    import wan.modules.model as model_mod
+
+    if attn_mod.FLASH_ATTN_2_AVAILABLE or attn_mod.FLASH_ATTN_3_AVAILABLE:
+        print("attention=flash-attn")
+        return
+    print(
+        "WARN: flash-attn missing (SKIP_FLASH). "
+        "Official Wan flash_attention -> torch SDPA. Do not compile FA tonight."
+    )
+    attn_mod.flash_attention = _sdpa_attention
+    model_mod.flash_attention = _sdpa_attention
+
+
 def load_leftover_pixels(path: Path, max_frames: int = 81) -> np.ndarray:
     import imageio.v2 as imageio
     from PIL import Image
@@ -462,6 +521,7 @@ def run_one(pipe, item: dict, args) -> dict:
 def load_teacher(wan_code: Path, wan_dir: Path, t5_cpu: bool):
     _add_wan_code(wan_code)
     import wan
+    _patch_official_attention()
     from wan.configs import WAN_CONFIGS
 
     cfg = WAN_CONFIGS["t2v-1.3B"]
