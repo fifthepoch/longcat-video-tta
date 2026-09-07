@@ -4835,6 +4835,22 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — login base cannot decode Panda leftovers
+**Tags:** workflow, cluster, diagnostic
+**Owner:** agent
+**Refs:** `experiment_outputs/2026-09-07.md`;
+`wan_experiment/scripts/filter_pwarp_pan_shortlist.py`
+
+Track A filter died on `panda_0000.mp4` under login
+`base` python3.13: imageio is installed, ffmpeg/pyav
+plugins are not. Farneback still needs OpenCV. Retry
+with `/scratch/wc3013/conda-envs/self_forcing/bin/python`.
+Reader now tries OpenCV, then decord, then imageio, and
+does not crash the scan on the first file. No GPU. Do
+not `--write-dir` until the table is pasted.
+
+---
+
 ## 2026-09-06 — three tracks: pan filter, Wan-extend, MovieGen
 **Tags:** experiment, spec, protocol
 **Owner:** agent

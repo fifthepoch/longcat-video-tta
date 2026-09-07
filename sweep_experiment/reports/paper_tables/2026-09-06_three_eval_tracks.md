@@ -16,13 +16,16 @@ names a sideways action** and whose leftover flow is a
 
 ```bash
 cd /scratch/wc3013/longcat-video-tta && git pull --ff-only origin main
-python3 -u wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 128
+# Login `base` python3 has imageio without ffmpeg. Use Self Forcing.
+/scratch/wc3013/conda-envs/self_forcing/bin/python -u \
+  wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 128
 ```
 
 Paste the table. If the eight look right:
 
 ```bash
-python3 -u wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 128 --write-dir
+/scratch/wc3013/conda-envs/self_forcing/bin/python -u \
+  wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 128 --write-dir
 ```
 
 Then a **later** pwarp submit uses

@@ -7,8 +7,13 @@ A keep is: first-segment caption already names a sideways action
 or pan, leftover mean flow is a real pan (not dust), and the
 field is not mostly zoom/expansion (0006 hole).
 
-    python3 -u wan_experiment/scripts/filter_pwarp_pan_shortlist.py
-    python3 -u wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 128 --write-dir
+    /scratch/wc3013/conda-envs/self_forcing/bin/python -u \
+        wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 128
+    /scratch/wc3013/conda-envs/self_forcing/bin/python -u \
+        wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 128 --write-dir
+
+Login ``base`` python3 has imageio without ffmpeg/pyav. Use the
+Self Forcing env (OpenCV + a working decoder).
 """
 from __future__ import annotations
 
@@ -26,6 +31,7 @@ ROOT = Path("/scratch/wc3013/longcat-video-tta")
 VIDEO_DIR = ROOT / "datasets" / "panda_1000_480p"
 OUT_JSON = ROOT / "datasets" / "panda_pwarp_pan_rank.json"
 OUT_DIR = ROOT / "datasets" / "panda_pwarp_pan_8"
+SF_PYTHON = Path("/scratch/wc3013/conda-envs/self_forcing/bin/python")
 
 # Same leftover length as V2V PREFIX_LATENTS=9.
 PREFIX_PIX = 1 + 4 * 8
@@ -55,11 +61,35 @@ def _repo_scripts() -> None:
         sys.path.insert(0, str(here))
 
 
-def _read_prefix(path: Path, n: int) -> np.ndarray | None:
-    try:
-        import imageio.v2 as imageio
-    except Exception:
+def _as_rgb01(frames: list) -> np.ndarray | None:
+    if len(frames) < 2:
         return None
+    return np.clip(np.stack(frames).astype(np.float32) / 255.0, 0.0, 1.0)
+
+
+def _read_prefix_cv2(path: Path, n: int) -> np.ndarray | None:
+    import cv2
+
+    cap = cv2.VideoCapture(str(path))
+    if not cap.isOpened():
+        return None
+    frames = []
+    try:
+        while len(frames) < n:
+            ok, im = cap.read()
+            if not ok:
+                break
+            if im.ndim == 3:
+                im = im[:, :, ::-1]
+            frames.append(np.asarray(im)[..., :3])
+    finally:
+        cap.release()
+    return _as_rgb01(frames)
+
+
+def _read_prefix_imageio(path: Path, n: int) -> np.ndarray | None:
+    import imageio.v2 as imageio
+
     frames = []
     r = imageio.get_reader(str(path))
     try:
@@ -72,9 +102,45 @@ def _read_prefix(path: Path, n: int) -> np.ndarray | None:
             r.close()
         except Exception:
             pass
-    if len(frames) < 2:
+    return _as_rgb01(frames)
+
+
+def _read_prefix_decord(path: Path, n: int) -> np.ndarray | None:
+    from decord import VideoReader, cpu
+
+    vr = VideoReader(str(path), ctx=cpu(0))
+    end = min(int(n), len(vr))
+    if end < 2:
         return None
-    return np.clip(np.stack(frames).astype(np.float32) / 255.0, 0.0, 1.0)
+    batch = vr.get_batch(list(range(end))).asnumpy()
+    return _as_rgb01([batch[i] for i in range(end)])
+
+
+def _read_prefix(path: Path, n: int) -> np.ndarray | None:
+    """OpenCV first. Login base imageio has no ffmpeg/pyav plugin."""
+    for fn in (_read_prefix_cv2, _read_prefix_decord, _read_prefix_imageio):
+        try:
+            out = fn(path, n)
+        except Exception:
+            continue
+        if out is not None:
+            return out
+    return None
+
+
+def _require_cv2() -> None:
+    try:
+        import cv2  # noqa: F401
+    except Exception:
+        hint = (
+            f"{SF_PYTHON} -u wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 128"
+            if SF_PYTHON.is_file()
+            else "the Self Forcing env python"
+        )
+        raise SystemExit(
+            "Need OpenCV for leftover Farneback. Login `base` python3 is not enough.\n"
+            f"  {hint}"
+        )
 
 
 def _flow_stats(frames: np.ndarray) -> dict:
@@ -166,6 +232,7 @@ def main() -> None:
     ap.add_argument("--out-json", type=Path, default=OUT_JSON)
     ap.add_argument("--out-dir", type=Path, default=OUT_DIR)
     args = ap.parse_args()
+    _require_cv2()
     _repo_scripts()
     from scripts.caption_utils import canonical_video_id, load_resolved_captions_csv
 
