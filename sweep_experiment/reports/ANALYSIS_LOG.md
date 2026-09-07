@@ -4835,6 +4835,24 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-06 — pwarp eyes: flicker worse; only 0006 asked for motion
+**Tags:** finding, qualitative, closed
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-06_pwarp_eye_notes.md`
+
+User watched the matched pack. 0007 Dyn flip is flicker;
+Self Forcing already flickers, slide makes it worse. 0004
+same (host flicker; always-on worse). 0002 still-room
+prompt: walls/shelves rewrite — stillness broke, identity
+did not hold. 0006 is the only first-8 caption that asks
+for motion (“boat is sailing”); eyes say quality fine,
+not more dynamic. Leftover-live ≠ prompt-wants-action.
+A prompt gate on this eight is one clip. A real test
+needs a new motion-caption shortlist. Letter stays **NO**.
+No GPU until the user picks that list or A/B/C.
+
+---
+
 ## 2026-09-06 — caption pwarp DONE / NO (IQ 66.81, Dyn twitch)
 **Tags:** results, method, closed
 **Owner:** agent
