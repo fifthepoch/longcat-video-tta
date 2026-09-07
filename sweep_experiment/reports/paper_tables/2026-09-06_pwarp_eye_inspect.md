@@ -16,8 +16,9 @@ python3 -u wan_experiment/scripts/export_pwarp_examples.py
 
 Writes
 `wan_experiment/results/v2v_panda_caption_pwarp_examples/`.
-Does not delete sources. Side-by-side + last 5 s if
-`ffmpeg` exists.
+Does not delete sources. Disk names are
+`000_panda_0000_h30s_<method>_s0.mp4`, not `panda_0000.mp4`.
+Side-by-side + last 5 s if `ffmpeg` exists.
 
 ## On your Mac
 
