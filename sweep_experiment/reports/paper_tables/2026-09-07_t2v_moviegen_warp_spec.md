@@ -50,8 +50,9 @@ below `notta` if Dyn goes up.
 
 ---
 
-**Status:** IN FLIGHT smoke. Jobs **17121785–792**
-(2026-09-07 13:24). Prompt `self_forcing_extended` n=2.
+**Status:** SMOKE HARVESTED. Jobs **17121785–792**
+COMPLETED 0:0. Protocol PASS. Harvest:
+`2026-09-07_t2v_moviegen_warp_smoke.md`.
 Do not letter n=2. Do not launch 128.
 
 ---

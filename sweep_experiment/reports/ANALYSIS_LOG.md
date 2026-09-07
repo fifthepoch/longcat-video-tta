@@ -4835,6 +4835,24 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — Track C smoke harvested; do not letter n=2
+**Tags:** wan, t2v, moviegen, nwarp, pwarp, negative-result
+**Owner:** agent
+**Refs:** jobs 17121785–792 COMPLETED 0:0;
+`paper_tables/2026-09-07_t2v_moviegen_warp_smoke.md`
+
+Protocol PASS: `self_forcing_extended`, `t2v_chunk0` 8/8,
+0 panda prompts. Both clips live (mot 0.0449 / 0.0230),
+so live == always. Official VBench vs this-wave notta
+(IQ 70.93 / subject 0.891 / Dyn 1/2): nwarp IQ **47.60**
+/ subject 0.672 (same leftover death). pwarp IQ 69.35 /
+subject 0.877; Dyn still 1/2; 000 flicker 0.967→0.950.
+nwarp last-chunk score 8.97 is junk. Do not letter n=2.
+Do not launch 128. Do not scale nwarp or pwarp. A later
+field T2V table, if wanted, is baselines only.
+
+---
+
 ## 2026-09-07 — Track C smoke submitted 17121785–792
 **Tags:** wan, t2v, moviegen, nwarp, pwarp, in-flight
 **Owner:** agent

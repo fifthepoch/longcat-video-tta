@@ -97,8 +97,9 @@ SMOKE=1 bash wan_experiment/sbatch/submit_t2v_moviegen_warp.sh
 
 Spec: `2026-09-07_t2v_moviegen_warp_spec.md`.
 Chunk 0 = do-nothing; nwarp/pwarp use that flow.
-Smoke **IN FLIGHT** 17121785–792
-(`self_forcing_extended` n=2). Do not letter n=2.
+Smoke **HARVESTED** 17121785–792 COMPLETED 0:0.
+Protocol PASS. nwarp IQ 47.60. pwarp no Dyn lift.
+Do not letter n=2. Do not launch 128.
 
 Do **not** launch the full 128 × always-search until
 the smoke sidecar is `source=t2v_chunk0` + MovieGen
