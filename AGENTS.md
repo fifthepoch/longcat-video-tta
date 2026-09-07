@@ -308,8 +308,10 @@ Per-method `merged_summary.json` lives at:
   MovieGen-128 Qwen). Not a leftover flow. 0006 is
   likely zoom/expansion; our slide only pans.   Three tracks (2026-09-06): A login pan-filter
   (`filter_pwarp_pan_shortlist.py`, **Self Forcing
-  python** — login `base` imageio has no ffmpeg;
-  no GPU until paste). B Wan-extend on first-8 leftovers
+  python** — login `base` imageio has no ffmpeg.
+  First-128 keep 3/128 were word accidents; do not
+  `--write-dir`. Table
+  `2026-09-07_pwarp_pan_filter_128.md`). B Wan-extend on first-8 leftovers
   (separate series, no pwarp). C field T2V
   MovieGen-128 + VBench-Long, `SMOKE=1` first.
   Panda is not their 30 s table. Do not cheapen

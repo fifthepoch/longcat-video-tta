@@ -4835,6 +4835,24 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — first-128 pan filter: 3 word accidents
+**Tags:** wan, v2v, leftover, negative-result, protocol
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-07_pwarp_pan_filter_128.md`;
+`experiment_outputs/2026-09-07.md`
+
+Self Forcing python scanned 128 leftovers. Printed keep
+0044 / 0048 / 0124. User correctly rejected them: captions
+do not ask for a sideways camera. Hits were substring
+**running** (river), **cycle** (motorcycles), **pan**
+(frying pan). Dual-gate on first-128 cannot fill eight.
+Driving captions have dead leftovers; strong leftovers
+have still captions. Do not `--write-dir`. Do not pwarp
+these three. Retag json with whole words; scan 1000 if
+still thin. No GPU. Do not mix Wan-extend.
+
+---
+
 ## 2026-09-07 — login base cannot decode Panda leftovers
 **Tags:** workflow, cluster, diagnostic
 **Owner:** agent

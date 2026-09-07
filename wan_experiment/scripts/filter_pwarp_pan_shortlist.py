@@ -8,9 +8,10 @@ or pan, leftover mean flow is a real pan (not dust), and the
 field is not mostly zoom/expansion (0006 hole).
 
     /scratch/wc3013/conda-envs/self_forcing/bin/python -u \
-        wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 128
+        wan_experiment/scripts/filter_pwarp_pan_shortlist.py \
+        --from-json datasets/panda_pwarp_pan_rank.json
     /scratch/wc3013/conda-envs/self_forcing/bin/python -u \
-        wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 128 --write-dir
+        wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 1000
 
 Login ``base`` python3 has imageio without ffmpeg/pyav. Use the
 Self Forcing env (OpenCV + a working decoder).
@@ -21,6 +22,7 @@ import argparse
 import csv
 import json
 import math
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -36,14 +38,30 @@ SF_PYTHON = Path("/scratch/wc3013/conda-envs/self_forcing/bin/python")
 # Same leftover length as V2V PREFIX_LATENTS=9.
 PREFIX_PIX = 1 + 4 * 8
 
-PAN_WORDS = (
-    "walk", "walking", "walks", "run", "running", "runs",
-    "drive", "driving", "drives", "pan", "panning",
-    "ride", "riding", "across", "along the", "camera follows",
-    "camera pans", "tracking", "parade", "traffic",
-    "dance", "dancing", "pour", "pouring", "chase", "chasing",
-    "cycle", "cycling", "skate", "horse", "gallop",
+# Whole-word / phrase only. Substring "pan"/"running"/"cycle" were
+# frying-pan, river-running, and motorcycles on the first-128 pass.
+PAN_PHRASES = (
+    "camera pans", "camera follows", "along the", "down the road",
+    "busy street", "off-road",
 )
+PAN_WORDS = (
+    "walking", "walks", "walk",
+    "driving", "drives",
+    "riding", "rides", "ride",
+    "sailing", "sails", "sail",
+    "flying", "flies",
+    "panning",
+    "motorcycles", "motorcycle",
+    "traffic", "parade",
+    "chasing", "chase",
+    "dancing", "dance",
+    "pouring", "pour",
+    "kicking", "kicks", "kick",
+    "skating", "galloping", "gallop",
+)
+# "drive" only as a verb, not drive-through / hard drive.
+DRIVE_OK = re.compile(r"\bdrives?\b")
+DRIVE_BLOCK = ("drive-through", "drive through", "hard drive")
 ZOOM_WORDS = (
     "zoom", "dolly", "close-up", "close up", "closeup",
     "toward the camera", "towards the camera", "into the camera",
@@ -188,29 +206,39 @@ def _flow_stats(frames: np.ndarray) -> dict:
 
 def _caption_tags(text: str) -> dict:
     t = (text or "").lower()
-    pan = sum(1 for w in PAN_WORDS if w in t)
+    hits = [p for p in PAN_PHRASES if p in t]
+    for w in PAN_WORDS:
+        if re.search(rf"\b{re.escape(w)}\b", t):
+            hits.append(w)
+    if DRIVE_OK.search(t) and not any(b in t for b in DRIVE_BLOCK):
+        if "drive" not in hits and "drives" not in hits and "driving" not in hits:
+            hits.append("drive")
     zoom = sum(1 for w in ZOOM_WORDS if w in t)
     still = sum(1 for w in STILL_WORDS if w in t)
     return {
-        "caption_pan": pan,
+        "caption_pan": len(hits),
+        "caption_hits": hits,
         "caption_zoom": zoom,
         "caption_still": still,
-        "caption_wants_pan": pan > 0 and zoom == 0,
+        "caption_wants_pan": len(hits) > 0 and zoom == 0,
     }
 
 
-def _keep(flow: dict, tags: dict) -> bool:
+def _leftover_pan(flow: dict) -> bool:
     if flow.get("backend") != "farneback":
         return False
-    if not tags.get("caption_wants_pan"):
+    try:
+        return (
+            float(flow["vec"]) >= 0.40
+            and float(flow["coherence"]) >= 0.50
+            and float(flow["zoom_score"]) < 0.20
+        )
+    except (TypeError, KeyError):
         return False
-    if float(flow["vec"]) < 0.05:
-        return False
-    if float(flow["coherence"]) < 0.35:
-        return False
-    if float(flow["zoom_score"]) >= 0.85:
-        return False
-    return True
+
+
+def _keep(flow: dict, tags: dict) -> bool:
+    return bool(tags.get("caption_wants_pan") and _leftover_pan(flow))
 
 
 def _score(flow: dict, tags: dict) -> float:
@@ -229,55 +257,85 @@ def main() -> None:
     ap.add_argument("--n", type=int, default=128)
     ap.add_argument("--top", type=int, default=8)
     ap.add_argument("--write-dir", action="store_true")
+    ap.add_argument("--from-json", type=Path, default=None)
     ap.add_argument("--out-json", type=Path, default=OUT_JSON)
     ap.add_argument("--out-dir", type=Path, default=OUT_DIR)
     args = ap.parse_args()
-    _require_cv2()
     _repo_scripts()
     from scripts.caption_utils import canonical_video_id, load_resolved_captions_csv
 
-    caps = load_resolved_captions_csv(
-        args.video_dir / "metadata.csv", warn_missing=False,
-    )
-    vids = sorted(
-        p for p in args.video_dir.rglob("*.mp4") if p.is_file()
-    )[: args.n]
-    rows = []
-    print(f"scan n={len(vids)} dir={args.video_dir} prefix_pix={PREFIX_PIX}")
-    print(
-        f"{'id':12} {'keep':4} {'vec':7} {'coh':6} {'zoom':6} "
-        f"{'pan':3} {'cap'}"
-    )
-    for p in vids:
-        cid = canonical_video_id(p.name) or p.stem
-        cap = caps.get(cid) or caps.get(p.stem) or ""
-        tags = _caption_tags(cap)
-        frames = _read_prefix(p, PREFIX_PIX)
-        flow = {"backend": "no_frames", "keep": False} if frames is None else _flow_stats(frames)
-        rec = {
-            "file_name": p.name,
-            "id": cid,
-            "path": str(p),
-            "caption": cap,
-            **tags,
-            **{k: flow.get(k) for k in (
+    if args.from_json is not None:
+        blob = json.loads(args.from_json.read_text())
+        rows = []
+        print(f"retag {args.from_json} n={len(blob.get('rows') or [])}")
+        for rec in blob.get("rows") or []:
+            tags = _caption_tags(rec.get("caption") or "")
+            flow = {k: rec.get(k) for k in (
                 "backend", "vy_px", "vx_px", "vec", "mean_speed",
                 "mean_abs_div", "coherence", "zoom_score", "n_pairs",
-            )},
-        }
-        rec["keep"] = _keep(flow, tags)
-        rec["score"] = _score(flow, tags)
-        rows.append(rec)
-        print(
-            f"{cid:12} {str(rec['keep']):4} "
-            f"{float(rec.get('vec') or 0):7.3f} "
-            f"{float(rec.get('coherence') or 0):6.3f} "
-            f"{float(rec.get('zoom_score') or 0):6.3f} "
-            f"{tags['caption_pan']:3} "
-            f"{cap[:72]}"
+            )}
+            rec = {**rec, **tags}
+            rec["keep"] = _keep(flow, tags)
+            rec["score"] = _score(flow, tags)
+            rec["leftover_pan"] = _leftover_pan(flow)
+            rows.append(rec)
+    else:
+        _require_cv2()
+        caps = load_resolved_captions_csv(
+            args.video_dir / "metadata.csv", warn_missing=False,
         )
+        vids = sorted(
+            p for p in args.video_dir.rglob("*.mp4") if p.is_file()
+        )[: args.n]
+        rows = []
+        print(f"scan n={len(vids)} dir={args.video_dir} prefix_pix={PREFIX_PIX}")
+        print(
+            f"{'id':12} {'keep':4} {'vec':7} {'coh':6} {'zoom':6} "
+            f"{'pan':3} {'cap'}"
+        )
+        for p in vids:
+            cid = canonical_video_id(p.name) or p.stem
+            cap = caps.get(cid) or caps.get(p.stem) or ""
+            tags = _caption_tags(cap)
+            frames = _read_prefix(p, PREFIX_PIX)
+            flow = (
+                {"backend": "no_frames", "keep": False}
+                if frames is None
+                else _flow_stats(frames)
+            )
+            rec = {
+                "file_name": p.name,
+                "id": cid,
+                "path": str(p),
+                "caption": cap,
+                **tags,
+                **{k: flow.get(k) for k in (
+                    "backend", "vy_px", "vx_px", "vec", "mean_speed",
+                    "mean_abs_div", "coherence", "zoom_score", "n_pairs",
+                )},
+            }
+            rec["keep"] = _keep(flow, tags)
+            rec["score"] = _score(flow, tags)
+            rec["leftover_pan"] = _leftover_pan(flow)
+            rows.append(rec)
+            hits = ",".join(tags["caption_hits"][:3]) or "-"
+            print(
+                f"{cid:12} {str(rec['keep']):4} "
+                f"{float(rec.get('vec') or 0):7.3f} "
+                f"{float(rec.get('coherence') or 0):6.3f} "
+                f"{float(rec.get('zoom_score') or 0):6.3f} "
+                f"{tags['caption_pan']:3} "
+                f"{hits:16} "
+                f"{cap[:56]}"
+            )
     keeps = [r for r in rows if r["keep"]]
     keeps.sort(key=lambda r: r["score"], reverse=True)
+    leftover = [r for r in rows if r.get("leftover_pan")]
+    leftover.sort(key=lambda r: float(r.get("vec") or 0), reverse=True)
+    cap_only = [
+        r for r in rows
+        if r.get("caption_wants_pan") and not r.get("leftover_pan")
+    ]
     picks = keeps[: args.top]
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
@@ -286,12 +344,34 @@ def main() -> None:
         "picks": picks,
         "rows": rows,
     }, indent=2))
-    print(f"\nkeep {len(keeps)} / {len(rows)}  wrote {args.out_json}")
-    print("== shortlist ==")
+    print(f"\ndual-keep {len(keeps)} / {len(rows)}  wrote {args.out_json}")
+    print("== dual (caption motion AND leftover pan) ==")
+    if not picks:
+        print("  (none)")
     for r in picks:
-        print(f"  {r['id']}  vec={r['vec']:.3f}  {r['caption'][:90]}")
+        hits = ",".join(r.get("caption_hits") or [])
+        print(
+            f"  {r['id']}  vec={float(r.get('vec') or 0):.3f}  "
+            f"hits={hits}  {str(r.get('caption') or '')[:80]}"
+        )
+    print("== leftover pan, caption may be still (do not write-dir these) ==")
+    for r in leftover[:12]:
+        mark = "DUAL" if r["keep"] else "flow"
+        print(
+            f"  {mark:4} {r['id']}  vec={float(r.get('vec') or 0):.3f}  "
+            f"coh={float(r.get('coherence') or 0):.3f}  "
+            f"{str(r.get('caption') or '')[:70]}"
+        )
+    print("== caption names motion, leftover is not a pan ==")
+    for r in cap_only[:12]:
+        hits = ",".join(r.get("caption_hits") or [])
+        print(
+            f"  {r['id']}  vec={float(r.get('vec') or 0):.3f}  "
+            f"coh={float(r.get('coherence') or 0):.3f}  "
+            f"hits={hits}  {str(r.get('caption') or '')[:56]}"
+        )
     if not args.write_dir:
-        print("Re-run with --write-dir after you like the eight.")
+        print("Do not --write-dir unless dual-keep has eight you like.")
         return
     if len(picks) < args.top:
         raise SystemExit(f"only {len(picks)} keeps; do not write a thin dir")

@@ -21,7 +21,14 @@ cd /scratch/wc3013/longcat-video-tta && git pull --ff-only origin main
   wan_experiment/scripts/filter_pwarp_pan_shortlist.py --n 128
 ```
 
-Paste the table. If the eight look right:
+First-128 printed 3 keeps — all word accidents
+(river-running / motorcycle-cycle / frying-pan).
+Do **not** `--write-dir` those three. Table:
+`2026-09-07_pwarp_pan_filter_128.md`. Retag the
+json, then scan `--n 1000` if dual-keep is still
+thin.
+
+If eight dual keeps look right:
 
 ```bash
 /scratch/wc3013/conda-envs/self_forcing/bin/python -u \
