@@ -57,6 +57,7 @@ Known setup failures (both already patched):
 |---|---|
 | Conda env | `/scratch/wc3013/conda-envs/self_forcing` |
 | Self-Forcing clone | `/scratch/wc3013/third_party/Self-Forcing` |
+| Official Wan2.1 code | `/scratch/wc3013/third_party/Wan2.1` |
 | Wan2.1-T2V-1.3B | `/scratch/wc3013/wan-checkpoints/Wan2.1-T2V-1.3B` |
 | Self-Forcing DMD | `/scratch/wc3013/wan-checkpoints/self_forcing_dmd.pt` |
 | VBench-I2V images | `/scratch/wc3013/longcat-video-tta/datasets/vbench_i2v/` |

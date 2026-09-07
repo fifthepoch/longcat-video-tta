@@ -99,6 +99,10 @@ cd /scratch/wc3013/longcat-video-tta && git pull --ff-only origin main
 SMOKE=1 bash wan_experiment/sbatch/submit_wan_teacher_smoke.sh
 ```
 
+If `/scratch/wc3013/third_party/Wan2.1` is missing, the submit
+script clones official Wan2.1 (not Self-Forcing’s `wan/`). Weights
+at `wan-checkpoints/Wan2.1-T2V-1.3B` stay as they are.
+
 Two series: `wan_teacher_leftover_smoke` and
 `wan_teacher_moviegen_smoke`. 7 methods each + VBench
 afterok. Sidecar must print `host=wan_teacher` and must

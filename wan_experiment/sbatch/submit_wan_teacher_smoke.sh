@@ -36,9 +36,18 @@ if [[ ! -d "${WAN_DIR}" ]]; then
     echo "ERROR: Wan teacher missing: ${WAN_DIR}" >&2
     exit 1
 fi
-if [[ ! -d "${WAN_CODE}" ]]; then
-    echo "ERROR: Wan code missing: ${WAN_CODE}" >&2
-    echo "Clone https://github.com/Wan-Video/Wan2.1 into that path, then resubmit." >&2
+if [[ ! -f "${WAN_CODE}/wan/text2video.py" ]]; then
+    echo "Cloning official Wan2.1 -> ${WAN_CODE}"
+    echo "(not Self-Forcing/wan — that fork is the student)"
+    mkdir -p "$(dirname "${WAN_CODE}")"
+    if [[ -d "${WAN_CODE}" ]]; then
+        echo "ERROR: ${WAN_CODE} exists but is not official Wan2.1" >&2
+        exit 1
+    fi
+    git clone --depth=1 https://github.com/Wan-Video/Wan2.1.git "${WAN_CODE}"
+fi
+if [[ ! -f "${WAN_CODE}/wan/text2video.py" ]]; then
+    echo "ERROR: clone succeeded but wan/text2video.py missing: ${WAN_CODE}" >&2
     exit 1
 fi
 if [[ ! -f "${VIDEO_DIR}/metadata.csv" ]]; then
