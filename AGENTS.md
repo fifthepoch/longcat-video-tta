@@ -433,11 +433,11 @@ Per-method `merged_summary.json` lives at:
   native AR long-horizon drifts; AdaSteer delta + routing closed;
   BoN k=4 N=8 passed credibility gate as always-on search, not a hard
   incoming-context gate.
-- **In-flight cluster jobs** (as of 2026-09-07 02:56):
-  Wan-extend smoke **17093254–256 HARVESTED**.
-  `caption_json`. 0000 invented a left pan + mechanic.
-  Do not letter n=2. N=8 gate open. Caption pwarp
-  **DONE / NO**
+- **In-flight cluster jobs** (as of 2026-09-07 03:01):
+  Wan-extend N=8 **17095709–711 queued** (prepare /
+  generate / VBench). Smoke **17093254–256 HARVESTED**.
+  Do not letter n=2. No pwarp on wanext dest. Caption
+  pwarp **DONE / NO**
   17058386–393. Caption nwarp **DONE / NO**
   17028867–876. Mix+ctx / FIFO+tscore / leftover /
   LPIPS+FVD / schedule8 **DONE / NO**. Do not remake

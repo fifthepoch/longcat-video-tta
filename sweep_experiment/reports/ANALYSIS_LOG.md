@@ -4835,6 +4835,24 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — wanext N=8 queued (17095709–711)
+**Tags:** wan, v2v, caption, prompt-extend
+**Owner:** agent
+**Refs:** `experiment_outputs/2026-09-07.md`
+
+User submitted N=8 after the smoke harvest. Prepare
+**17095709** → `datasets/panda_wanext_8`. Generate
+**17095710** afterok. VBench **17095711** afterok.
+Same first-8 leftovers, new T5 only, Self Forcing
+do-nothing. Cite caption-32 first-8 (IQ 70.62 /
+subject 0.658 / Dyn 2/8). Expect invented verbs on
+still rooms. Do not pwarp this dest. Do not mix into
+original-caption tables. Harvest with
+`harvest_wanext.py --series v2v_panda_caption_wanext_8v`
+after COMPLETED 0:0.
+
+---
+
 ## 2026-09-07 — wanext smoke harvested; n=2 not a letter
 **Tags:** wan, v2v, caption, prompt-extend
 **Owner:** agent
