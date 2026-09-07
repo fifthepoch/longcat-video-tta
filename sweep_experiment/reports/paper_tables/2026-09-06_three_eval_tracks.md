@@ -55,10 +55,16 @@ SMOKE=1 bash wan_experiment/sbatch/submit_v2v_caption_wanext.sh
 ```
 
 Login `base` python3 has no torch (2026-09-07 paste).
-Submit starts a GPU Qwen prepare if
-`datasets/panda_wanext_2` is missing, then generate
-afterok. If prepare fails, paste the error — do not
-fake a rewrite. Do not stack pwarp.
+Smoke **17093254–256 COMPLETED 0:0**. Dest exists.
+Harvest before N=8:
+
+```bash
+/scratch/wc3013/conda-envs/self_forcing/bin/python -u \
+  wan_experiment/scripts/harvest_wanext.py
+```
+
+Do not letter n=2. If prepare fails, paste the error —
+do not fake a rewrite. Do not stack pwarp.
 
 This is the “add natural verbs” diagnostic. First-8
 are mostly still rooms. Expect T5 to fight the leftover

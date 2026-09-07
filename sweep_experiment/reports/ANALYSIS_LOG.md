@@ -4835,6 +4835,23 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — wanext smoke COMPLETED; harvest pending
+**Tags:** wan, v2v, caption, protocol
+**Owner:** agent
+**Refs:** jobs 17093254–256 COMPLETED 0:0;
+`experiment_outputs/2026-09-07.md`
+
+Prepare wrote `datasets/panda_wanext_2` (captions.json
+1102 B, not stem). Qwen expanded 0000 to an engine
+close-up and 0001 to a tattooed woman still at a
+counter. Generate + VBench finished. Empty squeue was
+done, not failed. Truncated rewrites do not ask for a
+leftover pan. Do not letter n=2. Do not mix into
+caption-32 tables. Harvest `harvest_wanext.py` before
+N=8. No pwarp on this dest.
+
+---
+
 ## 2026-09-07 — wanext smoke left squeue (17093254–256)
 **Tags:** wan, v2v, cluster, protocol
 **Owner:** agent
