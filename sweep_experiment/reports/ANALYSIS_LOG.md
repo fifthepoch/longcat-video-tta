@@ -4835,6 +4835,21 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — wanext smoke left squeue (17093254–256)
+**Tags:** wan, v2v, cluster, protocol
+**Owner:** agent
+**Refs:** `experiment_outputs/2026-09-07.md`
+
+`SMOKE=1` issued prepare **17093254**, generate
+**17093255**, VBench **17093256**. Next `squeue -u`
+was empty. 2b-quater: `sacct` +
+`datasets/panda_wanext_2` + prep/gen logs before any
+resubmit. Do not invent an extend. Do not harvest
+metrics from an empty dest. No pwarp on this wave.
+No N=8 until smoke dest exists and sidecar is not stem.
+
+---
+
 ## 2026-09-07 — Wan-extend login prepare: no torch
 **Tags:** workflow, cluster, wan
 **Owner:** agent
