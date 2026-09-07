@@ -29,6 +29,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **GwF / SAVi run?** | `sweep_experiment/reports/paper_tables/2026-09-06_gwf_savi_should_we_run.md` | Retrain GwF **no**. SAVi = DNO increment; leak-easy writeup. No GPU. |
 | **Caption pwarp N=8 spec** | `sweep_experiment/reports/paper_tables/2026-09-06_wan_v2v_caption_pwarp_spec.md` | Slide `pred` after pass 1. `sf_pwarp` + `sf_pwarp_live`. **DONE / NO.** Do not remake cite-128. |
 | **Caption pwarp harvest** | `sweep_experiment/reports/paper_tables/2026-09-06_wan_v2v_caption_pwarp_harvest.md` | 17058386–393 COMPLETED. Always IQ 66.81 Dyn 3/8. Live IQ 66.81 Dyn 3/8. Both **NO**. Extra Dyn = 0007 twitch. |
+| **Pwarp eye-inspect pack** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_eye_inspect.md` | Matched SF vs slide mp4s. `export_pwarp_examples.py` then scp. Watch 0007 first. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
