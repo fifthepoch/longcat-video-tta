@@ -35,6 +35,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Three eval tracks** | `sweep_experiment/reports/paper_tables/2026-09-06_three_eval_tracks.md` | A pan-filter V2V. B Wan-extend V2V **DONE / NO**. C MovieGen T2V + first-chunk warp. Do not mix. |
 | **Track C + first-chunk warp** | `sweep_experiment/reports/paper_tables/2026-09-07_t2v_moviegen_warp_spec.md` | MovieGen T2V 30 s. Chunk-0 flow → nwarp/pwarp. Smoke **HARVESTED 17121785–792**. Do not letter n=2. Do not launch 128. |
 | **Track C smoke harvest** | `sweep_experiment/reports/paper_tables/2026-09-07_t2v_moviegen_warp_smoke.md` | Protocol PASS. notta IQ 70.93 Dyn 1/2. nwarp IQ **47.60**. pwarp IQ 69.35. Live==always. |
+| **Noise-method baselines** | `sweep_experiment/reports/paper_tables/2026-09-07_noise_method_baselines.md` | Baseline = attached host. SF only if the machine is SF. GwF cites CogVideoX. FIFO cites VideoCrafter2. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |

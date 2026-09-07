@@ -4835,6 +4835,27 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — noise-method baseline is the attached host
+**Tags:** methodology, paper-narrative, literature
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-07_noise_method_baselines.md`
+
+User: SF-as-baseline is only for papers that build on SF;
+nwarp/pwarp are noise methods, so cite the AR-long noise
+papers’ baselines instead. Split is right, switch-host is
+not. Kind A (warped \(x_T\): GwF / PYoCo / HIWYN) cites
+frozen CogVideoX or i.i.d. noise — no SF, not 30 s AR.
+Kind B (schedule: FIFO / FreeNoise / Diffusion Forcing /
+Stream / Rolling) cites the unmodified generator they
+attached to: VideoCrafter2, their DiT, or SF *when the
+machine is SF* (Rolling). Rule: baseline = attached
+host’s ordinary sampler. Our `notta` is still the honest
+controller row. Do not borrow Relax’s MovieGen sentence
+for nwarp. Do not move the stack to CogVideoX to “match
+GwF.”
+
+---
+
 ## 2026-09-07 — Track C smoke harvested; do not letter n=2
 **Tags:** wan, t2v, moviegen, nwarp, pwarp, negative-result
 **Owner:** agent
