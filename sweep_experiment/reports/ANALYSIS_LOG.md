@@ -4835,6 +4835,28 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-06 — caption pwarp DONE / NO (IQ 66.81, Dyn twitch)
+**Tags:** results, method, closed
+**Owner:** agent
+**Refs:** jobs 17058386–393 COMPLETED 0:0;
+`paper_tables/2026-09-06_wan_v2v_caption_pwarp_harvest.md`
+
+Caption N=8 leftover-direction pred-slide after pass 1.
+Protocol PASS (`metadata_csv`, slide wired, live gate
+3/8 = 0001/0006/0007). Always-on tail +38% (8/0/0) and
+Imaging Quality **66.81**, subject 0.628, Dyn **3/8**.
+Live tail +8% (3/0/5 identity skips) and IQ **66.81**,
+subject 0.651, Dyn 3/8. Analyzer FAIL quality collapse.
+Softer than nwarp IQ 49, still miss hold (IQ ≥ 70.54 /
+subject ≥ 0.680). Extra Dyn is 0007 twitch (flicker
+0.878, tail 0.125, leftover \(v_y=−1.11\)). 0002 leftover
+≈ 0 still forced `dx=1` (F6). 0004/0007 1-cell/strip
+crawl (F3). F1 is not a no-op. Closed. Do not scale.
+Do not stack nwarp. User picks one hole or A/B/C.
+Do not start 8-GPU DMD.
+
+---
+
 ## 2026-09-06 — pwarp interpretation gaps; harvest before retune
 **Tags:** method, analysis
 **Owner:** agent

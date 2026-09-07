@@ -27,8 +27,9 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Caption nwarp harvest** | `sweep_experiment/reports/paper_tables/2026-09-06_wan_v2v_caption_nwarp_harvest.md` | 17028867–876 COMPLETED. Always IQ 49.18 Dyn 0/8. Live IQ 54.42 Dyn 2/8. Both **NO**. |
 | **Why nwarp IQ died** | `sweep_experiment/reports/paper_tables/2026-09-06_nwarp_vs_gwf_why_iq_died.md` | Extra-only locked a noise stencil. Not GwF. dy=0 still IQ 45. |
 | **GwF / SAVi run?** | `sweep_experiment/reports/paper_tables/2026-09-06_gwf_savi_should_we_run.md` | Retrain GwF **no**. SAVi = DNO increment; leak-easy writeup. No GPU. |
-| **Caption pwarp N=8 spec** | `sweep_experiment/reports/paper_tables/2026-09-06_wan_v2v_caption_pwarp_spec.md` | Slide `pred` after pass 1. `sf_pwarp` + `sf_pwarp_live`. Queued 17058386–393. |
-| **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Interpretation gaps. Pull disk before retune. No 8-GPU DMD. |
+| **Caption pwarp N=8 spec** | `sweep_experiment/reports/paper_tables/2026-09-06_wan_v2v_caption_pwarp_spec.md` | Slide `pred` after pass 1. `sf_pwarp` + `sf_pwarp_live`. **DONE / NO.** Do not remake cite-128. |
+| **Caption pwarp harvest** | `sweep_experiment/reports/paper_tables/2026-09-06_wan_v2v_caption_pwarp_harvest.md` | 17058386–393 COMPLETED. Always IQ 66.81 Dyn 3/8. Live IQ 66.81 Dyn 3/8. Both **NO**. Extra Dyn = 0007 twitch. |
+| **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
 | **RF non-linear timestep list** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_nonlinear_schedule.md` | **DONE / NO.** Linger / dump Imaging Quality died. Harvest: `2026-09-04_wan_v2v_caption_schedule8_harvest.md`. Do not start 8-GPU DMD. |
@@ -288,15 +289,16 @@ Per-method `merged_summary.json` lives at:
   Outcomes: `paper_tables/2026-08-24_wan_v2v_caption_wave1_outcomes.md`.
   Spec: `paper_tables/2026-08-24_wan_v2v_caption_rerun_spec.md`.
 - **Current next (2026-09-06):** Caption nwarp N=8
-  **DONE / NO**. Why: locked extra stencil, not GwF
-  (`2026-09-06_nwarp_vs_gwf_why_iq_died.md`). Caption
-  pwarp N=8 is **queued** (`sf_pwarp` /
-  `sf_pwarp_live`): slide `pred` after pass 1, ordinary
-  extras. Jobs 17058386–393. Do not
-  retune extra γ. Do not combine with nwarp. Still no
-  8-GPU DMD. User picks A / B / C for the title. Do
-  not cheapen Pseudo. Do not scale mix / FIFO / tscore
-  / ρ / list / nwarp.
+  **DONE / NO**. Caption pwarp N=8 **DONE / NO**
+  (`sf_pwarp` / `sf_pwarp_live`, 17058386–393). Slide
+  fired; IQ **66.81** both arms; extra Dyn is 0007
+  twitch (flicker 0.878). Harvest:
+  `2026-09-06_wan_v2v_caption_pwarp_harvest.md`. Do
+  not retune extra γ. Do not stack nwarp. Still no
+  8-GPU DMD. User picks one pwarp hole (F3 vs F6)
+  or A / B / C for the title. Do not cheapen Pseudo.
+  Do not scale mix / FIFO / tscore / ρ / list /
+  nwarp / pwarp.
   Caption official (historical):
   N=32 **DONE**. Cite Dyn as **percent of clips** (VBench official),
   not median. SF 21.9% (7/32), Pseudo **40.6%** (13/32), Always
@@ -346,7 +348,7 @@ Per-method `merged_summary.json` lives at:
   Always 0.751 / 425; RF 0.762 / 436 (last16 **1108**).
   Caption leftover **NO**. Schedule8 linger/dump **NO**.
   Mix+ctx **NO**. FIFO **NO**. Gated lock-score = host identity.
-  Caption nwarp **NO**.
+  Caption nwarp **NO**. Caption pwarp **NO**.
   Pseudo-future Search **dropped as title**. Distill is
   territory A if the user picks it — do not start 8-GPU DMD
   tonight. Harvests:
@@ -409,11 +411,9 @@ Per-method `merged_summary.json` lives at:
   native AR long-horizon drifts; AdaSteer delta + routing closed;
   BoN k=4 N=8 passed credibility gate as always-on search, not a hard
   incoming-context gate.
-- **In-flight cluster jobs** (as of 2026-09-06 13:42):
-  Caption pwarp **queued**: smoke gen **17058386,
-  17058389** + VBench **17058390**; N=8 gen
-  **17058391, 17058392** + VBench **17058393**.
-  Caption nwarp **DONE / NO** 17028867–876. Mix+ctx /
+- **In-flight cluster jobs** (as of 2026-09-06 20:53):
+  Caption pwarp **DONE / NO** 17058386–393. Caption
+  nwarp **DONE / NO** 17028867–876. Mix+ctx /
   FIFO+tscore / leftover / LPIPS+FVD / schedule8
   **DONE / NO**. Do not remake cite-128. Do not start
   8-GPU DMD. **No I2V. No TTC.**

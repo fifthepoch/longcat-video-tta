@@ -1,9 +1,10 @@
 # Caption N=8 slide the guessed picture — spec (2026-09-06)
 
-**Status:** QUEUED 2026-09-06. Pred-only (not extras). Self Forcing
-host. Same-wave twins: always-on + leftover-live gate.
-Prompts = `metadata.csv`. Do not remake cite-128.
-**No TTC. No I2V. No 8-GPU DMD.**
+**Status:** DONE / NO 2026-09-06. Harvest:
+`2026-09-06_wan_v2v_caption_pwarp_harvest.md`. Pred-only
+(not extras). Self Forcing host. Same-wave twins: always-on
++ leftover-live gate. Prompts = `metadata.csv`. Do not
+remake cite-128. **No TTC. No I2V. No 8-GPU DMD.**
 
 Why extras died (not this recipe):
 `2026-09-06_nwarp_vs_gwf_why_iq_died.md`.
