@@ -102,11 +102,10 @@ def main() -> None:
         "0002 leftover ≈ 0 but we invented +x; Dyn stayed 0.\n"
     )
     print(f"  {readme.name}")
-    print("scp from your Mac:")
+    print("scp from your Mac (NYU VPN if off campus):")
     print(
         "  mkdir -p ~/Desktop/pwarp_examples && "
-        "scp 'wc3013@torch-login-a-2:"
-        f"{DEST}/*' ~/Desktop/pwarp_examples/"
+        f"scp -r torch:{DEST}/. ~/Desktop/pwarp_examples/"
     )
 
 

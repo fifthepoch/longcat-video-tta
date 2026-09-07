@@ -23,8 +23,13 @@ Does not delete sources. Side-by-side + last 5 s if
 
 ```bash
 mkdir -p ~/Desktop/pwarp_examples
-scp 'wc3013@torch-login-a-2:/scratch/wc3013/longcat-video-tta/wan_experiment/results/v2v_panda_caption_pwarp_examples/*' ~/Desktop/pwarp_examples/
+scp -r torch:/scratch/wc3013/longcat-video-tta/wan_experiment/results/v2v_panda_caption_pwarp_examples/. ~/Desktop/pwarp_examples/
 ```
+
+`torch` is the Host alias in `~/.ssh/config` → `login.torch.hpc.nyu.edu`.
+Do **not** use `torch-login-a-2` from a laptop (internal DNS only).
+Need NYU VPN if you are off campus. Microsoft device-login may
+pop once, same as `ssh torch`.
 
 ## Watch in this order
 
