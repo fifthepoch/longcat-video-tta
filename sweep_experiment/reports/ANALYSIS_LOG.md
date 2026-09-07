@@ -4835,6 +4835,25 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — wanext smoke harvested; n=2 not a letter
+**Tags:** wan, v2v, caption, prompt-extend
+**Owner:** agent
+**Refs:** jobs 17093254–256 COMPLETED 0:0;
+`paper_tables/2026-09-07_wan_v2v_caption_wanext_smoke.md`
+
+`prompt_source=caption_json`. Qwen 0000 (548c) invented
+a garage, a mechanic, and “camera slowly pans left” on
+a leftover with `vec=0.008`. Tail 0.014→0.026; Dyn was
+already 1. Qwen 0001 (504c) kept a standing kitchen
+portrait; tail identity. Median IQ 71.19 vs SF 70.26;
+subject 0.530 vs 0.537; Dyn 1/2 = 1/2. This is Wan
+rule 6 on still leftovers, not a leftover controller.
+Do not letter n=2. Do not mix into caption-32 tables.
+N=8 gate open (real Qwen, not stem). No pwarp on that
+dest.
+
+---
+
 ## 2026-09-07 — wanext smoke COMPLETED; harvest pending
 **Tags:** wan, v2v, caption, protocol
 **Owner:** agent

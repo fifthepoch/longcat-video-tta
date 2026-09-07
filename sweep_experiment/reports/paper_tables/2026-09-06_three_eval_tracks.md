@@ -55,16 +55,18 @@ SMOKE=1 bash wan_experiment/sbatch/submit_v2v_caption_wanext.sh
 ```
 
 Login `base` python3 has no torch (2026-09-07 paste).
-Smoke **17093254–256 COMPLETED 0:0**. Dest exists.
-Harvest before N=8:
+Smoke **17093254–256 HARVESTED.**
+`caption_json`. 0000 invented mechanic + left pan.
+IQ held, Dyn 1/2 = 1/2. **Do not letter n=2.**
+Table: `2026-09-07_wan_v2v_caption_wanext_smoke.md`.
+N=8 gate open:
 
 ```bash
-/scratch/wc3013/conda-envs/self_forcing/bin/python -u \
-  wan_experiment/scripts/harvest_wanext.py
+bash wan_experiment/sbatch/submit_v2v_caption_wanext.sh
 ```
 
-Do not letter n=2. If prepare fails, paste the error —
-do not fake a rewrite. Do not stack pwarp.
+If prepare fails, paste the error — do not fake a
+rewrite. Do not stack pwarp.
 
 This is the “add natural verbs” diagnostic. First-8
 are mostly still rooms. Expect T5 to fight the leftover
