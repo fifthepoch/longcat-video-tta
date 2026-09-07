@@ -25,7 +25,12 @@ def leftover_mean_flow_px(frames: np.ndarray) -> tuple[float, float, dict]:
     """
     frames = np.clip(np.asarray(frames, dtype=np.float32), 0.0, 1.0)
     if frames.ndim != 4 or frames.shape[0] < 2:
-        return 0.0, 0.0, {"backend": "empty", "n_pairs": 0}
+        return 0.0, 0.0, {
+            "backend": "empty",
+            "n_pairs": 0,
+            "vy_px": 0.0,
+            "vx_px": 0.0,
+        }
     grays = (
         0.299 * frames[..., 0] + 0.587 * frames[..., 1] + 0.114 * frames[..., 2]
     )
@@ -83,6 +88,61 @@ def _phase_mean_flow(grays: np.ndarray) -> tuple[float, float, dict]:
         "vy_px": vy,
         "vx_px": vx,
     }
+
+
+def warp_xt_volume(noise, vy_lat: float, vx_lat: float, gamma: float, rng):
+    """HIWYN on official Wan x_T. noise is [C, T, H, W].
+
+    Frame t is the frame-0 field transported t latent steps. Holes =
+    fresh Gaussian. Mix with white at gamma. Not mid-step extras.
+    """
+    import torch
+
+    if noise.ndim != 4:
+        raise ValueError(f"expected [C,T,H,W], got {tuple(noise.shape)}")
+    c, n_t, h, w = noise.shape
+    field = torch.randn(
+        [c, h, w], device=noise.device, dtype=noise.dtype, generator=rng,
+    )
+    frames = []
+    y_acc = 0.0
+    x_acc = 0.0
+    dy_sum = 0
+    dx_sum = 0
+    for i in range(int(n_t)):
+        if i == 0:
+            frames.append(field)
+            continue
+        prev_iy = int(math.floor(y_acc))
+        prev_ix = int(math.floor(x_acc))
+        y_acc += float(vy_lat)
+        x_acc += float(vx_lat)
+        dy = int(math.floor(y_acc)) - prev_iy
+        dx = int(math.floor(x_acc)) - prev_ix
+        dy_sum += dy
+        dx_sum += dx
+        field = _shift_fill(field, dy, dx, rng)
+        frames.append(field)
+    warped = torch.stack(frames, dim=1)
+    white = torch.randn(
+        warped.shape, device=warped.device, dtype=warped.dtype, generator=rng,
+    )
+    g = min(1.0, max(0.0, float(gamma)))
+    denom = math.sqrt((1.0 - g) ** 2 + g ** 2)
+    out = ((1.0 - g) * warped + g * white) / denom
+    log = {
+        "nwarp": True,
+        "on": "x_T",
+        "vy_lat": float(vy_lat),
+        "vx_lat": float(vx_lat),
+        "y_acc": float(y_acc),
+        "x_acc": float(x_acc),
+        "dy": int(dy_sum),
+        "dx": int(dx_sum),
+        "gamma": float(g),
+        "n_t": int(n_t),
+    }
+    return out, log
 
 
 def leftover_vel_latent(vy_px: float, vx_px: float) -> tuple[float, float]:

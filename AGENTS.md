@@ -36,6 +36,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Track C + first-chunk warp** | `sweep_experiment/reports/paper_tables/2026-09-07_t2v_moviegen_warp_spec.md` | MovieGen T2V 30 s. Chunk-0 flow → nwarp/pwarp. Smoke **HARVESTED 17121785–792**. Do not letter n=2. Do not launch 128. |
 | **Track C smoke harvest** | `sweep_experiment/reports/paper_tables/2026-09-07_t2v_moviegen_warp_smoke.md` | Protocol PASS. notta IQ 70.93 Dyn 1/2. nwarp IQ **47.60**. pwarp IQ 69.35. Live==always. |
 | **Noise-method baselines** | `sweep_experiment/reports/paper_tables/2026-09-07_noise_method_baselines.md` | Baseline = attached host. SF only if the machine is SF. GwF cites CogVideoX. FIFO cites VideoCrafter2. |
+| **Clean host split** | `sweep_experiment/reports/paper_tables/2026-09-07_clean_host_split.md` | Portable ideas on official Wan teacher. Cite `wan_notta`. Forcing-only stay on SF/RF tables. Smoke leftover + MovieGen n=2. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
@@ -248,7 +249,7 @@ Per-method `merged_summary.json` lives at:
 
 ## 3. Active project state (snapshot — keep current)
 
-**Date:** Updated 2026-09-04.
+**Date:** Updated 2026-09-07.
 
 - **Paper target:** CVPR 2027.
 - **Paper method (2026-09-04):** Pseudo-future Search is **dropped**
@@ -295,7 +296,16 @@ Per-method `merged_summary.json` lives at:
   caption tables.
   Outcomes: `paper_tables/2026-08-24_wan_v2v_caption_wave1_outcomes.md`.
   Spec: `paper_tables/2026-08-24_wan_v2v_caption_rerun_spec.md`.
-- **Current next (2026-09-07):** Caption Wan-extend N=8
+- **Current next (2026-09-07):** Clean Wan-teacher
+  host. Portable ideas cite `wan_notta` (official
+  Wan2.1-T2V-1.3B, no `self_forcing_dmd.pt`).
+  **SUBMIT-READY smoke** leftover n=2 + MovieGen
+  n=2: `SMOKE=1 bash wan_experiment/sbatch/submit_wan_teacher_smoke.sh`.
+  Native clip 81 frames. nwarp = HIWYN on \(x_T\)
+  once. pwarp = mid-timestep pred slide. Do not
+  launch 128. Do not remake cite-128. Forcing-only
+  (Rolling / mix / FIFO / leftover ρ) stay on the
+  existing SF/RF tables. Caption Wan-extend N=8
   **DONE / NO** (17095709–711). IQ 69.22 / subject
   0.576 / Dyn 4/8 vs SF first-8 70.62 / 0.658 / 2/8.
   Extra Dyn = invented pans. Do not scale. Do not
@@ -313,21 +323,23 @@ Per-method `merged_summary.json` lives at:
   eight is one clip. Prompt rewrite in the field is
   train/test text-length match (Wan Qwen extend,
   MovieGen-128 Qwen). Not a leftover flow. 0006 is
-  likely zoom/expansion; our slide only pans.   Three tracks (2026-09-06): A login pan-filter
+  likely zoom/expansion; our slide only pans. Three
+  tracks (2026-09-06): A login pan-filter
   (`filter_pwarp_pan_shortlist.py`, **Self Forcing
   python** — login `base` imageio has no ffmpeg.
   First-128 keep 3/128 were word accidents; do not
   `--write-dir`. User started track A 2026-09-07:
   retag json then `--n 1000` if thin. Table
   `2026-09-07_pwarp_pan_filter_128.md`). B Wan-extend
-  N=8 **DONE / NO** 17095709–711.   C MovieGen T2V +
+  N=8 **DONE / NO** 17095709–711. C MovieGen T2V +
   first-chunk nwarp/pwarp **SMOKE HARVESTED**
   17121785–792 COMPLETED 0:0. Protocol PASS
   (`t2v_chunk0` 8/8). notta IQ 70.93 / Dyn 1/2.
   nwarp IQ **47.60** (same death as leftover).
-  pwarp IQ 69.35, Dyn still 1/2. Do not letter
-  n=2. Do not launch 128. Do not scale nwarp
-  or pwarp.
+  pwarp IQ 69.35, Dyn still 1/2. That was the
+  **wrong host** (SF extras). Isolated kind-A table
+  is the Wan-teacher smoke. Do not letter n=2. Do
+  not launch 128. Do not scale nwarp or pwarp on SF.
   Panda is not their 30 s table. Do not cheapen
   Pseudo.
   Do not scale mix / FIFO / tscore / ρ / list /
@@ -444,11 +456,13 @@ Per-method `merged_summary.json` lives at:
   native AR long-horizon drifts; AdaSteer delta + routing closed;
   BoN k=4 N=8 passed credibility gate as always-on search, not a hard
   incoming-context gate.
-- **In-flight cluster jobs** (as of 2026-09-07 15:17):
+- **In-flight cluster jobs** (as of 2026-09-07 16:00):
+  Wan-teacher leftover + MovieGen smokes
+  **SUBMIT-READY** (not launched from this machine).
   Track C MovieGen smoke **HARVESTED** 17121785–792
   COMPLETED 0:0. nwarp IQ 47.60 **NO** even as
-  smoke. pwarp no Dyn lift. Do not launch 128.
-  Wan-extend N=8 **DONE / NO** 17095709–711.
+  smoke (SF host). pwarp no Dyn lift. Do not launch
+  128. Wan-extend N=8 **DONE / NO** 17095709–711.
   Caption pwarp **DONE / NO** 17058386–393.
   Caption nwarp **DONE / NO** 17028867–876.
   Mix+ctx / FIFO+tscore / leftover / LPIPS+FVD /

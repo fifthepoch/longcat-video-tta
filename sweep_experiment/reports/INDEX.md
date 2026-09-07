@@ -9,7 +9,7 @@ update the Status / Findings columns when re-merged. NEVER delete rows
 even if results are superseded — mark them `superseded` and keep them
 for audit trail.
 
-**Owners:** Wenchen (PI) and any active agent. Last updated: 2026-09-01.
+**Owners:** Wenchen (PI) and any active agent. Last updated: 2026-09-07.
 Week talk: [`weekly_recap_2026-09-01.md`](../../weekly_recap_2026-09-01.md).
 
 ---
@@ -141,6 +141,9 @@ Timing: [`paper_tables/2026-08-16_wan_i2v_smoke.md`](paper_tables/2026-08-16_wan
 | Panda first-128 pan filter | Dual-gate leftover + caption motion words. | **3/128 are word accidents. Do not write-dir.** User started track A 2026-09-07: retag then `--n 1000` if thin. | [`2026-09-07_pwarp_pan_filter_128.md`](paper_tables/2026-09-07_pwarp_pan_filter_128.md). |
 | Wan-extend prepare | Qwen2.5-7B official rewrite on first-8 leftovers. | Login `base` no torch (2026-09-07). Submit GPU-prepares then generate afterok. | [`2026-09-06_three_eval_tracks.md`](paper_tables/2026-09-06_three_eval_tracks.md). Paste: [`experiment_outputs/2026-09-07.md`](experiment_outputs/2026-09-07.md). |
 | Noise-method baselines | What A (warped \(x_T\)) vs B (schedule) papers cite. | Baseline = attached host. SF only if the machine is SF. Do not borrow Relax’s MovieGen sentence for nwarp. | [`2026-09-07_noise_method_baselines.md`](paper_tables/2026-09-07_noise_method_baselines.md). |
+| Clean host split | Portable ideas vs Forcing-only. Host = official Wan2.1-T2V-1.3B teacher. Cite `wan_notta`. | Do not port Rolling / mix / FIFO / leftover ρ. Native clip 81 frames. Smoke leftover n=2 + MovieGen n=2 first. No 128 until protocol PASS. | [`2026-09-07_clean_host_split.md`](paper_tables/2026-09-07_clean_host_split.md). |
+| `wan_teacher_leftover_smoke` | `wan_notta` / always / gated / nwarp / nwarp_live / pwarp / pwarp_live. Leftover Panda n=2. Official teacher, no `self_forcing_dmd.pt`. | **SUBMIT-READY.** Flow = leftover pixels. Sidecar `host=wan_teacher` `source=leftover` `prefix=flow_only`. Cite `wan_notta`. | Submit: `SMOKE=1 bash wan_experiment/sbatch/submit_wan_teacher_smoke.sh`. Harvest: `harvest_wan_teacher.py --series wan_teacher_leftover_smoke`. |
+| `wan_teacher_moviegen_smoke` | Same 7 methods. MovieGen n=2. Official teacher, 81 frames. | **SUBMIT-READY.** Flow = first `wan_notta` clip. Sidecar `source=t2v_firstseg`. Do not mix leftover dirs. Do not launch 128. | Same submit (both waves). Harvest: `harvest_wan_teacher.py --series wan_teacher_moviegen_smoke`. |
 | Track C + first-chunk warp | MovieGen T2V 30 s. notta / always / gated + nwarp/pwarp from chunk-0 flow. | **SMOKE HARVESTED.** 17121785–792 COMPLETED 0:0. Protocol PASS. Do not letter n=2. Do not launch 128. | Spec: [`2026-09-07_t2v_moviegen_warp_spec.md`](paper_tables/2026-09-07_t2v_moviegen_warp_spec.md). Smoke: [`2026-09-07_t2v_moviegen_warp_smoke.md`](paper_tables/2026-09-07_t2v_moviegen_warp_smoke.md). |
 | `t2v_moviegen_warp_smoke` | notta / always / gated / nwarp / nwarp_live / pwarp / pwarp_live. MovieGen n=2. | **17121785–792 COMPLETED 0:0.** `t2v_chunk0` 8/8. notta IQ **70.93** / 0.891 / Dyn 1/2. nwarp IQ **47.60**. pwarp IQ 69.35. Dyn 1/2 every arm. Live==always. | [`2026-09-07_t2v_moviegen_warp_smoke.md`](paper_tables/2026-09-07_t2v_moviegen_warp_smoke.md). |
 | `v2v_panda_caption_wanext_8v_smoke` | `notta` on Wan-extended first-2 leftovers. | **17093254–256 COMPLETED 0:0.** `caption_json`. 0000 invented mechanic + left pan. IQ 71.19 vs SF 70.26. Dyn 1/2=1/2. **Do not letter n=2.** N=8 gate open. | [`2026-09-07_wan_v2v_caption_wanext_smoke.md`](paper_tables/2026-09-07_wan_v2v_caption_wanext_smoke.md). |

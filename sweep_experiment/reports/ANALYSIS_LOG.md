@@ -5588,3 +5588,25 @@ is the evidence a new list needs a student. Do not start
 context noise / next-block bump still open.
 
 ---
+
+## 2026-09-07 — clean host: isolate ideas from Self Forcing
+**Tags:** wan, teacher, nwarp, pwarp, protocol, methodology
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-07_clean_host_split.md`;
+`paper_tables/2026-09-07_noise_method_baselines.md`;
+`wan_experiment/scripts/run_wan_teacher.py`
+
+SF-as-baseline is only for Forcing follow-ons. nwarp / pwarp
+on SF extras mixed two effects (the idea + the 4-step causal
+student). Portable ideas now run on official Wan2.1-T2V-1.3B
+teacher. Cite `wan_notta`. Native clip is 81 frames. nwarp =
+HIWYN on \(x_T\) once. pwarp = mid-timestep pred slide.
+Leftover: flow from leftover pixels, `prefix=flow_only`
+(T2V-1.3B cannot take a visual prefix). MovieGen: flow from
+the first white clip, `source=t2v_firstseg`. Do not port
+Rolling / mix / FIFO / leftover ρ — those stay on existing
+SF/RF tables. Smoke leftover n=2 + MovieGen n=2 first. Do
+not launch 128. Do not remake cite-128. Do not start 8-GPU
+DMD.
+
+---
