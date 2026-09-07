@@ -132,23 +132,36 @@ def main() -> None:
     print(f"prompt_source={srcs}")
     if any(s == "stem" for s in srcs):
         raise SystemExit("stem prompt in generate sidecar")
+    dest_caps = {}
+    cap_p = dest / "captions.json"
+    if cap_p.is_file():
+        raw = json.loads(cap_p.read_text())
+        dest_caps = {Path(str(k)).stem: str(v) for k, v in raw.items()}
     keys = sorted(gen_rows)
-    print(f"{'id':14} {'src':8} {'wan_tail':10} {'sf_tail':10} prompt[:48]")
+    print(f"{'id':14} {'src':8} {'dest_c':6} {'side_c':6} {'match':5} {'wan_tail':10} {'sf_tail':10}")
     wan_tails, sf_tails = [], []
     for k in keys:
         wr = gen_rows[k]
         sr = sf_rows.get(k) or {}
+        dest_c = dest_caps.get(k) or dest_caps.get(wr.get("file_name") or "") or ""
+        side_c = str(wr.get("prompt") or "")
         wt = wr.get("tail_motion")
         st = sr.get("tail_motion")
         if wt is not None:
             wan_tails.append(float(wt))
         if st is not None:
             sf_tails.append(float(st))
+        match = dest_c == side_c and len(side_c) >= 20
         print(
             f"{k:14} {wr.get('prompt_source', '?'):8} "
-            f"{_fmt(wt, 5):10} {_fmt(st, 5):10} "
-            f"{str(wr.get('prompt') or '')[:48]}"
+            f"{len(dest_c):6} {len(side_c):6} {str(match):5} "
+            f"{_fmt(wt, 5):10} {_fmt(st, 5):10}"
         )
+        if dest_c and not match:
+            raise SystemExit(
+                f"{k}: sidecar prompt != dest caption "
+                f"({len(side_c)}c vs {len(dest_c)}c)"
+            )
     if wan_tails and sf_tails:
         wm = statistics.median(wan_tails)
         sm = statistics.median(sf_tails)

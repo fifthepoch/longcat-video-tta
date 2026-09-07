@@ -4835,6 +4835,21 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — wanext terminal cuts are display-only
+**Tags:** wan, v2v, caption, workflow
+**Owner:** agent
+**Refs:** `run_v2v_chunked.py` `_load_v2v_captions` / `text_encoder`;
+`experiment_outputs/2026-09-07.md`
+
+User saw truncated prompts in login prints. Those were
+`[:160]` / `[:48]` / prepare `[:120]`. Dest strings are
+441–525+ chars. Generate encodes the full `item["prompt"]`.
+T5 cross-attn cache is 512 tokens; 80–100 words fits.
+Do not scancel **17095710**. Harvest will assert sidecar
+prompt equals dest caption.
+
+---
+
 ## 2026-09-07 — wanext N=8 queued (17095709–711)
 **Tags:** wan, v2v, caption, prompt-extend
 **Owner:** agent

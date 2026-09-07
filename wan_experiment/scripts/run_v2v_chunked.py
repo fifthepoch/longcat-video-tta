@@ -4464,7 +4464,12 @@ def main() -> int:
                 "mp4": str(mp4), **item,
             })
             continue
-        print(f"[{i+1}/{len(items)}] V2V {method} {item['file_name']}")
+        print(
+            f"[{i+1}/{len(items)}] V2V {method} {item['file_name']} "
+            f"prompt_source={item.get('prompt_source')} "
+            f"prompt_chars={len(item.get('prompt') or '')}",
+            flush=True,
+        )
         _seed_torch(torch, args.seed)
         t0 = time.time()
         try:

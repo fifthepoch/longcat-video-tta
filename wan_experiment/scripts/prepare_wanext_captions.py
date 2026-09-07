@@ -143,11 +143,11 @@ def main() -> None:
         src_cap = caps.get(cid) or caps.get(p.stem) or ""
         if not src_cap:
             raise SystemExit(f"no metadata caption for {p.name}")
-        print(f"extend {cid}: {src_cap[:80]}")
+        print(f"extend {cid} src ({len(src_cap)}c): {src_cap}")
         ext = _extend_hf(src_cap, args.model)
         if len(ext) < 20:
             raise SystemExit(f"extend too short for {cid}: {ext!r}")
-        print(f"  -> {ext[:120]}")
+        print(f"  -> ext ({len(ext)}c): {ext}")
         rows.append({
             "file_name": p.name,
             "id": cid,
