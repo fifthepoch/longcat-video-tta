@@ -311,7 +311,10 @@ Per-method `merged_summary.json` lives at:
   python** — login `base` imageio has no ffmpeg.
   First-128 keep 3/128 were word accidents; do not
   `--write-dir`. Table
-  `2026-09-07_pwarp_pan_filter_128.md`). B Wan-extend on first-8 leftovers
+  `2026-09-07_pwarp_pan_filter_128.md`). B Wan-extend:
+  login `base` has no torch — submit GPU-prepares
+  Qwen then generate afterok; do not fake a rewrite.
+  Same first-8 leftovers, new T5 only
   (separate series, no pwarp). C field T2V
   MovieGen-128 + VBench-Long, `SMOKE=1` first.
   Panda is not their 30 s table. Do not cheapen

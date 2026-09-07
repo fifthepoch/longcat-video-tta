@@ -50,13 +50,15 @@ Self Forcing do-nothing. Cite vs caption-32 `notta`
 (original `metadata.csv`).
 
 ```bash
-python3 -u wan_experiment/scripts/prepare_wanext_captions.py --n 2
-SMOKE=1 VIDEO_DIR=/scratch/wc3013/longcat-video-tta/datasets/panda_wanext_2 \
-  bash wan_experiment/sbatch/submit_v2v_caption_wanext.sh
+cd /scratch/wc3013/longcat-video-tta && git pull --ff-only origin main
+SMOKE=1 bash wan_experiment/sbatch/submit_v2v_caption_wanext.sh
 ```
 
-Needs Qwen on the node. If prepare fails, paste the
-error — do not fake a rewrite. Do not stack pwarp.
+Login `base` python3 has no torch (2026-09-07 paste).
+Submit starts a GPU Qwen prepare if
+`datasets/panda_wanext_2` is missing, then generate
+afterok. If prepare fails, paste the error — do not
+fake a rewrite. Do not stack pwarp.
 
 This is the “add natural verbs” diagnostic. First-8
 are mostly still rooms. Expect T5 to fight the leftover

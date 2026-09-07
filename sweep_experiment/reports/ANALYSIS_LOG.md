@@ -4835,6 +4835,22 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — Wan-extend login prepare: no torch
+**Tags:** workflow, cluster, wan
+**Owner:** agent
+**Refs:** `experiment_outputs/2026-09-07.md`;
+`wan_experiment/sbatch/run_prepare_wanext.sbatch`
+
+Track B `prepare_wanext_captions.py --n 2` under login
+`base` printed the first caption then
+`ModuleNotFoundError: No module named 'torch'`. Submit
+then died because `panda_wanext_2` was never written.
+Do not invent a rewrite. Submit now GPU-prepares Qwen
+then generate afterok. Same leftover videos, new T5
+only. No pwarp on that wave.
+
+---
+
 ## 2026-09-07 — first-128 pan filter: 3 word accidents
 **Tags:** wan, v2v, leftover, negative-result, protocol
 **Owner:** agent

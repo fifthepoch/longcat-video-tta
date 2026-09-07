@@ -3,10 +3,15 @@
 
 Separate from pwarp. Same leftover videos, new T5 string only.
 
-    python3 -u wan_experiment/scripts/prepare_wanext_captions.py --n 8
+    /scratch/wc3013/conda-envs/self_forcing/bin/python -u \
+        wan_experiment/scripts/prepare_wanext_captions.py --n 2
 
-Needs Qwen2.5-Instruct on the node (Self Forcing env + HF cache, or
-DASH_API_KEY). If extend fails, this script exits without writing.
+Login ``base`` python3 has no torch. Prefer the GPU job:
+
+    SMOKE=1 bash wan_experiment/sbatch/submit_v2v_caption_wanext.sh
+
+Needs Qwen2.5-Instruct (Self Forcing env + HF cache on /scratch).
+If extend fails, this script exits without writing. Do not fake a rewrite.
 """
 from __future__ import annotations
 
@@ -21,6 +26,9 @@ from pathlib import Path
 ROOT = Path("/scratch/wc3013/longcat-video-tta")
 SRC = ROOT / "datasets" / "panda_1000_480p"
 DEST = ROOT / "datasets" / "panda_wanext_8"
+SF_PYTHON = Path("/scratch/wc3013/conda-envs/self_forcing/bin/python")
+_TOK = None
+_MDL = None
 
 # Wan2.1 English T2V extend (wan/utils/prompt_extend.py LM_EN_SYS_PROMPT).
 WAN_EN_SYS = (
@@ -57,15 +65,47 @@ def _repo() -> None:
         sys.path.insert(0, str(here))
 
 
-def _extend_hf(prompt: str, model: str) -> str:
+def _require_torch() -> None:
+    try:
+        import torch  # noqa: F401
+        from transformers import AutoModelForCausalLM  # noqa: F401
+    except ModuleNotFoundError as exc:
+        hint = (
+            f"{SF_PYTHON} -u wan_experiment/scripts/prepare_wanext_captions.py --n 2"
+            if SF_PYTHON.is_file()
+            else "the Self Forcing env python"
+        )
+        raise SystemExit(
+            "Need torch + transformers. Login `base` python3 is not enough.\n"
+            "On a GPU node:\n"
+            f"  {hint}\n"
+            "Or submit prepare+generate together:\n"
+            "  SMOKE=1 bash wan_experiment/sbatch/submit_v2v_caption_wanext.sh"
+        ) from exc
+
+
+def _load_hf(model: str):
+    global _TOK, _MDL
+    if _MDL is not None:
+        return _TOK, _MDL
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
+    scratch = Path("/scratch") / os.environ.get("USER", "wc3013")
+    os.environ.setdefault("HF_HOME", str(scratch / ".cache" / "huggingface"))
+    os.environ.setdefault("TRANSFORMERS_CACHE", os.environ["HF_HOME"])
     tok = AutoTokenizer.from_pretrained(model, trust_remote_code=True)
     mdl = AutoModelForCausalLM.from_pretrained(
         model, torch_dtype=torch.bfloat16, device_map="auto",
         trust_remote_code=True,
     )
+    _TOK, _MDL = tok, mdl
+    print(f"loaded {model} cuda={torch.cuda.is_available()}")
+    return tok, mdl
+
+
+def _extend_hf(prompt: str, model: str) -> str:
+    tok, mdl = _load_hf(model)
     messages = [
         {"role": "system", "content": WAN_EN_SYS},
         {"role": "user", "content": prompt},
@@ -89,6 +129,7 @@ def main() -> None:
     args = ap.parse_args()
     if args.dest is None:
         args.dest = ROOT / "datasets" / f"panda_wanext_{args.n}"
+    _require_torch()
     _repo()
     from scripts.caption_utils import canonical_video_id, load_resolved_captions_csv
 

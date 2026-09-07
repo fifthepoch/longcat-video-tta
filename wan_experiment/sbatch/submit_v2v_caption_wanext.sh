@@ -5,10 +5,11 @@
 # Do not remake cite-128. No TTC. No I2V. No 8-GPU DMD.
 #
 #   cd /scratch/wc3013/longcat-video-tta && git pull --ff-only origin main
-#   python3 -u wan_experiment/scripts/prepare_wanext_captions.py --n 2   # smoke texts
 #   SMOKE=1 bash wan_experiment/sbatch/submit_v2v_caption_wanext.sh
-#   python3 -u wan_experiment/scripts/prepare_wanext_captions.py --n 8
 #   bash wan_experiment/sbatch/submit_v2v_caption_wanext.sh
+#
+# Login `base` python3 has no torch. This submit starts a GPU prepare
+# job if datasets/panda_wanext_${N} is missing, then generate afterok.
 
 set -euo pipefail
 
@@ -31,21 +32,21 @@ SF_CAP="${SF_CAP:-${PROJECT_ROOT}/wan_experiment/results/v2v_panda_caption_32v/n
 cd "${PROJECT_ROOT}"
 mkdir -p "${PROJECT_ROOT}/wan_experiment/slurm_log"
 
-if [[ ! -d "${VIDEO_DIR}" ]]; then
-    echo "ERROR: ${VIDEO_DIR} missing. Run prepare_wanext_captions.py first." >&2
-    exit 1
-fi
-if [[ ! -f "${VIDEO_DIR}/captions.json" && ! -f "${VIDEO_DIR}/metadata.csv" ]]; then
-    echo "ERROR: extended captions missing under ${VIDEO_DIR}" >&2
-    exit 1
-fi
 if [[ ! -f /scratch/${USER}/wan-checkpoints/self_forcing_dmd.pt ]]; then
     echo "ERROR: Self Forcing ckpt missing." >&2
     exit 1
 fi
 
-echo "---- wanext preflight (must not be stem) ----"
-python3 - <<PY
+DEP=""
+if [[ ! -f "${VIDEO_DIR}/captions.json" && ! -f "${VIDEO_DIR}/metadata.csv" ]]; then
+    PREP=$(sbatch --parsable --account="${ACCOUNT}" \
+        --export=ALL,N_VIDEOS=${N_VIDEOS},DEST=${VIDEO_DIR},PROJECT_ROOT=${PROJECT_ROOT} \
+        "${SB}/run_prepare_wanext.sbatch")
+    echo "Wan-extend prepare n=${N_VIDEOS} job ${PREP} -> ${VIDEO_DIR}"
+    DEP="--dependency=afterok:${PREP}"
+else
+    echo "---- wanext preflight (must not be stem) ----"
+    python3 - <<PY
 from pathlib import Path
 import json, sys
 d = Path("${VIDEO_DIR}")
@@ -61,10 +62,12 @@ for k, v in list(caps.items())[:2]:
 if len(caps) < ${N_VIDEOS}:
     raise SystemExit("not enough extended captions")
 PY
+fi
 
 COMMON="HORIZON_S=30,N_VIDEOS=${N_VIDEOS},SEED=0,SEARCH_FROM=0,PREFIX_LATENTS=9,CHUNK_LATENTS=21,SERIES=${SERIES},NUM_SHARDS=1,VIDEO_DIR=${VIDEO_DIR},VIDEO_WORKERS=1"
 
 J=$(sbatch --parsable --account="${ACCOUNT}" --time="${GEN_WALL}" \
+    ${DEP} \
     --export=ALL,METHOD=notta,SEARCH_K=1,${COMMON} \
     "${SB}/run_v2v_chunked.sbatch")
 echo "V2V ${SERIES} notta (wan-extended captions) n=${N_VIDEOS} job ${J}"
@@ -77,5 +80,9 @@ VB=$(sbatch --parsable --account="${ACCOUNT}" --time="${VBENCH_WALL}" \
 echo "VBench full-clip job ${VB} afterok ${J}"
 echo "Cite vs caption Self Forcing first-8 (original metadata.csv)."
 echo "Sidecar prompt_source must not be stem."
-echo "  scancel ${J} ${VB}"
+if [[ -n "${PREP:-}" ]]; then
+    echo "  scancel ${PREP} ${J} ${VB}"
+else
+    echo "  scancel ${J} ${VB}"
+fi
 echo "No pwarp on this wave. No TTC. No I2V."
