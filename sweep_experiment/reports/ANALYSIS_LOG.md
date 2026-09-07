@@ -4835,6 +4835,24 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-06 — prompt rewrite literature; 0006 is zoom not pan
+**Tags:** literature, method, analysis
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-06_prompt_rewrite_lit.md`
+
+Field rewrite is train/test **text-length match** (Movie
+Gen Llama, Hunyuan rewrite, CogVideoX GLM, Wan Qwen
+extend, MovieGen-128 Qwen for Relax/SF++). Movie Gen:
+excess motion words → artifacts. Wan extend adds
+“natural verbs” and will invent action on a still room.
+Nobody parses verbs into a leftover `(dy,dx)` slide.
+User 0006: leftover still, then forward expansion. Our
+operator is a pan; mean flow cancels on zoom. Next
+shortlist = filter lateral leftover + caption, no
+rewrite on that wave. No GPU.
+
+---
+
 ## 2026-09-06 — pwarp eyes: flicker worse; only 0006 asked for motion
 **Tags:** finding, qualitative, closed
 **Owner:** agent

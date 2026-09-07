@@ -31,6 +31,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Caption pwarp harvest** | `sweep_experiment/reports/paper_tables/2026-09-06_wan_v2v_caption_pwarp_harvest.md` | 17058386–393 COMPLETED. Always IQ 66.81 Dyn 3/8. Live IQ 66.81 Dyn 3/8. Both **NO**. Extra Dyn = 0007 twitch. |
 | **Pwarp eye-inspect pack** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_eye_inspect.md` | Matched SF vs slide mp4s. `export_pwarp_examples.py` then scp. Watch 0007 first. |
 | **Pwarp eye notes** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_eye_notes.md` | 0007/0004 host flicker, slide worse. 0002 rewrites a still room. 0006 sailing: quality ok, no extra motion. |
+| **Prompt rewrite literature** | `sweep_experiment/reports/paper_tables/2026-09-06_prompt_rewrite_lit.md` | Movie Gen / Hunyuan / CogVideoX / Wan Qwen / MovieGen-128. Rewrite = long-text match, not a flow. 0006 is zoom. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
@@ -301,9 +302,13 @@ Per-method `merged_summary.json` lives at:
   Forcing and worse after the slide. 0002 rewrites
   a still room. Only 0006’s caption asks for motion
   and it did not get more. A prompt-gate on this
-  eight is one clip. New motion-caption shortlist
-  only if the user picks it, or A / B / C. Do not
-  cheapen Pseudo.
+  eight is one clip. Prompt rewrite in the field is
+  train/test text-length match (Wan Qwen extend,
+  MovieGen-128 Qwen). Not a leftover flow. 0006 is
+  likely zoom/expansion; our slide only pans. Next
+  shortlist = filter lateral leftover + caption, no
+  rewrite on that wave, only if the user picks it,
+  or A / B / C. Do not cheapen Pseudo.
   Do not scale mix / FIFO / tscore / ρ / list /
   nwarp / pwarp.
   Caption official (historical):
