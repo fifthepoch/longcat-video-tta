@@ -292,8 +292,12 @@ Per-method `merged_summary.json` lives at:
   caption tables.
   Outcomes: `paper_tables/2026-08-24_wan_v2v_caption_wave1_outcomes.md`.
   Spec: `paper_tables/2026-08-24_wan_v2v_caption_rerun_spec.md`.
-- **Current next (2026-09-06):** Caption nwarp N=8
-  **DONE / NO**. Caption pwarp N=8 **DONE / NO**
+- **Current next (2026-09-07):** Caption Wan-extend N=8
+  **DONE / NO** (17095709–711). IQ 69.22 / subject
+  0.576 / Dyn 4/8 vs SF first-8 70.62 / 0.658 / 2/8.
+  Extra Dyn = invented pans. Do not scale. Do not
+  pwarp that dest. Caption nwarp N=8 **DONE / NO**.
+  Caption pwarp N=8 **DONE / NO**
   (`sf_pwarp` / `sf_pwarp_live`, 17058386–393). Slide
   fired; IQ **66.81** both arms; extra Dyn is 0007
   twitch (flicker 0.878). Harvest:
@@ -311,11 +315,8 @@ Per-method `merged_summary.json` lives at:
   python** — login `base` imageio has no ffmpeg.
   First-128 keep 3/128 were word accidents; do not
   `--write-dir`. Table
-  `2026-09-07_pwarp_pan_filter_128.md`). B Wan-extend:
-  login `base` has no torch — submit GPU-prepares
-  Qwen then generate afterok; do not fake a rewrite.
-  Same first-8 leftovers, new T5 only
-  (separate series, no pwarp). C field T2V
+  `2026-09-07_pwarp_pan_filter_128.md`). B Wan-extend
+  N=8 **DONE / NO** 17095709–711. C field T2V
   MovieGen-128 + VBench-Long, `SMOKE=1` first.
   Panda is not their 30 s table. Do not cheapen
   Pseudo.
@@ -433,15 +434,12 @@ Per-method `merged_summary.json` lives at:
   native AR long-horizon drifts; AdaSteer delta + routing closed;
   BoN k=4 N=8 passed credibility gate as always-on search, not a hard
   incoming-context gate.
-- **In-flight cluster jobs** (as of 2026-09-07 12:09):
-  Wan-extend N=8: prepare **17095709 COMPLETED 0:0**.
-  Generate **17095710** / VBench **17095711** left
-  `squeue`. Harvest pending `sacct`. Smoke sidecar
-  matched dest (548/504). Smoke **17093254–256
-  HARVESTED**.
-  Do not letter n=2. No pwarp on wanext dest. Caption
-  pwarp **DONE / NO**
-  17058386–393. Caption nwarp **DONE / NO**
+- **In-flight cluster jobs** (as of 2026-09-07 12:13):
+  Wan-extend N=8 **DONE / NO** 17095709–711.
+  IQ 69.22 / subject 0.576 / Dyn 4/8 vs SF first-8
+  70.62 / 0.658 / 2/8. Extra Dyn = invented pans.
+  Smoke **17093254–256 HARVESTED**. Caption pwarp
+  **DONE / NO** 17058386–393. Caption nwarp **DONE / NO**
   17028867–876. Mix+ctx / FIFO+tscore / leftover /
   LPIPS+FVD / schedule8 **DONE / NO**. Do not remake
   cite-128. Do not start 8-GPU DMD. **No I2V. No TTC.**

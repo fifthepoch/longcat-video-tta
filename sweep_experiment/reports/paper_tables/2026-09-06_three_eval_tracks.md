@@ -55,18 +55,12 @@ SMOKE=1 bash wan_experiment/sbatch/submit_v2v_caption_wanext.sh
 ```
 
 Login `base` python3 has no torch (2026-09-07 paste).
-Smoke **17093254–256 HARVESTED.**
-`caption_json`. 0000 invented mechanic + left pan.
-IQ held, Dyn 1/2 = 1/2. **Do not letter n=2.**
-Table: `2026-09-07_wan_v2v_caption_wanext_smoke.md`.
-N=8 gate open:
-
-```bash
-bash wan_experiment/sbatch/submit_v2v_caption_wanext.sh
-```
-
-If prepare fails, paste the error — do not fake a
-rewrite. Do not stack pwarp.
+Smoke **17093254–256 HARVESTED.** N=8 **17095709–711
+DONE / NO.** IQ 69.22 / subject 0.576 / Dyn 4/8 vs
+SF first-8 70.62 / 0.658 / 2/8. Extra Dyn = invented
+city / photographer / car-show pans. Harvest:
+`2026-09-07_wan_v2v_caption_wanext_harvest.md`.
+Do not scale. Do not stack pwarp.
 
 This is the “add natural verbs” diagnostic. First-8
 are mostly still rooms. Expect T5 to fight the leftover

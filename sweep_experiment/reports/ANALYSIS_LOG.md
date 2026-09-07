@@ -4835,6 +4835,24 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — wanext N=8 DONE / NO
+**Tags:** wan, v2v, caption, prompt-extend, negative-result
+**Owner:** agent
+**Refs:** jobs 17095709–711 COMPLETED 0:0;
+`paper_tables/2026-09-07_wan_v2v_caption_wanext_harvest.md`
+
+Protocol PASS (`caption_json`, dest==sidecar 437–868c).
+Cite first-8 SF IQ **70.62** / subject **0.658** / Dyn
+**2/8**. Wan-extend 69.22 / 0.576 / **4/8**. Extra Dyn =
+0003 city-follow, 0004 photographer on the wrecked book
+host (SF IQ 44), 0007 car-show crowd. Lost 0005. 0000
+IQ 71→55 (invented pan/zoom on a still hood). Subject
+−0.082. Official extend adds verbs the leftover does
+not have. **NO.** Do not scale. Do not pwarp this dest.
+Do not mix into caption-32 tables.
+
+---
+
 ## 2026-09-07 — wanext terminal cuts are display-only
 **Tags:** wan, v2v, caption, workflow
 **Owner:** agent
