@@ -4835,6 +4835,21 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — Track C smoke submitted 17121785–792
+**Tags:** wan, t2v, moviegen, nwarp, pwarp, in-flight
+**Owner:** agent
+**Refs:** jobs 17121785–792; series `t2v_moviegen_warp_smoke`;
+`paper_tables/2026-09-07_t2v_moviegen_warp_spec.md`
+
+`SMOKE=1` landed. Prompt resolver printed
+`source=self_forcing_extended` n=2, first line Tokyo
+street (MovieGen, not panda). Seven generate + VBench
+afterok. Sidecar must later print `source=t2v_chunk0`.
+Do not letter n=2. Do not launch 128. If any ID leaves
+`squeue`, `sacct` and harvest immediately.
+
+---
+
 ## 2026-09-07 — Track C MovieGen T2V + first-chunk warp
 **Tags:** wan, t2v, moviegen, nwarp, pwarp, spec
 **Owner:** agent

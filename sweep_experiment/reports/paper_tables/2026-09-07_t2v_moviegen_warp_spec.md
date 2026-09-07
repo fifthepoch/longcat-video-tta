@@ -50,6 +50,12 @@ below `notta` if Dyn goes up.
 
 ---
 
+**Status:** IN FLIGHT smoke. Jobs **17121785–792**
+(2026-09-07 13:24). Prompt `self_forcing_extended` n=2.
+Do not letter n=2. Do not launch 128.
+
+---
+
 ## Submit (smoke only tonight)
 
 ```bash

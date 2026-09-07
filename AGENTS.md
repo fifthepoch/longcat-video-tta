@@ -33,7 +33,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Pwarp eye notes** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_eye_notes.md` | 0007/0004 host flicker, slide worse. 0002 rewrites a still room. 0006 sailing: quality ok, no extra motion. |
 | **Prompt rewrite literature** | `sweep_experiment/reports/paper_tables/2026-09-06_prompt_rewrite_lit.md` | Movie Gen / Hunyuan / CogVideoX / Wan Qwen / MovieGen-128. Rewrite = long-text match, not a flow. 0006 is zoom. |
 | **Three eval tracks** | `sweep_experiment/reports/paper_tables/2026-09-06_three_eval_tracks.md` | A pan-filter V2V. B Wan-extend V2V **DONE / NO**. C MovieGen T2V + first-chunk warp. Do not mix. |
-| **Track C + first-chunk warp** | `sweep_experiment/reports/paper_tables/2026-09-07_t2v_moviegen_warp_spec.md` | MovieGen T2V 30 s. Chunk-0 flow → nwarp/pwarp. Smoke first. Do not launch 128 tonight. |
+| **Track C + first-chunk warp** | `sweep_experiment/reports/paper_tables/2026-09-07_t2v_moviegen_warp_spec.md` | MovieGen T2V 30 s. Chunk-0 flow → nwarp/pwarp. Smoke **IN FLIGHT 17121785–792**. Do not launch 128. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
@@ -318,10 +318,10 @@ Per-method `merged_summary.json` lives at:
   `--write-dir`. User started track A 2026-09-07:
   retag json then `--n 1000` if thin. Table
   `2026-09-07_pwarp_pan_filter_128.md`). B Wan-extend
-  N=8 **DONE / NO** 17095709–711. C MovieGen T2V +
-  first-chunk nwarp/pwarp **SUBMIT-READY smoke**
-  (`2026-09-07_t2v_moviegen_warp_spec.md`). Do not
-  launch 128 tonight.
+  N=8 **DONE / NO** 17095709–711.   C MovieGen T2V +
+  first-chunk nwarp/pwarp **IN FLIGHT smoke**
+  17121785–792 (`self_forcing_extended` n=2).
+  Do not launch 128.
   Panda is not their 30 s table. Do not cheapen
   Pseudo.
   Do not scale mix / FIFO / tscore / ρ / list /
@@ -438,12 +438,14 @@ Per-method `merged_summary.json` lives at:
   native AR long-horizon drifts; AdaSteer delta + routing closed;
   BoN k=4 N=8 passed credibility gate as always-on search, not a hard
   incoming-context gate.
-- **In-flight cluster jobs** (as of 2026-09-07 12:13):
-  Wan-extend N=8 **DONE / NO** 17095709–711.
-  IQ 69.22 / subject 0.576 / Dyn 4/8 vs SF first-8
-  70.62 / 0.658 / 2/8. Extra Dyn = invented pans.
-  Smoke **17093254–256 HARVESTED**. Caption pwarp
-  **DONE / NO** 17058386–393. Caption nwarp **DONE / NO**
+- **In-flight cluster jobs** (as of 2026-09-07 13:24):
+  Track C MovieGen smoke **17121785–792** (7 generate
+  + VBench afterok). Series `t2v_moviegen_warp_smoke`.
+  Prompt `self_forcing_extended` n=2. If a JobID
+  leaves `squeue`, `sacct` and harvest. Do not
+  launch 128. Wan-extend N=8 **DONE / NO**
+  17095709–711. Caption pwarp **DONE / NO**
+  17058386–393. Caption nwarp **DONE / NO**
   17028867–876. Mix+ctx / FIFO+tscore / leftover /
   LPIPS+FVD / schedule8 **DONE / NO**. Do not remake
   cite-128. Do not start 8-GPU DMD. **No I2V. No TTC.**

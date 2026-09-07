@@ -97,9 +97,11 @@ SMOKE=1 bash wan_experiment/sbatch/submit_t2v_moviegen_warp.sh
 
 Spec: `2026-09-07_t2v_moviegen_warp_spec.md`.
 Chunk 0 = do-nothing; nwarp/pwarp use that flow.
+Smoke **IN FLIGHT** 17121785–792
+(`self_forcing_extended` n=2). Do not letter n=2.
 
 Do **not** launch the full 128 × always-search until
-the smoke sidecar is `Qwen-refined or vendor MovieGen`
+the smoke sidecar is `source=t2v_chunk0` + MovieGen
 and generate finishes 0:0. Full 128 is the Relax /
 SF++ cell, not a leftover slide.
 
