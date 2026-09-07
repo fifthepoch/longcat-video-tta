@@ -314,7 +314,8 @@ Per-method `merged_summary.json` lives at:
   (`filter_pwarp_pan_shortlist.py`, **Self Forcing
   python** — login `base` imageio has no ffmpeg.
   First-128 keep 3/128 were word accidents; do not
-  `--write-dir`. Table
+  `--write-dir`. User started track A 2026-09-07:
+  retag json then `--n 1000` if thin. Table
   `2026-09-07_pwarp_pan_filter_128.md`). B Wan-extend
   N=8 **DONE / NO** 17095709–711. C field T2V
   MovieGen-128 + VBench-Long, `SMOKE=1` first.
