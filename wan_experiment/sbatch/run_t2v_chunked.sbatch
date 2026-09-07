@@ -11,7 +11,8 @@
 #SBATCH --error=/scratch/%u/longcat-video-tta/wan_experiment/slurm_log/wan_t2v_chunk_%j.err
 #SBATCH --comment="preemption=yes;requeue=true"
 
-# Chunked Wan T2V: METHOD=notta|always_bon|gated_bon
+# Chunked Wan T2V: METHOD=notta|always_bon|gated_bon|
+#   sf_nwarp|sf_nwarp_live|sf_pwarp|sf_pwarp_live
 #   sbatch --export=ALL,METHOD=notta,HORIZON_S=30,N_VIDEOS=128,SEARCH_K=1 \
 #       wan_experiment/sbatch/run_t2v_chunked.sbatch
 
@@ -41,6 +42,9 @@ SERIES="${SERIES:-t2v_bon_128v_vbenchlong}"
 SHARD_ID="${SHARD_ID:-0}"
 NUM_SHARDS="${NUM_SHARDS:-1}"
 PROMPT_FILE="${PROMPT_FILE:-${PROJECT_ROOT}/datasets/moviegen_128_resolved.txt}"
+NWARP_GAMMA="${NWARP_GAMMA:-0.5}"
+PWARP_STEP="${PWARP_STEP:-1}"
+LIVE_MIN="${LIVE_MIN:-0.012}"
 OUT_DIR="${OUT_DIR:-${PROJECT_ROOT}/wan_experiment/results/${SERIES}/${METHOD}_h${HORIZON_S}s_shard${SHARD_ID}}"
 
 export PYTHONHASHSEED="${SEED}"
@@ -102,6 +106,9 @@ cd "${PROJECT_ROOT}"
     --gate-ch1-threshold "${GATE_CH1_THRESHOLD}" \
     --gate-delta "${GATE_DELTA}" \
     --gate-delta-prev-min "${GATE_DELTA_PREV_MIN}" \
+    --nwarp-gamma "${NWARP_GAMMA}" \
+    --pwarp-step "${PWARP_STEP}" \
+    --live-min "${LIVE_MIN}" \
     --shard-id "${SHARD_ID}" \
     --num-shards "${NUM_SHARDS}"
 

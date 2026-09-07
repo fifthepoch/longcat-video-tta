@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Chunked Wan T2V: NOTTA, always-BoN, or gated-BoN (cand0 = NOTTA seed).
+"""Chunked Wan T2V: baselines + first-chunk nwarp/pwarp.
 
-Text start, then AR from own KV. Not I2V-from-still. Official
-CausalInferencePipeline.inference() is one-shot; this runner replays
-committed latents (T2V: no independent first frame) then denoises the
-next chunk. Piece 0 is always seed 0 (shared prefix).
+Text start, then AR from own KV. Not I2V-from-still. Piece 0 is
+always seed 0 (shared prefix). Warp methods measure Farneback on
+chunk 0, then HIWYN extras (nwarp) or pred-slide (pwarp) from
+chunk 1. No leftover video.
 
 30 s = 6 × 21 latents (Self-Forcing native 5 s unit → 81 px × 6).
 Do not add TTC.
@@ -55,6 +55,27 @@ from run_i2v_continuation import (  # noqa: E402
     write_mp4,
     _cuda_mem,
 )
+from wan_nwarp import (  # noqa: E402
+    DEFAULT_GAMMA as NWARP_DEFAULT_GAMMA,
+    leftover_mean_flow_px,
+    leftover_vel_latent,
+    NWarpState,
+)
+from wan_pwarp import (  # noqa: E402
+    DEFAULT_STEP as PWARP_DEFAULT_STEP,
+    PWarpState,
+)
+
+import numpy as np
+
+T2V_METHODS = (
+    "notta", "always_bon", "gated_bon",
+    "sf_nwarp", "sf_nwarp_live",
+    "sf_pwarp", "sf_pwarp_live",
+)
+SF_NWARP_METHODS = frozenset({"sf_nwarp", "sf_nwarp_live"})
+SF_PWARP_METHODS = frozenset({"sf_pwarp", "sf_pwarp_live"})
+LIVE_SEARCH_MIN = 0.012
 
 
 def t2v_pixel_frames(n_lat: int) -> int:
@@ -162,6 +183,9 @@ def generate_chunked_t2v(
     gate_ch1_threshold: float = 0.8,
     gate_delta: float = 0.5,
     gate_delta_prev_min: float = 0.5,
+    nwarp_gamma: float = NWARP_DEFAULT_GAMMA,
+    pwarp_step: int = PWARP_DEFAULT_STEP,
+    live_min: float = LIVE_SEARCH_MIN,
 ):
     import torch
 
@@ -177,6 +201,12 @@ def generate_chunked_t2v(
     committed_pixels = None
     incoming_prev = None
     chunk_logs = []
+    nwarp_state = None
+    pwarp_state = None
+    extra_fn = None
+    pred_fn = None
+    chunk0_motion = None
+    flow_armed = None
 
     for ci in range(n_chunks):
         incoming_signals = None
@@ -209,6 +239,9 @@ def generate_chunked_t2v(
                 t_delta_prev_min=gate_delta_prev_min,
             )
             n_try = search_k if gated_fired else 1
+        elif method in SF_NWARP_METHODS or method in SF_PWARP_METHODS:
+            n_try = 1
+            gate_reason = "chunk0_measure" if ci == 0 else method
         elif method == "notta":
             n_try = 1
             gate_reason = "notta" if ci >= search_from_chunk else "forced_prefix"
@@ -229,7 +262,10 @@ def generate_chunked_t2v(
                 _cache_clean_latents_t2v(
                     pipeline, output[:, :committed], conditional_dict,
                 )
-            _denoise_chunk(pipeline, noise, committed, conditional_dict, output, rng)
+            _denoise_chunk(
+                pipeline, noise, committed, conditional_dict, output, rng,
+                extra_fn=extra_fn, pred_fn=pred_fn,
+            )
             end = committed + chunk_latents
             pixels = _decode_pixels(pipeline, output[:, :end])
             n_committed_pix = t2v_pixel_frames(committed)
@@ -306,6 +342,77 @@ def generate_chunked_t2v(
                 for c in cands
             ],
         }
+        if (
+            ci == 0
+            and (method in SF_NWARP_METHODS or method in SF_PWARP_METHODS)
+            and nwarp_state is None
+            and pwarp_state is None
+        ):
+            pix0 = best["pixels"]
+            chunk0_motion = (
+                float(np.mean(np.abs(pix0[1:] - pix0[:-1])))
+                if pix0.shape[0] >= 2 else None
+            )
+            vy_px, vx_px, flow_log = leftover_mean_flow_px(pix0)
+            vy_lat, vx_lat = leftover_vel_latent(vy_px, vx_px)
+            live = (
+                chunk0_motion is not None
+                and chunk0_motion == chunk0_motion
+                and chunk0_motion >= float(live_min)
+            )
+            flow_armed = {
+                **flow_log,
+                "vy_px": vy_px,
+                "vx_px": vx_px,
+                "vy_lat": vy_lat,
+                "vx_lat": vx_lat,
+                "chunk0_motion": chunk0_motion,
+                "live": bool(live),
+                "source": "t2v_chunk0",
+            }
+            if method in SF_NWARP_METHODS:
+                enabled = True if method == "sf_nwarp" else bool(live)
+                nwarp_state = NWarpState(
+                    vy_lat, vx_lat,
+                    gamma=float(nwarp_gamma),
+                    enabled=enabled,
+                    flow_log={**flow_armed, "enabled": bool(enabled)},
+                )
+                extra_fn = nwarp_state.extra_fn if enabled else None
+                print(
+                    f"  nwarp armed after chunk0 enabled={enabled} live={live} "
+                    f"motion={chunk0_motion} vy_px={vy_px:.4g} vx_px={vx_px:.4g}",
+                    flush=True,
+                )
+            else:
+                enabled = True if method == "sf_pwarp" else bool(live)
+                pwarp_state = PWarpState(
+                    vy_lat, vx_lat,
+                    step=int(pwarp_step),
+                    enabled=enabled,
+                    flow_log={**flow_armed, "enabled": bool(enabled)},
+                )
+                pred_fn = pwarp_state.pred_fn if enabled else None
+                print(
+                    f"  pwarp armed after chunk0 enabled={enabled} live={live} "
+                    f"motion={chunk0_motion} vy_px={vy_px:.4g} vx_px={vx_px:.4g}",
+                    flush=True,
+                )
+        rec["nwarp"] = (
+            {
+                k: _json_float(v) if isinstance(v, float) else v
+                for k, v in (nwarp_state.last_log or nwarp_state.flow_log).items()
+            }
+            if nwarp_state is not None else None
+        )
+        rec["pwarp"] = (
+            {
+                k: _json_float(v) if isinstance(v, float) else v
+                for k, v in (pwarp_state.last_log or pwarp_state.flow_log).items()
+            }
+            if pwarp_state is not None else None
+        )
+        rec["chunk0_motion"] = _json_float(chunk0_motion)
         chunk_logs.append(rec)
         if incoming_drift is not None:
             incoming_prev = incoming_drift
@@ -340,8 +447,10 @@ def main() -> int:
                     help="Self-Forcing native 5 s unit")
     ap.add_argument("--n", type=int, default=128)
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--method", choices=("notta", "always_bon", "gated_bon"),
-                    default="notta")
+    ap.add_argument("--method", choices=T2V_METHODS, default="notta")
+    ap.add_argument("--nwarp-gamma", type=float, default=NWARP_DEFAULT_GAMMA)
+    ap.add_argument("--pwarp-step", type=int, default=PWARP_DEFAULT_STEP)
+    ap.add_argument("--live-min", type=float, default=LIVE_SEARCH_MIN)
     ap.add_argument("--search-k", type=int, default=4)
     ap.add_argument("--search-from-chunk", type=int, default=1)
     ap.add_argument("--seam-weight", type=float, default=1.0)
@@ -428,6 +537,9 @@ def main() -> int:
                     args.seam_weight, args.gate_threshold,
                     args.gate_ch1_threshold, args.gate_delta,
                     args.gate_delta_prev_min,
+                    nwarp_gamma=args.nwarp_gamma,
+                    pwarp_step=args.pwarp_step,
+                    live_min=args.live_min,
                 )
             write_mp4(mp4, video, fps=FPS)
             n_div = sum(
@@ -472,6 +584,15 @@ def main() -> int:
                 "last_chunk_chosen_minus_cand0": last.get("chosen_minus_cand0"),
                 "last_chunk_breakdown": last.get("chosen_breakdown"),
                 "ref_signals": _json_signals(ref),
+                "nwarp": (
+                    chunk_logs[-1].get("nwarp") if chunk_logs else None
+                ),
+                "pwarp": (
+                    chunk_logs[-1].get("pwarp") if chunk_logs else None
+                ),
+                "chunk0_motion": (
+                    chunk_logs[0].get("chunk0_motion") if chunk_logs else None
+                ),
                 "chunks": chunk_logs,
                 "horizon_s_requested": args.horizon_s,
                 "seed": args.seed,

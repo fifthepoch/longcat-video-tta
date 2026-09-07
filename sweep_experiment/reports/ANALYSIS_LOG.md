@@ -4835,6 +4835,23 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-07 — Track C MovieGen T2V + first-chunk warp
+**Tags:** wan, t2v, moviegen, nwarp, pwarp, spec
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-07_t2v_moviegen_warp_spec.md`
+
+User wants the field T2V table and both noise-space
+ideas on it. No leftover video, so chunk 0 is ordinary
+Self Forcing and Farneback on those pixels is the field.
+Same-wave: notta / always-BoN / gated-BoN / nwarp /
+nwarp_live / pwarp / pwarp_live. Do not stack nwarp+pwarp.
+Smoke 2 prompts first. Cite this wave’s notta, not Panda.
+V2V nwarp IQ 49 and pwarp IQ 66.81 stay the leftover
+lessons. Do not launch 128 tonight. Track A stays the
+other login job.
+
+---
+
 ## 2026-09-07 — wanext N=8 DONE / NO
 **Tags:** wan, v2v, caption, prompt-extend, negative-result
 **Owner:** agent

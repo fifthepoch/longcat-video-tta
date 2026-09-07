@@ -91,9 +91,12 @@ We already have the runner and the 128 prompts
 `MovieGenVideoBench_extended.txt` if present).
 
 ```bash
-# After git pull. Smoke only tonight (2 prompts, 3 methods).
-SMOKE=1 bash wan_experiment/sbatch/submit_t2v_bon128.sh
+# After git pull. Smoke only (2 prompts × 7 methods).
+SMOKE=1 bash wan_experiment/sbatch/submit_t2v_moviegen_warp.sh
 ```
+
+Spec: `2026-09-07_t2v_moviegen_warp_spec.md`.
+Chunk 0 = do-nothing; nwarp/pwarp use that flow.
 
 Do **not** launch the full 128 × always-search until
 the smoke sidecar is `Qwen-refined or vendor MovieGen`

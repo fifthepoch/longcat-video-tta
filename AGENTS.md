@@ -32,7 +32,8 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Pwarp eye-inspect pack** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_eye_inspect.md` | Matched SF vs slide mp4s. `export_pwarp_examples.py` then scp. Watch 0007 first. |
 | **Pwarp eye notes** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_eye_notes.md` | 0007/0004 host flicker, slide worse. 0002 rewrites a still room. 0006 sailing: quality ok, no extra motion. |
 | **Prompt rewrite literature** | `sweep_experiment/reports/paper_tables/2026-09-06_prompt_rewrite_lit.md` | Movie Gen / Hunyuan / CogVideoX / Wan Qwen / MovieGen-128. Rewrite = long-text match, not a flow. 0006 is zoom. |
-| **Three eval tracks** | `sweep_experiment/reports/paper_tables/2026-09-06_three_eval_tracks.md` | A pan-filter V2V. B Wan-extend V2V. C MovieGen-128 T2V + VBench-Long. Do not mix. |
+| **Three eval tracks** | `sweep_experiment/reports/paper_tables/2026-09-06_three_eval_tracks.md` | A pan-filter V2V. B Wan-extend V2V **DONE / NO**. C MovieGen T2V + first-chunk warp. Do not mix. |
+| **Track C + first-chunk warp** | `sweep_experiment/reports/paper_tables/2026-09-07_t2v_moviegen_warp_spec.md` | MovieGen T2V 30 s. Chunk-0 flow → nwarp/pwarp. Smoke first. Do not launch 128 tonight. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
@@ -317,8 +318,10 @@ Per-method `merged_summary.json` lives at:
   `--write-dir`. User started track A 2026-09-07:
   retag json then `--n 1000` if thin. Table
   `2026-09-07_pwarp_pan_filter_128.md`). B Wan-extend
-  N=8 **DONE / NO** 17095709–711. C field T2V
-  MovieGen-128 + VBench-Long, `SMOKE=1` first.
+  N=8 **DONE / NO** 17095709–711. C MovieGen T2V +
+  first-chunk nwarp/pwarp **SUBMIT-READY smoke**
+  (`2026-09-07_t2v_moviegen_warp_spec.md`). Do not
+  launch 128 tonight.
   Panda is not their 30 s table. Do not cheapen
   Pseudo.
   Do not scale mix / FIFO / tscore / ρ / list /
