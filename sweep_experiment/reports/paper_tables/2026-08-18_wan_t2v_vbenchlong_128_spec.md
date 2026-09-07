@@ -1,8 +1,9 @@
 # Spec — standard long-horizon verify (not submitted)
 
-**Status:** SUBMIT-READY (2026-08-18). User asked to run T2V 128 as an
-optional standard compare for gating vs other methods. Not a task lock.
-V2V continuation remains allowed. I2V-32 scale-up stays closed. No TTC.
+**Status:** SUBMIT-READY (2026-08-18). Re-opened as **track C**
+on 2026-09-06 (`2026-09-06_three_eval_tracks.md`). Smoke first
+(`SMOKE=1`). Not a task lock. V2V leftover (tracks A/B) stays
+the claim. I2V-32 scale-up stays closed. No TTC.
 
 Cluster (after `git pull`):
 ```

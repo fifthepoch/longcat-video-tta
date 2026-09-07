@@ -4835,6 +4835,24 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-06 — three tracks: pan filter, Wan-extend, MovieGen
+**Tags:** experiment, spec, protocol
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-06_three_eval_tracks.md`
+
+User asked for a new filtered eight, a separate Wan
+prompt-extend run, and the dataset/metrics everyone
+else uses. Field 30–60 s table is T2V MovieGen-128 +
+VBench-Long (prompts, not leftover videos). DFoT
+continuation is Kinetics-600 + FVD. Panda stays our
+V2V leftover pool. Track A = login Farneback +
+caption pan words, no GPU until paste. Track B =
+Qwen extend on first-8 leftovers, SF do-nothing,
+no pwarp. Track C = existing T2V smoke, not 128
+tonight. Do not mix.
+
+---
+
 ## 2026-09-06 — prompt rewrite literature; 0006 is zoom not pan
 **Tags:** literature, method, analysis
 **Owner:** agent

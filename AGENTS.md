@@ -32,6 +32,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Pwarp eye-inspect pack** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_eye_inspect.md` | Matched SF vs slide mp4s. `export_pwarp_examples.py` then scp. Watch 0007 first. |
 | **Pwarp eye notes** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_eye_notes.md` | 0007/0004 host flicker, slide worse. 0002 rewrites a still room. 0006 sailing: quality ok, no extra motion. |
 | **Prompt rewrite literature** | `sweep_experiment/reports/paper_tables/2026-09-06_prompt_rewrite_lit.md` | Movie Gen / Hunyuan / CogVideoX / Wan Qwen / MovieGen-128. Rewrite = long-text match, not a flow. 0006 is zoom. |
+| **Three eval tracks** | `sweep_experiment/reports/paper_tables/2026-09-06_three_eval_tracks.md` | A pan-filter V2V. B Wan-extend V2V. C MovieGen-128 T2V + VBench-Long. Do not mix. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
@@ -305,10 +306,13 @@ Per-method `merged_summary.json` lives at:
   eight is one clip. Prompt rewrite in the field is
   train/test text-length match (Wan Qwen extend,
   MovieGen-128 Qwen). Not a leftover flow. 0006 is
-  likely zoom/expansion; our slide only pans. Next
-  shortlist = filter lateral leftover + caption, no
-  rewrite on that wave, only if the user picks it,
-  or A / B / C. Do not cheapen Pseudo.
+  likely zoom/expansion; our slide only pans.   Three tracks (2026-09-06): A login pan-filter
+  (`filter_pwarp_pan_shortlist.py`, no GPU until
+  paste). B Wan-extend on first-8 leftovers
+  (separate series, no pwarp). C field T2V
+  MovieGen-128 + VBench-Long, `SMOKE=1` first.
+  Panda is not their 30 s table. Do not cheapen
+  Pseudo.
   Do not scale mix / FIFO / tscore / ρ / list /
   nwarp / pwarp.
   Caption official (historical):
