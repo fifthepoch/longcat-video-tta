@@ -28,6 +28,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Why nwarp IQ died** | `sweep_experiment/reports/paper_tables/2026-09-06_nwarp_vs_gwf_why_iq_died.md` | Extra-only locked a noise stencil. Not GwF. dy=0 still IQ 45. |
 | **GwF / SAVi run?** | `sweep_experiment/reports/paper_tables/2026-09-06_gwf_savi_should_we_run.md` | Retrain GwF **no**. SAVi = DNO increment; leak-easy writeup. No GPU. |
 | **Caption pwarp N=8 spec** | `sweep_experiment/reports/paper_tables/2026-09-06_wan_v2v_caption_pwarp_spec.md` | Slide `pred` after pass 1. `sf_pwarp` + `sf_pwarp_live`. Queued 17058386–393. |
+| **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Interpretation gaps. Pull disk before retune. No 8-GPU DMD. |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
 | **RF non-linear timestep list** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_nonlinear_schedule.md` | **DONE / NO.** Linger / dump Imaging Quality died. Harvest: `2026-09-04_wan_v2v_caption_schedule8_harvest.md`. Do not start 8-GPU DMD. |

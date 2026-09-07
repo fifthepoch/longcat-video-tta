@@ -4835,6 +4835,21 @@ scancel cite-128. Do not harvest stem leftover numbers.
 
 ---
 
+## 2026-09-06 — pwarp interpretation gaps; harvest before retune
+**Tags:** method, analysis
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-06_pwarp_failure_points.md`
+
+User asked what I changed in their “move the guess”
+idea and why I think it fails. Extras was not their
+idea (IQ 49). pwarp added: rigid whole-strip translate,
+dominant-axis only, 1 cell every strip (~320 px crawl),
+edge repeat, leftover KV unmoved, from strip 1. Do not
+harvest-claim until they paste disk. Fix one hole per
+wave. No 8-GPU DMD.
+
+---
+
 ## 2026-09-06 — do not retrain GwF; SAVi-DNO holes are ordinary
 **Tags:** literature, method
 **Owner:** agent
