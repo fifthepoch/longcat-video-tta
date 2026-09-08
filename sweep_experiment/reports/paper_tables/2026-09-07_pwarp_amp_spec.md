@@ -1,5 +1,10 @@
 # Pwarp amplify leftover n=2 (2026-09-07)
 
+**DONE / NO 2026-09-08.** Harvest:
+`2026-09-08_pwarp_amp_harvest.md`. Jobs 17172470–483
+COMPLETED 0:0. All five **NO**. Do not letter n=2.
+Do not launch 128.
+
 Official Wan teacher. Cite `wan_notta`. Same leftover
 ids as the teacher smoke (`panda_0000` pan / `panda_0001`
 dust). **Do not letter n=2.** Do not launch 128. Do not

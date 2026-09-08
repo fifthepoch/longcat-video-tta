@@ -5678,3 +5678,24 @@ mean \|v\| < 0.5 px/frame (0001 dust). Same-wave live
 on A/B/D/E. Do not letter n=2. Do not launch 128.
 
 ---
+
+## 2026-09-08 — pwarp amplify leftover n=2 all five NO
+**Tags:** wan, teacher, pwarp, harvest
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-08_pwarp_amp_harvest.md`;
+jobs 17172470–483 COMPLETED 0:0
+
+Protocol PASS. Cite `wan_notta` IQ 75.60 / Dyn 1/2.
+A ramp fired: leftover 0000 last-frame **dxL=−15**.
+Official VBench still Dyn 1/2. B persist n=26 painted
+(IQ 23.46 / 54.41, median 38.94). C s2/s4/s8 and D
+early stay ≈ notta. E mag skipped 0001 dust
+(`pw=None`) and matched notta on that clip. Live ==
+always. Dyn never rose, so the IQ-hold never
+triggered. Amplifying the crop or ramping \(t \cdot v\)
+does not create Dynamic Degree on 81-frame Wan.
+**All five NO.** Do not letter n=2. Do not launch 128.
+Do not scale pwarp. No GPU until the user picks a
+territory.
+
+---
