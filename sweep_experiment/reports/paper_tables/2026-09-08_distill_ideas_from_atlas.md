@@ -104,38 +104,32 @@ ours. The method is “put that proof into the student.”
 
 ---
 
-### 2. Trajectory sink (not frame 0)
+### 2. Trajectory sink — OCCUPIED (2026-09-08)
 
-**Sentence.** Rolling’s frozen first-frame sink is the
-identity/Dyn trade we measured. Reward Forcing’s
-EMA-sink averages *self-generated* KV. Train a sink
-built from the **leftover’s own temporal KV** — a short
-moving prefix, not a still — and let the student
-continue while that sink stays the identity object.
+**Killed as a title.** Rolling already trains “keep the
+opening in the cache as the identity object.” Their
+opening is the first **self-generated** chunk. Ours
+would be a **real leftover**. That is the same idea:
+early context is the clean information. Source of the
+opening (real clip vs first self-chunk) is a protocol
+detail, not a method. Same class as leftover-locked
+unroll = train-on-the-test-task.
 
-**Why our atlas.** Extra `sink_size` without their train
-was a no-op or a tax. TTC / prefix-match re-anchored to
-frame 0 and froze. Leftover ρ dirtied the write and
-painted. The leftover is already a 2 s *trajectory*,
-which their sink never was.
+**What they already did.**
+- [Rolling Forcing](https://arxiv.org/abs/2509.25161):
+  trained first-chunk sink + RoPE freeze. We measured
+  the Dyn tax (28.9% vs Self Forcing 32.8%).
+- [Reward Forcing](https://arxiv.org/abs/2512.04678)
+  EMA-sink: do not freeze frame 0; average self-made
+  memory. They already named the Dyn tax.
+- [Deep Forcing](https://arxiv.org/abs/2512.05081):
+  deeper self-made opening, **no** new student.
 
-**Why their papers.** Almost every RF descendant is
-memory (Deep / Relax / EMA / LongLive recache). They
-all start from a still or from the model’s own first
-chunk. Nobody trained “sink = real moving leftover.”
-
-**Not them.** Not Relax’s test-time KV routing. Not
-LongLive’s prompt-switch recache. Not “more sink
-tokens” on a frozen host. The student must *see* the
-trajectory sink in DMD.
-
-**Kills it.** Subject up and Dyn% ≤ Rolling 28.9%
-(same tax, new name). IQ paint. Matches official RF
-because we only copied their sink code.
-
-**2-month rank: second.** Field-shaped. Easy to get
-called “EMA-sink + leftover.” The write must insist the
-sink is a **trajectory**, not an average of frame 0.
+**What is left (ablation only).** Swap Rolling’s
+self-chunk for a real leftover and check whether Dyn
+beats 28.9% without subject death. That is “Rolling
+Forcing on our V2V leftover,” not a paper. Do not
+launch 8-GPU for this.
 
 ---
 

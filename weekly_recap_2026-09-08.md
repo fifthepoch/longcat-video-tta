@@ -107,19 +107,18 @@ From one opening, several seeds; a judge picks; train toward the winner; test is
 
 Do not claim we invented distilling seed search. Note: `2026-09-08_search_mode_distill_neighbors.md`.
 
-### Idea 2 — remember a moving opening, not frame 0
+### Idea 2 — OCCUPIED. Rolling already trains an opening sink
 
-Rolling’s first-frame sink holds identity (subject 0.685) and taxes Dyn (28.9%). Train the identity object as the **whole real opening**.
+The distinction “real leftover vs first self-chunk” is the same move: early context is the clean information. Rolling trained that. Reward Forcing already un-froze frame 0 (EMA). Deep Forcing deepened a self-made opening without training. Leftover-as-sink is a Rolling ablation on our V2V protocol, not a title.
 
 | Adjacent work | Relation |
 |---|---|
-| Rolling Forcing sink | Frozen first chunk. The Dyn tax we measured. |
-| Reward Forcing EMA-sink | Average of **self-made** memory. |
-| Deep / Relax / Forcing-KV | Memory at test, often no new student. |
-| LongLive | Recache on **user** prompt switch. |
-| TTC / our prefix-match | Pull toward frame 0. Froze motion. |
+| **Rolling Forcing sink** | This **is** idea 2. Trained first-chunk sink. Dyn tax 28.9%. |
+| Reward Forcing EMA-sink | Same lever; do not freeze frame 0. |
+| Deep Forcing | Deeper self-made opening, frozen student. |
+| Relax / Forcing-KV / LongLive | Memory rewrite, not a new sink object. |
 
-Dies if we only copy Rolling (identity up, Dyn ≤ 28.9%).
+Do not launch 8-GPU to show “real leftover sink beats self-chunk sink.”
 
 ### Idea 3 — pick the drawing schedule from the opening
 
