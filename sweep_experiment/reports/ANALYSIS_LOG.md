@@ -5715,3 +5715,17 @@ beats official SF *and* the matched control without a
 Do not remake cite-128. Do not scale pwarp.
 
 ---
+
+## 2026-09-08 — A distills Wan, not a warp
+**Tags:** wan, distill, territory-A, nwarp
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-08_territory_a_sentence_kill.md`
+
+User asked whether Territory A still is the noise-warp
+idea. No. The student still matches the official Wan
+teacher (unroll + holistic DMD). The only change is a
+frozen real leftover at the start of the unroll and DMD
+on the tail. nwarp / pwarp stay closed frozen-weight
+NO. Retrain-GwF is occupied. Do not fold warp into A.
+
+---

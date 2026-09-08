@@ -34,6 +34,34 @@ test, and every inference-only edit of it died.
 
 ---
 
+## What the student is distilling (not a warp)
+
+Same machine as Self Forcing / Rolling Forcing:
+
+1. Init from **Wan2.1-T2V-1.3B**.
+2. Unroll the **test sampler** with a KV cache.
+3. Holistic DMD: reverse KL via **teacher score minus
+   critic** on the self-rolled clip (data-free, prompts).
+
+The student is still matching the **official Wan teacher**
+on videos it just made. We are not distilling a flow
+field, a warped \(x_T\), or VBench.
+
+What changes is only the **condition at the start of that
+unroll**: a frozen real leftover in KV, then DMD on the
+tail. The teacher still scores “does this continuation
+look like Wan,” not “did we follow leftover flow.”
+
+**Noise warping is not this paper.** `sf_nwarp` / teacher
+nwarp and `sf_pwarp` / teacher pwarp (including A–E
+amplify) were inference-only edits of a frozen student.
+All **NO**. Retrain-GwF (pair warped \(x_T\) with matching
+flow and fine-tune) is their CVPR 2025 Oral; doing that
+on Wan is citing them. Folding nwarp into Territory A
+would make the title “we did GwF on Wan.” Do not.
+
+---
+
 ## What this is not
 
 | Temptation | Why it is illegal here |
