@@ -5793,3 +5793,21 @@ with lineage (BOND / DanceGRPO; Rolling sink / EMA-sink;
 Stream Forcing). No GPU until one idea is spec’d.
 
 ---
+
+## 2026-09-08 — vanilla DMD on Best-of-N is the control
+**Tags:** bond, dmd, idea-1
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-08_bond_dmd_bon_open.md`
+
+User asked if idea 1 is “just DMD on the winner,” and
+what BOND leaves open. Vanilla winner-only teacher-matching
+is probably not enough: reverse KL collapses; losers are
+unused; picker can fight Wan. No named video paper is
+exactly Self Forcing DMD on student Best-of-N of a real
+opening; Alice / Reward Forcing / DanceGRPO are adjacent.
+BOND’s open issues for continuation: continuation judge
+(same scene + living), Jeffreys analog, iterative Best-of-2
++ slow anchor, no cheap video likelihood. Do not skip the
+vanilla control. No GPU.
+
+---
