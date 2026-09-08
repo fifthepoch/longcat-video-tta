@@ -39,7 +39,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Clean host split** | `sweep_experiment/reports/paper_tables/2026-09-07_clean_host_split.md` | Portable ideas on official Wan teacher. Cite `wan_notta`. Forcing-only stay on SF/RF tables. Smoke leftover + MovieGen n=2. |
 | **Wan-teacher smoke harvest** | `sweep_experiment/reports/paper_tables/2026-09-07_wan_teacher_smoke_harvest.md` | 17135846–861 COMPLETED 0:0. Protocol PASS. nwarp IQ **54.25 / 51.60** **NO**. pwarp ≈ notta, no Dyn. Do not letter n=2. Do not launch 128. |
 | **Pwarp amplify?** | `sweep_experiment/reports/paper_tables/2026-09-07_pwarp_amplify.md` | Slide was a crop, not a pan. Ramp \(t \cdot v\) if we try. |
-| **Pwarp amp leftover n=2** | `sweep_experiment/reports/paper_tables/2026-09-07_pwarp_amp_spec.md` | **SUBMIT-READY.** A/B/C/D/E on official teacher. Cite `wan_notta`. Do not letter n=2. Do not launch 128. |
+| **Pwarp amp leftover n=2** | `sweep_experiment/reports/paper_tables/2026-09-07_pwarp_amp_spec.md` | **IN-FLIGHT.** Generate 17172470–482 COMPLETED 0:0. VBench **17172483** RUNNING. Cite `wan_notta`. Do not letter n=2. Do not launch 128. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
@@ -469,10 +469,12 @@ Per-method `merged_summary.json` lives at:
   native AR long-horizon drifts; AdaSteer delta + routing closed;
   BoN k=4 N=8 passed credibility gate as always-on search, not a hard
   incoming-context gate.
-- **In-flight cluster jobs** (as of 2026-09-08 02:37):
-  Pwarp amp leftover n=2 **17172470–483**.
-  If a JobID leaves `squeue`, `sacct` and harvest.
-  Do not letter n=2. Do not launch 128.
+- **In-flight cluster jobs** (as of 2026-09-08 04:45):
+  Pwarp amp leftover n=2 generate
+  **17172470–482 COMPLETED 0:0.** VBench
+  **17172483** still RUNNING. Harvest after
+  17172483 COMPLETED 0:0. Do not letter n=2.
+  Do not launch 128.
   Track C MovieGen smoke **HARVESTED** 17121785–792
   COMPLETED 0:0. nwarp IQ 47.60 **NO** even as
   smoke (SF host). pwarp no Dyn lift. Do not launch
