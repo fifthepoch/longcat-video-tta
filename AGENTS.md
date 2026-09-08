@@ -41,7 +41,8 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Pwarp amplify?** | `sweep_experiment/reports/paper_tables/2026-09-07_pwarp_amplify.md` | Slide was a crop, not a pan. Ramp \(t \cdot v\) tried. |
 | **Pwarp amp leftover n=2** | `sweep_experiment/reports/paper_tables/2026-09-07_pwarp_amp_spec.md` | **DONE / NO.** 17172470–483. A dxL=−15 still Dyn 1/2. B persist IQ 38.94. C/D/E ≈ notta. |
 | **Pwarp amp harvest** | `sweep_experiment/reports/paper_tables/2026-09-08_pwarp_amp_harvest.md` | Protocol PASS. Cite `wan_notta` 75.60 / 1/2. All five **NO**. Do not letter n=2. Do not launch 128. |
-| **Territory A sentence + kill** | `sweep_experiment/reports/paper_tables/2026-09-08_territory_a_sentence_kill.md` | **DRAFT.** Leftover-locked tail DMD. Matched T2V control required. No 8-GPU until user accepts. |
+| **Territory A sentence + kill** | `sweep_experiment/reports/paper_tables/2026-09-08_territory_a_sentence_kill.md` | **DRAFT.** Honest: SF protocol ablation. Not a title. |
+| **Distill ideas from atlas** | `sweep_experiment/reports/paper_tables/2026-09-08_distill_ideas_from_atlas.md` | Four student ideas. Rank-1: search-mode distill. No GPU until user picks one. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |

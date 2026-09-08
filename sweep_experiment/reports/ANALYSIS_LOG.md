@@ -5744,3 +5744,20 @@ title. Matched T2V control is how you measure the
 seam, not how you name a paper. No GPU.
 
 ---
+
+## 2026-09-08 — four distill ideas from the atlas
+**Tags:** wan, distill, territory-A, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-08_distill_ideas_from_atlas.md`
+
+User asked for new student ideas from our outcomes and
+the long-horizon field, not a remake of Self Forcing.
+Four: (1) distill the Always-search mode via teacher-pick
+among k leftover tails; (2) trajectory sink from the
+moving leftover, not frame-0; (3) Stream’s path indexed
+by leftover motion, not train step; (4) related-family
+flow inheritance at train, warp-free at test. Leftover
+lock is infrastructure. Rank-1 is (1). No GPU until one
+idea is spec’d.
+
+---
