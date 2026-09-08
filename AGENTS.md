@@ -299,9 +299,9 @@ Per-method `merged_summary.json` lives at:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official
   Wan2.1-T2V-1.3B, no `self_forcing_dmd.pt`).
-  **IN-FLIGHT smoke** leftover **17135846–853**
-  + MovieGen **17135854–861** (SDPA patch).
-  First wave FA2 **FAILED 2:0**. Cite `wan_notta`.
+  **COMPLETED 0:0** leftover **17135846–853**
+  + MovieGen **17135854–861** (SDPA). Harvest
+  pending (ran from `~`). Cite `wan_notta`.
   Native clip 81 frames. nwarp = HIWYN on \(x_T\)
   once. pwarp = mid-timestep pred slide. Do not
   launch 128. Do not remake cite-128. Forcing-only
@@ -457,11 +457,10 @@ Per-method `merged_summary.json` lives at:
   native AR long-horizon drifts; AdaSteer delta + routing closed;
   BoN k=4 N=8 passed credibility gate as always-on search, not a hard
   incoming-context gate.
-- **In-flight cluster jobs** (as of 2026-09-07 17:06):
-  Wan-teacher leftover **17135846–853** + MovieGen
-  **17135854–861** (SDPA). First wave FA2
-  **FAILED 2:0**. If a JobID leaves `squeue`,
-  `sacct` and harvest (2b-quater). Do not letter
+- **In-flight cluster jobs** (as of 2026-09-07 23:01):
+  Wan-teacher leftover **17135846–853 COMPLETED 0:0**
+  + MovieGen **17135854–861 COMPLETED 0:0**.
+  Harvest pending (cwd was `~`). Do not letter
   n=2. Do not launch 128.
   Track C MovieGen smoke **HARVESTED** 17121785–792
   COMPLETED 0:0. nwarp IQ 47.60 **NO** even as
