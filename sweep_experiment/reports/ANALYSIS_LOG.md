@@ -5811,3 +5811,18 @@ BOND’s open issues for continuation: continuation judge
 vanilla control. No GPU.
 
 ---
+
+## 2026-09-08 — losers as negatives; constrain the energy well
+**Tags:** bond, energy, idea-1
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-08_winner_loser_energy.md`
+
+User asked if 30% winners / 30% losers with different
+updates is good, and if an energy model can limit the
+low-energy region. Yes to negatives; never teacher-match
+the losers (Alice: equal weight imitates failure). Prefer
+best-vs-worst of one opening, not a global 30%. Energy
+well must be *where* (same scene and living), not *any
+small blob* (that is collapse). No GPU.
+
+---

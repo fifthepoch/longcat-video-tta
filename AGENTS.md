@@ -45,6 +45,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Distill ideas from atlas** | `sweep_experiment/reports/paper_tables/2026-09-08_distill_ideas_from_atlas.md` | Four student ideas. Rank-1: search-mode distill. No GPU until user picks one. |
 | **Search-mode distill neighbors** | `sweep_experiment/reports/paper_tables/2026-09-08_search_mode_distill_neighbors.md` | Idea 1 class is published (BOND / DanceGRPO / Reward Forcing). Not an empty field. |
 | **BOND + DMD on Best-of-N** | `sweep_experiment/reports/paper_tables/2026-09-08_bond_dmd_bon_open.md` | Vanilla winner-only DMD is the control, not the title. BOND’s open issues: judge, Jeffreys, iterative N=2. |
+| **Winners / losers / energy** | `sweep_experiment/reports/paper_tables/2026-09-08_winner_loser_energy.md` | Negatives yes. Do not teacher-match losers. Low-energy well must be in-scene and living. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
