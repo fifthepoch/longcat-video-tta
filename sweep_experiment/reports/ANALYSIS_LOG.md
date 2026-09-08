@@ -5761,3 +5761,21 @@ lock is infrastructure. Rank-1 is (1). No GPU until one
 idea is spec’d.
 
 ---
+
+## 2026-09-08 — idea 1 is not an empty field
+**Tags:** lit, distill, BOND, DanceGRPO
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-08_search_mode_distill_neighbors.md`
+
+User asked why nobody published “distill seed search into
+the student.” They were right to be suspicious. Language:
+BOND (ICLR 2025) is that title. Video search papers
+(Video-T1, LatSearch, CachedSearch) stay training-free on
+purpose. Video training cousins: Reward Forcing
+(reweight), DanceGRPO / Self-Forcing++ GRPO (group of
+samples + judge), VideoDPO / V.I.P. (preference pairs),
+Alice (reverse-KL + top teacher clips). Exact Self Forcing
++ Wan-teacher picker + video-to-video slice is thin, not
+empty. Do not claim we invented it. No GPU.
+
+---

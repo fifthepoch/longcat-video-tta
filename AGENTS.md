@@ -43,6 +43,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Pwarp amp harvest** | `sweep_experiment/reports/paper_tables/2026-09-08_pwarp_amp_harvest.md` | Protocol PASS. Cite `wan_notta` 75.60 / 1/2. All five **NO**. Do not letter n=2. Do not launch 128. |
 | **Territory A sentence + kill** | `sweep_experiment/reports/paper_tables/2026-09-08_territory_a_sentence_kill.md` | **DRAFT.** Honest: SF protocol ablation. Not a title. |
 | **Distill ideas from atlas** | `sweep_experiment/reports/paper_tables/2026-09-08_distill_ideas_from_atlas.md` | Four student ideas. Rank-1: search-mode distill. No GPU until user picks one. |
+| **Search-mode distill neighbors** | `sweep_experiment/reports/paper_tables/2026-09-08_search_mode_distill_neighbors.md` | Idea 1 class is published (BOND / DanceGRPO / Reward Forcing). Not an empty field. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
