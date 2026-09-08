@@ -56,9 +56,51 @@ METHODS = (
     "wan_nwarp_live",
     "wan_pwarp",
     "wan_pwarp_live",
+    "wan_pwarp_ramp",
+    "wan_pwarp_ramp_live",
+    "wan_pwarp_persist",
+    "wan_pwarp_persist_live",
+    "wan_pwarp_s2",
+    "wan_pwarp_s4",
+    "wan_pwarp_s8",
+    "wan_pwarp_early",
+    "wan_pwarp_early_live",
+    "wan_pwarp_mag",
+    "wan_pwarp_mag_live",
 )
 NWARP_METHODS = frozenset({"wan_nwarp", "wan_nwarp_live"})
-PWARP_METHODS = frozenset({"wan_pwarp", "wan_pwarp_live"})
+PWARP_METHODS = frozenset(m for m in METHODS if m.startswith("wan_pwarp"))
+MAG_MIN_PX = 0.5
+
+
+def pwarp_flags(method: str) -> dict:
+    """Map method name → slide geometry. Live is applied in run_one."""
+    live = method.endswith("_live")
+    base = method[: -5] if live else method
+    out = {
+        "mode": "crop",
+        "step": 1,
+        "start_frac": 0.5,
+        "persist": False,
+        "mag_min": 0.0,
+        "live": live,
+    }
+    if base == "wan_pwarp_ramp":
+        out["mode"] = "ramp"
+    elif base == "wan_pwarp_persist":
+        out["mode"] = "ramp"
+        out["persist"] = True
+    elif base == "wan_pwarp_s2":
+        out["step"] = 2
+    elif base == "wan_pwarp_s4":
+        out["step"] = 4
+    elif base == "wan_pwarp_s8":
+        out["step"] = 8
+    elif base == "wan_pwarp_early":
+        out["start_frac"] = 0.25
+    elif base == "wan_pwarp_mag":
+        out["mag_min"] = MAG_MIN_PX
+    return out
 LIVE_MIN = 0.012
 VIDEO_EXTS = {".mp4", ".webm", ".mkv", ".mov"}
 SIZE = (832, 480)
@@ -312,7 +354,15 @@ def generate_teacher(
 
     no_sync = getattr(pipe.model, "no_sync", noop_no_sync)
     pwarp_log = None
-    mid_i = max(0, int(sampling_steps) // 2)
+    start_frac = 0.5
+    persist = False
+    pwarp_mode = "crop"
+    pwarp_state = None
+    if pwarp and pwarp.get("enabled"):
+        start_frac = float(pwarp.get("start_frac", 0.5))
+        persist = bool(pwarp.get("persist"))
+        pwarp_mode = str(pwarp.get("mode") or "crop")
+    start_i = max(0, min(int(sampling_steps) - 1, int(round((int(sampling_steps) - 1) * start_frac))))
 
     with amp.autocast(dtype=pipe.param_dtype), torch.no_grad(), no_sync():
         sample_scheduler = FlowUniPCMultistepScheduler(
@@ -343,23 +393,29 @@ def generate_teacher(
                 generator=seed_g,
             )[0]
             lat = temp_x0.squeeze(0)
-            if (
+            fire = (
                 pwarp
                 and pwarp.get("enabled")
-                and step_i == mid_i
-            ):
-                # Wan latent [C, T, H, W] → PWarp [B, T, C, H, W].
-                pred = lat.permute(1, 0, 2, 3).unsqueeze(0)
-                state = PWarpState(
-                    float(pwarp["vy_lat"]),
-                    float(pwarp["vx_lat"]),
-                    step=int(pwarp.get("step", PWARP_DEFAULT_STEP)),
-                    enabled=True,
-                    flow_log={**pwarp, "mid_step": int(mid_i)},
+                and (
+                    step_i == start_i
+                    or (persist and step_i >= start_i)
                 )
-                pred = state.pred_fn(pred, rng=None, index=0)
+            )
+            if fire:
+                pred = lat.permute(1, 0, 2, 3).unsqueeze(0)
+                if pwarp_state is None:
+                    pwarp_state = PWarpState(
+                        float(pwarp["vy_lat"]),
+                        float(pwarp["vx_lat"]),
+                        step=int(pwarp.get("step", PWARP_DEFAULT_STEP)),
+                        enabled=True,
+                        mode=pwarp_mode,
+                        persist=persist,
+                        flow_log={**pwarp, "start_step": int(start_i)},
+                    )
+                pred = pwarp_state.pred_fn(pred, rng=None, index=0)
                 lat = pred.squeeze(0).permute(1, 0, 2, 3).contiguous()
-                pwarp_log = dict(state.last_log)
+                pwarp_log = dict(pwarp_state.last_log)
             latents = [lat]
         x0 = latents
         if offload_model:
@@ -417,11 +473,21 @@ def run_one(pipe, item: dict, args) -> dict:
     def _pwarp_cfg(enabled: bool) -> dict | None:
         if method not in PWARP_METHODS:
             return None
+        flags = pwarp_flags(method)
+        step = int(flags["step"])
+        if step == 1 and int(args.pwarp_step) != 1 and flags["mode"] == "crop" and method in {
+            "wan_pwarp", "wan_pwarp_live",
+        }:
+            step = int(args.pwarp_step)
         return {
             "enabled": bool(enabled),
             "vy_lat": vy_lat,
             "vx_lat": vx_lat,
-            "step": int(args.pwarp_step),
+            "step": step,
+            "mode": flags["mode"],
+            "persist": flags["persist"],
+            "start_frac": flags["start_frac"],
+            "mag_min": flags["mag_min"],
             "source": source,
             "live": bool(live),
             "motion": motion,
@@ -443,8 +509,13 @@ def run_one(pipe, item: dict, args) -> dict:
         live = motion >= float(args.live_min)
 
     enabled_warp = True
-    if method in {"wan_nwarp_live", "wan_pwarp_live"}:
+    if method.endswith("_live"):
         enabled_warp = bool(live)
+    if method in PWARP_METHODS:
+        flags = pwarp_flags(method)
+        speed = max(abs(float(vy_px)), abs(float(vx_px)))
+        if float(flags["mag_min"]) > 0 and speed < float(flags["mag_min"]):
+            enabled_warp = False
 
     k = 1
     if method == "wan_always":
@@ -458,7 +529,8 @@ def run_one(pipe, item: dict, args) -> dict:
         use_first = (
             first_pix is not None
             and si == 0
-            and method in {"wan_nwarp_live", "wan_pwarp_live"}
+            and method.endswith("_live")
+            and method in (NWARP_METHODS | PWARP_METHODS)
             and not enabled_warp
         )
         if use_first:

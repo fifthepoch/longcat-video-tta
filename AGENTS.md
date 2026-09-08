@@ -38,7 +38,8 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Noise-method baselines** | `sweep_experiment/reports/paper_tables/2026-09-07_noise_method_baselines.md` | Baseline = attached host. SF only if the machine is SF. GwF cites CogVideoX. FIFO cites VideoCrafter2. |
 | **Clean host split** | `sweep_experiment/reports/paper_tables/2026-09-07_clean_host_split.md` | Portable ideas on official Wan teacher. Cite `wan_notta`. Forcing-only stay on SF/RF tables. Smoke leftover + MovieGen n=2. |
 | **Wan-teacher smoke harvest** | `sweep_experiment/reports/paper_tables/2026-09-07_wan_teacher_smoke_harvest.md` | 17135846–861 COMPLETED 0:0. Protocol PASS. nwarp IQ **54.25 / 51.60** **NO**. pwarp ≈ notta, no Dyn. Do not letter n=2. Do not launch 128. |
-| **Pwarp amplify?** | `sweep_experiment/reports/paper_tables/2026-09-07_pwarp_amplify.md` | Slide was a crop, not a pan. Ramp \(t \cdot v\) if we try. No GPU until the user picks. |
+| **Pwarp amplify?** | `sweep_experiment/reports/paper_tables/2026-09-07_pwarp_amplify.md` | Slide was a crop, not a pan. Ramp \(t \cdot v\) if we try. |
+| **Pwarp amp leftover n=2** | `sweep_experiment/reports/paper_tables/2026-09-07_pwarp_amp_spec.md` | **SUBMIT-READY.** A/B/C/D/E on official teacher. Cite `wan_notta`. Do not letter n=2. Do not launch 128. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
@@ -301,6 +302,10 @@ Per-method `merged_summary.json` lives at:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official
   Wan2.1-T2V-1.3B, no `self_forcing_dmd.pt`).
+  Pwarp amplify leftover n=2 **SUBMIT-READY**:
+  `SMOKE=1 bash wan_experiment/sbatch/submit_wan_teacher_pwarp_amp.sh`.
+  A ramp / B persist / C s2-8 / D early / E mag.
+  Do not letter n=2. Do not launch 128.
   Wan-teacher leftover + MovieGen smoke
   **HARVESTED** 17135846–861 COMPLETED 0:0.
   Protocol PASS. Cite `wan_notta`. Leftover IQ
@@ -465,9 +470,10 @@ Per-method `merged_summary.json` lives at:
   BoN k=4 N=8 passed credibility gate as always-on search, not a hard
   incoming-context gate.
 - **In-flight cluster jobs** (as of 2026-09-07 23:06):
-  Wan-teacher leftover + MovieGen smoke
-  **HARVESTED** 17135846–861 COMPLETED 0:0.
-  nwarp **NO**. pwarp no Dyn. Do not launch 128.
+  Pwarp amp leftover n=2 **SUBMIT-READY** (not
+  launched from this machine). Wan-teacher smoke
+  **HARVESTED** 17135846–861. nwarp **NO**. Do not
+  launch 128.
   Track C MovieGen smoke **HARVESTED** 17121785–792
   COMPLETED 0:0. nwarp IQ 47.60 **NO** even as
   smoke (SF host). pwarp no Dyn lift. Do not launch

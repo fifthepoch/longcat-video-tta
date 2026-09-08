@@ -25,6 +25,17 @@ METHODS = (
     "wan_nwarp_live",
     "wan_pwarp",
     "wan_pwarp_live",
+    "wan_pwarp_ramp",
+    "wan_pwarp_ramp_live",
+    "wan_pwarp_persist",
+    "wan_pwarp_persist_live",
+    "wan_pwarp_s2",
+    "wan_pwarp_s4",
+    "wan_pwarp_s8",
+    "wan_pwarp_early",
+    "wan_pwarp_early_live",
+    "wan_pwarp_mag",
+    "wan_pwarp_mag_live",
 )
 
 
@@ -103,7 +114,12 @@ def main() -> None:
     print(f"series {series}")
     print("cite   wan_notta (Wan teacher, not Self Forcing)")
 
-    dirs = {m: series / f"{m}_h5s_shard0" for m in METHODS}
+    found = []
+    for p in sorted(series.glob("*_h5s_shard0")) if series.is_dir() else []:
+        name = p.name[: -len("_h5s_shard0")]
+        found.append(name)
+    methods = [m for m in METHODS if m in found] or [m for m in METHODS]
+    dirs = {m: series / f"{m}_h5s_shard0" for m in methods}
     print("\n== disk ==")
     panda = 0
     hosts = set()
@@ -131,10 +147,13 @@ def main() -> None:
             pr = str(rec.get("prompt") or "")
             if pr.lower().startswith("panda "):
                 panda += 1
+            pw = rec.get("pwarp") or {}
             print(
                 f"    {rec.get('stem')} host={rec.get('host')} "
                 f"src={rec.get('source')} prefix={rec.get('prefix')} "
                 f"mot={_fmt(rec.get('chunk0_motion'), 4)} "
+                f"pw={pw.get('mode')} n={pw.get('n_shifts')} "
+                f"dx0={pw.get('dx')} dxL={pw.get('dx_last')} "
                 f"ok={rec.get('ok')}"
             )
     print(f"hosts={sorted(hosts)}  panda-prompt hits={panda}")
@@ -144,12 +163,13 @@ def main() -> None:
         print("PROTOCOL FAIL: a sidecar prompt looks like panda stem.")
 
     print("\n== VBench vs wan_notta ==")
-    notta_vb = _vb_by_key(_vb_joined(dirs["wan_notta"]))
-    keys = sorted(notta_vb) or sorted(_rows(dirs["wan_notta"]))
-    med = {m: {"iq": [], "sub": []} for m in METHODS}
-    dyn_c = {m: 0 for m in METHODS}
+    notta_d = dirs.get("wan_notta")
+    notta_vb = _vb_by_key(_vb_joined(notta_d)) if notta_d else {}
+    keys = sorted(notta_vb) or (sorted(_rows(notta_d)) if notta_d else [])
+    med = {m: {"iq": [], "sub": []} for m in methods}
+    dyn_c = {m: 0 for m in methods}
     print(
-        f"{'id':14} {'method':16} {'IQ':7} {'dIQ':6} {'subj':6} {'Dyn':4}"
+        f"{'id':14} {'method':22} {'IQ':7} {'dIQ':6} {'subj':6} {'Dyn':4}"
     )
     for m, d in dirs.items():
         by = _vb_by_key(_vb_joined(d))
@@ -167,14 +187,14 @@ def main() -> None:
                 dyn_c[m] += 1
             diq = (iq - niq) if iq is not None and niq is not None else None
             print(
-                f"{k:14} {m:16} {_fmt(iq, 2):7} {_fmt(diq, 2):6} "
+                f"{k:14} {m:22} {_fmt(iq, 2):7} {_fmt(diq, 2):6} "
                 f"{_fmt(sub, 3):6} {_fmt(dyn, 0):4}"
             )
     n = len(keys) or 2
     print("\n== medians (do not letter n=2) ==")
-    for m in METHODS:
+    for m in methods:
         print(
-            f"  {m:16} IQ={_fmt(_median(med[m]['iq']), 2)} "
+            f"  {m:22} IQ={_fmt(_median(med[m]['iq']), 2)} "
             f"subj={_fmt(_median(med[m]['sub']), 3)} "
             f"Dyn={dyn_c[m]}/{n}"
         )

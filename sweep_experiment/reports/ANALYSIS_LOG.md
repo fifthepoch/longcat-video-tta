@@ -5662,3 +5662,19 @@ IQ-risky. Do not go earlier toward \(x_T\). No GPU
 until the user picks. Do not launch 128.
 
 ---
+
+## 2026-09-07 — pwarp amplify leftover n=2 SUBMIT-READY
+**Tags:** wan, teacher, pwarp, diagnostic
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-07_pwarp_amp_spec.md`;
+`wan_experiment/sbatch/submit_wan_teacher_pwarp_amp.sh`
+
+User asked to test A–E together. Leftover n=2 only,
+official teacher, cite `wan_notta`. Ramp = frame \(t\)
+slides \(t \cdot v\). Persist reapplies that ramp every
+remaining step (compounds, 25% cap). C is crop step
+2/4/8. D is crop at 25% of the schedule. E skips if
+mean \|v\| < 0.5 px/frame (0001 dust). Same-wave live
+on A/B/D/E. Do not letter n=2. Do not launch 128.
+
+---
