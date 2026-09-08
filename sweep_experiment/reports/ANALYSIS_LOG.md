@@ -5699,3 +5699,19 @@ Do not scale pwarp. No GPU until the user picks a
 territory.
 
 ---
+
+## 2026-09-08 — Territory A draft sentence + kill test
+**Tags:** wan, distill, territory-A, draft
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-08_territory_a_sentence_kill.md`
+
+Draft only. No 8-GPU. The A sentence is leftover-locked
+unroll + holistic DMD on the tail only. Not “V2V student
+beats T2V student.” Not official Dyn/MUSIQ in the loss.
+Required control: matched T2V DMD on the same machine.
+Kill: smoke N=8 painted/frozen/no-op; scale only if Dyn%
+beats official SF *and* the matched control without a
+1-point IQ death or subject rewrite. Miss → slip venue.
+Do not remake cite-128. Do not scale pwarp.
+
+---
