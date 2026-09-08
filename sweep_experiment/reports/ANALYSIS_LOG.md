@@ -5644,3 +5644,21 @@ mid-step slide is invisible to 81-frame VBench on this
 pair. Still **NO**. Do not retune extra γ. Do not launch 128.
 
 ---
+
+## 2026-09-07 — pwarp was a crop, not a pan
+**Tags:** wan, teacher, pwarp, method
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-07_pwarp_amplify.md`;
+sidecar dx=±1 on 17135851/52/59/60
+
+Teacher pwarp translates the **whole** 81-frame latent
+by one cell. That is a reframe. Dynamic Degree wants
+temporal motion. Amplifying `|step|` makes a bigger
+crop and also punches leftover 0001 dust. The legal
+amplification is a **time ramp** (frame \(t\) slides
+\(t \cdot v\)): 0000 would travel ~17 cells; dust stays
+~1. Persist-every-step is the stronger twin and is
+IQ-risky. Do not go earlier toward \(x_T\). No GPU
+until the user picks. Do not launch 128.
+
+---
