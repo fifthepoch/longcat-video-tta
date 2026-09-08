@@ -5,6 +5,18 @@ the user accepts this paragraph or rewrites it. Do not
 remake cite-128. Do not scale pwarp. Hypothesis 2 as
 “RAFT bit in the loss” stays dead.
 
+**Honesty (2026-09-08):** A-minimum is **not a new method
+class.** It is Self Forcing’s machine with a different
+unroll start. Self Forcing already inits from
+Wan2.1-T2V-1.3B. We would not be “adding Wan weights.”
+We would be remaking their distill and swapping
+self-history for a frozen leftover. That is the
+2026-09-04 user compression: a protocol ablation, not a
+title, unless a later spec names a label other than
+“V2V student beats T2V student.” The kill test still
+asks whether the seam matters. It does not make the
+seam a CVPR idea.
+
 Hypothesis lock: `2026-09-04_method_hypotheses_motivation.md`.
 Machine: `2026-09-04_sf_rf_common_impl.md`.
 Same-metric law: `2026-09-05_train_eval_same_metric.md`.

@@ -5729,3 +5729,18 @@ on the tail. nwarp / pwarp stay closed frozen-weight
 NO. Retrain-GwF is occupied. Do not fold warp into A.
 
 ---
+
+## 2026-09-08 — A-minimum is an SF protocol ablation
+**Tags:** wan, distill, territory-A, honesty
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-08_territory_a_sentence_kill.md`
+
+User asked if A is just remaking Self Forcing with
+Wan2.1. Yes, almost: SF already *is* Wan2.1-T2V-1.3B +
+unroll + holistic DMD. A-minimum only changes the
+unroll opening (frozen leftover, tail DMD). That is
+train-on-the-test-task, not a new sampler and not a
+title. Matched T2V control is how you measure the
+seam, not how you name a paper. No GPU.
+
+---
