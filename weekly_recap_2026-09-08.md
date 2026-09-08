@@ -78,7 +78,8 @@ From one opening, several seeds; a judge picks; train toward the winner; test is
 | Video-T1 / LatSearch / CachedSearch | Search **at test**. Stay training-free on purpose. |
 | Reward Forcing | Reweight high-motion samples. One rollout. |
 | DanceGRPO; Self-Forcing++ GRPO | Group of videos + relative scores. Closest video cousin. |
-| VideoDPO / V.I.P. / Alice v1 | Preference or top teacher clips. Same job, different picker. |
+| VideoDPO / V.I.P. | Preference pairs. Same job, different picker. |
+| **Alice v1** ([arXiv:2605.08115](https://arxiv.org/abs/2605.08115)) | Distill Wan2.2 with reverse-KL + keep **top 30% of teacher** videos. They write this is “analogous to best-of-n.” Not live student seeds. |
 
 Do not claim we invented distilling seed search. Note: `2026-09-08_search_mode_distill_neighbors.md`.
 

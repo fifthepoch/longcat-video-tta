@@ -62,7 +62,7 @@ those PDFs.
 | **DanceGRPO** ([2505.07818](https://arxiv.org/abs/2505.07818)) | For one prompt, generate a **group** of videos, score them, update from the relative scores. Used on Wan-family video. This **is** several seeds + a judge + train. |
 | **Self-Forcing++** | Optional extra stage: group-relative training with a chosen reward. Same family. |
 | **VideoDPO** (CVPR 2025); **V.I.P.** ([2508.03254](https://arxiv.org/abs/2508.03254)) | Make several videos, build win/lose pairs, preference-train. |
-| **Alice v1** ([2605.08115](https://arxiv.org/abs/2605.08115)) | Reverse-KL teacher matching + keep the top 30% of **teacher** videos. They write that this is “analogous to best-of-n.” They do not draw several **student** seeds. |
+| **Alice v1** ([abs](https://arxiv.org/abs/2605.08115), [pdf](https://arxiv.org/pdf/2605.08115), [html](https://arxiv.org/html/2605.08115), [code](https://github.com/mirage-video)) | Distill Wan2.2 (14B student). Reverse-KL / score regularizer + keep the **top 30% of teacher** videos; some failures kept at low weight. They write this is “analogous to best-of-n.” Not live student seeds from one opening. |
 | DOLLAR / reward-guided consistency | Put a quality score into distillation. Official dynamic-degree in the loss is the twitch failure we already know. |
 
 None of these is “unpublished.” They differ in **who

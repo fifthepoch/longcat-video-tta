@@ -77,9 +77,13 @@ mode search finds**.
 
 **Why their papers.** Reward Forcing reweights a T2V
 prompt pool by VideoAlign. Video-T1 / LatSearch /
-CachedSearch *search at test*. BoN distillation exists
-in language; not as leftover-conditioned teacher-pick
-among \(k\) few-step tails on Wan.
+CachedSearch *search at test*. BOND is Best-of-N
+distillation in **language**. **Alice v1**
+([arXiv:2605.08115](https://arxiv.org/abs/2605.08115))
+filters the **teacher’s** videos (top 30%) then
+reverse-KL / teacher-matching; they call that
+“analogous to best-of-n.” They do not draw several
+**student** seeds from one real opening.
 
 **Not them.** Not VideoAlign-in-DMD. Not official RAFT.
 Not “we run Always-search.” The unit is **same leftover,
