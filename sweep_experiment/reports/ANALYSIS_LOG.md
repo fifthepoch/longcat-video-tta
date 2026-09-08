@@ -5779,3 +5779,17 @@ Alice (reverse-KL + top teacher clips). Exact Self Forcing
 empty. Do not claim we invented it. No GPU.
 
 ---
+
+## 2026-09-08 — week recap talk (gadgets closed; three ideas)
+**Tags:** recap, talk, territory-A
+**Owner:** agent
+**Refs:** `weekly_recap_2026-09-08.md`;
+canvas `week-recap-0908`
+
+Week talk: frozen noise-warp / picture-slide / amplify /
+Wan-extend all NO. Official teacher host for portable
+ideas. Train video-to-video is not a title. Ideas 1–3
+with lineage (BOND / DanceGRPO; Rolling sink / EMA-sink;
+Stream Forcing). No GPU until one idea is spec’d.
+
+---

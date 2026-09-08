@@ -63,7 +63,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Caption leftover ρ spec** | `sweep_experiment/reports/paper_tables/2026-09-01_wan_v2v_caption_leftovers_spec.md` | Stem leftovers are panda-infected. Caption N=8 ρ / look only. Do not remake cite-128. |
 | **Caption leftover harvest** | `sweep_experiment/reports/paper_tables/2026-09-01_wan_v2v_caption_leftovers_harvest.md` | 16734909–913 COMPLETED. All four **NO**. Real captions did not save Imaging Quality. |
 | **Cite-128 wall (job/96)** | `sweep_experiment/reports/paper_tables/2026-09-01_wan_v2v_cite128_wall.md` | 108 / 47 / 294 / 354. Not n=32 sidecar 196 / 45 / 304 / 348. |
-| **Weekly recap (current week)** | `weekly_recap_YYYY-MM-DD.md` | One per Monday meeting. Latest: `weekly_recap_2026-09-01.md` |
+| **Weekly recap (current week)** | `weekly_recap_YYYY-MM-DD.md` | One per Monday meeting. Latest: `weekly_recap_2026-09-08.md` |
 | **Daily experimental-output log** | `sweep_experiment/reports/experiment_outputs/YYYY-MM-DD.md` | Append every pasted output (raw + interpretation) |
 | **Canonical results memory (legacy)** | `sweep_experiment/reports/experiment_metrics_log.md` | Long-form running log. Superseded by INDEX.md + ANALYSIS_LOG.md as of 2026-06-08, but kept for history. |
 | **Paper draft** | `sweep_experiment/reports/paper_draft.md` | LaTeX-aligned narrative + result placeholders. Often dehydrated locally. |
@@ -256,7 +256,7 @@ Per-method `merged_summary.json` lives at:
 
 ## 3. Active project state (snapshot — keep current)
 
-**Date:** Updated 2026-09-07.
+**Date:** Updated 2026-09-08.
 
 - **Paper target:** CVPR 2027.
 - **Paper method (2026-09-04):** Pseudo-future Search is **dropped**

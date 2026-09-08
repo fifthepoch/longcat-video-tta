@@ -9,8 +9,8 @@ update the Status / Findings columns when re-merged. NEVER delete rows
 even if results are superseded — mark them `superseded` and keep them
 for audit trail.
 
-**Owners:** Wenchen (PI) and any active agent. Last updated: 2026-09-07.
-Week talk: [`weekly_recap_2026-09-01.md`](../../weekly_recap_2026-09-01.md).
+**Owners:** Wenchen (PI) and any active agent. Last updated: 2026-09-08.
+Week talk: [`weekly_recap_2026-09-08.md`](../../weekly_recap_2026-09-08.md).
 
 ---
 
@@ -127,6 +127,7 @@ Timing: [`paper_tables/2026-08-16_wan_i2v_smoke.md`](paper_tables/2026-08-16_wan
 | SF / RF shared experiment machine | Read of Huang 2506.08009 + Liu 2509.25161. No GPU. | Both papers unroll inference + holistic DMD. Rolling = wider lock + sink + 50% SF mix. | [`2026-09-04_sf_rf_common_impl.md`](paper_tables/2026-09-04_sf_rf_common_impl.md). |
 | SF / RF KV + compute audit | Official kernels vs our V2V wrappers. No GPU. | Quality KV / sink / RoPE / window **already on**. Huge 30 s cache is memory. Do not retune cite hosts. | [`2026-09-04_sf_rf_kv_opt_audit.md`](paper_tables/2026-09-04_sf_rf_kv_opt_audit.md). |
 | Drop Pseudo + next territories | Paper-title lock. Outcome atlas. No GPU. | Pseudo-future Search **dropped**. Fork: new student / analysis paper / new frozen control. | [`2026-09-04_drop_pseudo_next_territories.md`](paper_tables/2026-09-04_drop_pseudo_next_territories.md). |
+| Week recap 1–8 Sep | Frozen gadgets closed. Three student ideas + lineage. | Noise-warp / picture-slide / amplify / Wan-extend **NO**. Do not remake Self Forcing. | [`weekly_recap_2026-09-08.md`](../../weekly_recap_2026-09-08.md). |
 | Territory A sentence + kill test | Draft claim + bars. No GPU. | Leftover-locked tail DMD. Honest: SF protocol ablation, not a title. | [`2026-09-08_territory_a_sentence_kill.md`](paper_tables/2026-09-08_territory_a_sentence_kill.md). |
 | Distill ideas from atlas + field | Four student ideas. No GPU. | (1) search-mode distill (2) trajectory sink (3) prefix-conditional schedule (4) train-time motion inheritance. Leftover lock is infrastructure. | [`2026-09-08_distill_ideas_from_atlas.md`](paper_tables/2026-09-08_distill_ideas_from_atlas.md). |
 | Search-mode distill neighbors | Is idea 1 unpublished? Lit only. | Class is published: BOND (language), DanceGRPO / Reward Forcing / VideoDPO (video). Search papers stay training-free. | [`2026-09-08_search_mode_distill_neighbors.md`](paper_tables/2026-09-08_search_mode_distill_neighbors.md). |
