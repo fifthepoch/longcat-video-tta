@@ -47,7 +47,10 @@ official RAFT bit in the loss and got twitch + IQ death.
 **Law.** If the path is new, the student has to see it
 in distillation. If the title is their path, we are
 citing them. The leftover loader can sit under a real
-idea. It cannot be the idea.
+idea. It cannot be the idea. What the DMD papers
+actually wrote about frozen noise (they mostly did not;
+they wrote train=infer):
+`2026-09-08_why_dmd_frozen_noise.md`.
 
 ---
 

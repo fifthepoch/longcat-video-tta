@@ -5826,3 +5826,10 @@ well must be *where* (same scene and living), not *any
 small blob* (that is collapse). No GPU.
 
 ---
+
+## 2026-09-08 — Why DMD is the machine, not a literature ban on frozen noise
+
+**Tags:** dmd, self-forcing, rolling-forcing, stream-forcing, go-with-the-flow, fifo, train-test
+**Refs:** `paper_tables/2026-09-08_why_dmd_frozen_noise.md`, weekly_recap_2026-09-08.md §4, canvas week-recap-0908 “Why DMD”
+
+The DMD / Forcing papers do not write “do not warp starting noise on a frozen Wan.” That measurement is ours (IQ ~49–54; persist slide 38.94). What they write is train = infer: Self Forcing (teacher/DF videos “do not belong to” the inference distribution), Rolling (mixed noise slots look like bad camera; mix 50% SF loss), Stream (noise list is a training curriculum), Reward / Alice (change the score or filter the teacher set). Go-with-the-Flow is the noise-warp paper: image training-free, video paired fine-tune. FIFO claims a training-free diagonal; our FIFO on frozen SF/RF was NO. Deep/Relax/Forcing-KV stay frozen but edit KV memory, not the noise path. DMD is how they put a *new* recipe into a few-step student. It is not a title and not a license to remake Self Forcing.

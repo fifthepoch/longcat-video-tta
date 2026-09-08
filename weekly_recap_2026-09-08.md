@@ -16,6 +16,7 @@ Talk: open [week recap](/Users/macrohard/.cursor/projects/Users-macrohard-Deskto
 - **Official teacher is the host for portable ideas.** Cite do-nothing on that teacher. Forcing-only tables stay on Self Forcing / Rolling.
 - **“Train video-to-video” is not a title.** That is train-on-the-test-task. Self Forcing already is Wan 1.3B + unroll + teacher match.
 - **Analysis alone is not enough** for a method paper. Three student ideas remain, each with a published lineage. No 8-GPU job until one idea is picked and its fail bars are written.
+- **Why DMD:** the field does not forbid frozen noise edits in writing. It says train = infer. Go-with-the-Flow still fine-tunes video warp. FIFO’s training-free schedule failed on our student. DMD is the machine that puts a *new* recipe into a few-step student — not the title.
 - **Do not scale** noise-warp, picture-slide, mix, FIFO, leftover timestep list. Do not remake cite-128.
 
 ---
@@ -64,7 +65,30 @@ Jobs **17172470–483** COMPLETED 0:0. Cite do-nothing IQ **75.60** / Dyn **1/2*
 
 ---
 
-## 4. Three student ideas and their lineage
+## 4. Why DMD (bridge to a new student)
+
+The DMD papers do **not** write “do not warp starting noise
+on a frozen Wan.” That is our measurement. They write:
+**train with the same recipe you will use at test.** If the
+recipe is new, they train a few-step student by unrolling it
+and matching the teacher. DMD is that matching loss — the
+machine, not the title.
+
+| Paper | Frozen noise / path? | What they wrote |
+|---|---|---|
+| Self Forcing | No | Teacher / Diffusion Forcing videos “do not belong to” the inference distribution. Unroll, then holistic DMD. |
+| Rolling Forcing | No | Mixed noise slots in the fake video look like bad camera. Mix 50% Self Forcing loss. |
+| Stream Forcing | No | The noise list is a **training** curriculum toward the inference diagonal. |
+| Reward Forcing / Alice | No | Change the score or filter the teacher set. Weights move. |
+| Go-with-the-Flow | Image yes; video no | The noise-warp paper. Video needs paired fine-tune. |
+| FIFO-Diffusion | Claims yes (schedule) | Training-free diagonal. Our FIFO on frozen SF/RF was **NO**. |
+| Deep / Relax / Forcing-KV | Frozen **memory**, not noise | Remaining frozen lever in their field. |
+
+Note: `2026-09-08_why_dmd_frozen_noise.md`.
+
+---
+
+## 5. Three student ideas and their lineage
 
 A real opening in the training loader is infrastructure. Official Dyn / Imaging Quality stay out of the loss.
 
@@ -111,7 +135,7 @@ A referee can say “Stream Forcing, conditioned on the opening.”
 
 ---
 
-## 5. Do not do
+## 6. Do not do
 
 Scale noise-warp or picture-slide. Remake cite-128. Launch 8-GPU teacher-matching to show “video-to-video student beats text-to-video student.” Official Dyn in the loss. Mix / FIFO / AdaSteer / TTC.
 
