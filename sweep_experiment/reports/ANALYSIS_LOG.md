@@ -5610,3 +5610,22 @@ not launch 128. Do not remake cite-128. Do not start 8-GPU
 DMD.
 
 ---
+
+## 2026-09-07 — Wan-teacher smoke: nwarp still dies off SF
+**Tags:** wan, teacher, nwarp, pwarp, negative-result
+**Owner:** agent
+**Refs:** jobs 17135846–861 COMPLETED 0:0;
+`paper_tables/2026-09-07_wan_teacher_smoke_harvest.md`
+
+Protocol PASS on official Wan2.1-T2V-1.3B (`host=wan_teacher`,
+leftover `source=leftover` `prefix=flow_only`, MovieGen warp
+`t2v_firstseg`, 0 panda stems, real fields). Cite `wan_notta`.
+nwarp IQ leftover **54.25** (notta 75.60) Dyn 0/2; MovieGen
+**51.60** (notta 69.97) Dyn 0/2. Same Imaging Quality death
+as SF extras (49.18 / 47.60). Isolating the host did not
+rescue HIWYN-on-\(x_T\). pwarp ≈ notta, no extra Dyn clip.
+Gated = notta. Always-search did not help. **NO** both
+ideas. Do not letter n=2. Do not launch 128. Do not remake
+cite-128. Do not start 8-GPU DMD.
+
+---
