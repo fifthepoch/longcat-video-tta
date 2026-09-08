@@ -5629,3 +5629,18 @@ ideas. Do not letter n=2. Do not launch 128. Do not remake
 cite-128. Do not start 8-GPU DMD.
 
 ---
+
+## 2026-09-07 — teacher pwarp fired; VBench did not care
+**Tags:** wan, teacher, pwarp, sidecar
+**Owner:** agent
+**Refs:** leftover + MovieGen `wan_pwarp` json;
+`paper_tables/2026-09-07_wan_teacher_smoke_harvest.md`
+
+All four smoke clips slid one latent cell (`dx=±1`,
+`n=1`). Leftover 0000 is a real left pan (`vx_px=−1.71`).
+0001 leftover is dust that still got a full step. Official
+IQ nick ≤0.37; Dyn unchanged. Not “pwarp slept.” A 1-cell
+mid-step slide is invisible to 81-frame VBench on this
+pair. Still **NO**. Do not retune extra γ. Do not launch 128.
+
+---

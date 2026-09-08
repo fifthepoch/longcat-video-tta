@@ -115,8 +115,21 @@ IQ 49.18; Track C SF IQ 47.60). Isolating the host did
 not rescue HIWYN-on-\(x_T\). The idea itself paints a
 bad picture. **NO.** Do not scale. Do not retune γ.
 
+pwarp **did fire** on all four clips (sidecar 23:16).
+Not a skipped gate. One latent cell, horizontal, mid
+timestep (`n=1`, `dy=0`, `dx=±1`). Official VBench still
+read as `wan_notta`.
+
+| id | vx_px | dx | IQ Δ | Dyn |
+|---|---:|---:|---:|---:|
+| leftover 0000 | **−1.71** (real left pan) | −1 | −0.11 | 1=1 |
+| leftover 0001 | +0.08 (dust; still stepped) | +1 | −0.05 | 0=0 |
+| MovieGen 000 | +0.98 | +1 | −0.37 | 1=1 |
+| MovieGen 001 | −0.24 | −1 | −0.04 | 1=1 |
+
 pwarp is nearly `wan_notta`. No extra Dynamic Degree clip
-on either dataset. **NO** as a motion method.
+on either dataset. **NO** as a motion method. The slide
+happened; the 81-frame official score did not care.
 
 Gated search = do-nothing. Always-search did not help
 and lost a MovieGen Dyn clip. Video-T1-style seed search
