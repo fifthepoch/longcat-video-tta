@@ -48,6 +48,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Search-mode distill neighbors** | `sweep_experiment/reports/paper_tables/2026-09-08_search_mode_distill_neighbors.md` | Idea 1 class is published (BOND / DanceGRPO / Reward Forcing / **Alice v1** [2605.08115](https://arxiv.org/abs/2605.08115)). Not an empty field. |
 | **BOND + DMD on Best-of-N** | `sweep_experiment/reports/paper_tables/2026-09-08_bond_dmd_bon_open.md` | Vanilla winner-only DMD is the control, not the title. BOND’s open issues: judge, Jeffreys, iterative N=2. |
 | **Winners / losers / energy** | `sweep_experiment/reports/paper_tables/2026-09-08_winner_loser_energy.md` | Negatives yes. Do not teacher-match losers. Low-energy well must be in-scene and living. |
+| **Streaming / CL novel methods** | `sweep_experiment/reports/paper_tables/2026-09-18_streaming_cl_novel.md` | Fills the briefing blank. Rank-1: reality-ranked amortize (world as judge). Rank-2: scene-well energy. No GPU until user picks. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
@@ -73,10 +74,39 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Paper draft** | `sweep_experiment/reports/paper_draft.md` | LaTeX-aligned narrative + result placeholders. Often dehydrated locally. |
 | **Paper LaTeX** | `paper/main.tex`, `paper/sections/*.tex`, `paper/refs.bib` | Real submission source |
 | **Run registry** | `experiment_tracker/run_registry.yaml` | Job-ID ↔ result-dir mapping |
+| **Laptop → cluster SSH/SCP** | **`wc3013@torch`** | **LOCKED. From this Mac, the host is `torch` (SSH config alias). Never invent `torch-login-a-*.hpc.nyu.edu` or `torch-login-b-*` as the scp/ssh target. Prompt `[wc3013@torch-login-a-1]` is the node after login, not the host you type.** |
 | **Cluster repo root** | `/scratch/wc3013/longcat-video-tta/` | All results & raw data live here. Local repo is mostly views. |
 | **Wan 1.3B / Self-Forcing setup** | `wan_experiment/README.md` | I2V-32 is **discovery only**. Official VBench **DONE** (full-clip tie). **Do not scale I2V-32.** Current next: V2V Panda bake-off (`2026-08-20_wan_v2v_sampling_bakeoff_spec.md`). T2V 128 is optional. Do **not** add TTC. |
 
 ## 2. CRITICAL workflow rules
+
+### 2a-pre. Laptop SSH/SCP host is `wc3013@torch` (LOCKED 2026-09-09)
+
+From the user's local machine, every `ssh` / `scp` / `rsync` to the
+cluster is:
+
+```bash
+wc3013@torch
+```
+
+**Never** write any of these as the host the user types:
+
+- `wc3013@torch-login-a-1.hpc.nyu.edu`
+- `wc3013@torch-login-a-0.hpc.nyu.edu`
+- `wc3013@torch-login-b-2.hpc.nyu.edu`
+- `torch-login-*` of any letter
+
+`torch` is the SSH config alias on this Mac. After login, the prompt
+may say `[wc3013@torch-login-a-1]` — that is the node you landed on,
+not the hostname for the next SCP command. Agents have invented the
+FQDN many times; the user has had to correct it every time. Do not
+do it again.
+
+Example:
+
+```bash
+scp wc3013@torch:/scratch/wc3013/longcat-video-tta/<remote> <local>
+```
 
 ### 2a. iCloud / `UF_DATALESS` gotcha
 

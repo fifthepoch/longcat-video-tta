@@ -5827,16 +5827,21 @@ small blob* (that is collapse). No GPU.
 
 ---
 
-## 2026-09-08 — Why DMD is the machine, not a literature ban on frozen noise
+## 2026-09-18 — streaming / CL next: world as judge, not AdaSteer
+**Tags:** streaming, continual-learning, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-18_streaming_cl_novel.md`
 
-**Tags:** dmd, self-forcing, rolling-forcing, stream-forcing, go-with-the-flow, fifo, train-test
-**Refs:** `paper_tables/2026-09-08_why_dmd_frozen_noise.md`, weekly_recap_2026-09-08.md §4, canvas week-recap-0908 “Why DMD”
+User asked for novel methods under the briefing’s blank
+“continuous learning / streaming.” Field streaming is T2V
+self-rollout (SF / RF / Reward Forcing / LongLive); no later
+real frame arrives. Unused signal: a growing real leftover.
+Four ideas, no GPU: (1) reality-ranked amortize — k student
+tails, arriving world picks, no SFT on GT pixels; (2)
+scene-well energy — DiT frozen, bank of wells + replay;
+(3) live/dream sink — crowded memory class; (4) gated
+plasticity — when it is legal to learn, sensor first.
+Vanilla BOND / leftover unroll / online AdaSteer stay
+non-titles.
 
-The DMD / Forcing papers do not write “do not warp starting noise on a frozen Wan.” That measurement is ours (IQ ~49–54; persist slide 38.94). What they write is train = infer: Self Forcing (teacher/DF videos “do not belong to” the inference distribution), Rolling (mixed noise slots look like bad camera; mix 50% SF loss), Stream (noise list is a training curriculum), Reward / Alice (change the score or filter the teacher set). Go-with-the-Flow is the noise-warp paper: image training-free, video paired fine-tune. FIFO claims a training-free diagonal; our FIFO on frozen SF/RF was NO. Deep/Relax/Forcing-KV stay frozen but edit KV memory, not the noise path. DMD is how they put a *new* recipe into a few-step student. It is not a title and not a license to remake Self Forcing.
-
-## 2026-09-08 — Idea 2 is Rolling’s sink, not a leftover distinction
-
-**Tags:** idea-2, rolling-forcing, sink, occupied
-**Refs:** `paper_tables/2026-09-08_idea2_occupied_rolling.md`, distill_ideas_from_atlas.md §2
-
-User correction: a trained sink on the first self-generated chunk (Rolling Forcing) and a trained sink on a real leftover are the same idea. Both rely on “the opening has the good information.” Source of the opening is protocol, not a method. Reward Forcing already un-froze frame 0 (EMA). Deep Forcing deepened a self-made opening without training. Idea 2 is OCCUPIED as a title. Leftover-as-sink is a Rolling ablation only. Do not launch 8-GPU for the swap.
+---
