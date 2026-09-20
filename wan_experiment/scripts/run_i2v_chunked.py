@@ -206,12 +206,17 @@ def _denoise_chunk(
     stats_out=None,
     extra_fn=None,
     pred_fn=None,
+    kv_start=None,
 ) -> None:
     """Official Step 3 loop for one chunk. Writes output[:, start:start+n].
 
     ``rng`` must seed add_noise. Job 15883525 vs 15883526: chunk 0 cand0
     scores already differed (3.305 vs 2.992) because randn_like used the
     global CUDA RNG. Without this, cand0 is not a NOTTA twin.
+
+    ``kv_start`` is the RoPE / physical KV index for this write. Default
+    is ``start_frame``. Windowed T2V packs a suffix from 0 so the first
+    chunk can leave without leaving a hole of zero tokens.
     """
     import torch
 
@@ -220,7 +225,8 @@ def _denoise_chunk(
     if n_gen % block != 0:
         raise ValueError(f"chunk n_gen={n_gen} not divisible by block={block}")
     device = noise.device
-    cur = start_frame
+    write_at = start_frame
+    cur = start_frame if kv_start is None else int(kv_start)
     consumed = 0
     for _ in range(n_gen // block):
         noisy_input = noise[:, consumed:consumed + block]
@@ -270,7 +276,7 @@ def _denoise_chunk(
                         [bsz * block], device=device, dtype=torch.long
                     ),
                 ).unflatten(0, denoised_pred.shape[:2])
-        output[:, cur:cur + block] = denoised_pred
+        output[:, write_at:write_at + block] = denoised_pred
         context_timestep = torch.ones_like(timestep) * float(
             getattr(getattr(pipeline, "args", None), "context_noise", 0) or 0
         )
@@ -282,6 +288,7 @@ def _denoise_chunk(
             crossattn_cache=pipeline.crossattn_cache,
             current_start=cur * pipeline.frame_seq_length,
         )
+        write_at += block
         cur += block
         consumed += block
 

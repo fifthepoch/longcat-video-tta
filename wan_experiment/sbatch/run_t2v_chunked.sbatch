@@ -12,8 +12,9 @@
 #SBATCH --comment="preemption=yes;requeue=true"
 
 # Chunked Wan T2V: METHOD=notta|always_bon|gated_bon|
-#   sf_nwarp|sf_nwarp_live|sf_pwarp|sf_pwarp_live
-#   sbatch --export=ALL,METHOD=notta,HORIZON_S=30,N_VIDEOS=128,SEARCH_K=1 \
+#   sf_nwarp|sf_nwarp_live|sf_pwarp|sf_pwarp_live|
+#   sf_window|sf_pprot
+#   sbatch --export=ALL,METHOD=notta,HORIZON_S=30,N_VIDEOS=8,SEARCH_K=1 \
 #       wan_experiment/sbatch/run_t2v_chunked.sbatch
 
 set -euo pipefail
@@ -45,6 +46,11 @@ PROMPT_FILE="${PROMPT_FILE:-${PROJECT_ROOT}/datasets/moviegen_128_resolved.txt}"
 NWARP_GAMMA="${NWARP_GAMMA:-0.5}"
 PWARP_STEP="${PWARP_STEP:-1}"
 LIVE_MIN="${LIVE_MIN:-0.012}"
+WINDOW_LATENTS="${WINDOW_LATENTS:-21}"
+PPROT_TAU_CENTER="${PPROT_TAU_CENTER:-2.0}"
+PPROT_TAU_LO="${PPROT_TAU_LO:-0.4}"
+PPROT_TAU_HI="${PPROT_TAU_HI:-2.5}"
+PPROT_MAX_SLOTS="${PPROT_MAX_SLOTS:-3}"
 OUT_DIR="${OUT_DIR:-${PROJECT_ROOT}/wan_experiment/results/${SERIES}/${METHOD}_h${HORIZON_S}s_shard${SHARD_ID}}"
 
 export PYTHONHASHSEED="${SEED}"
@@ -109,6 +115,11 @@ cd "${PROJECT_ROOT}"
     --nwarp-gamma "${NWARP_GAMMA}" \
     --pwarp-step "${PWARP_STEP}" \
     --live-min "${LIVE_MIN}" \
+    --window-latents "${WINDOW_LATENTS}" \
+    --pprot-tau-center "${PPROT_TAU_CENTER}" \
+    --pprot-tau-lo "${PPROT_TAU_LO}" \
+    --pprot-tau-hi "${PPROT_TAU_HI}" \
+    --pprot-max-slots "${PPROT_MAX_SLOTS}" \
     --shard-id "${SHARD_ID}" \
     --num-shards "${NUM_SHARDS}"
 

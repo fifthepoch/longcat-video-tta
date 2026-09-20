@@ -71,6 +71,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Prefix-protected fast weights** | `sweep_experiment/reports/paper_tables/2026-09-20_prefix_protected_fast_weights.md` | Proposed method: protect / update / fork on \(W_{\text{fast}}\). Titans inverted on freeze; EMA inverted on smear. |
 | **KV sink vs FW gate** | `sweep_experiment/reports/paper_tables/2026-09-20_kv_sink_vs_fw_gate.md` | Permanent first-chunk KV sink kills motion (RF; Rolling Dyn%). Gated \(W_{\text{fast}}\) only if that sink is removed. |
 | **Prefix stats as gate** | `sweep_experiment/reports/paper_tables/2026-09-20_prefix_stats_as_gate.md` | Tokens evict; frozen \((\mu,\mathrm{scale})\) only labels the \(W_{\text{fast}}\) write set. Medium novelty vs prototype CL / EMA / Titans. |
+| **Prefix-protect first-8 spec** | `sweep_experiment/reports/paper_tables/2026-09-20_t2v_pprot8_spec.md` | MovieGen T2V 30 s. `notta` / `sf_window` / `sf_pprot`. No first-chunk KV sink. **SUBMIT-READY, not launched.** Do not letter n=2. Do not launch 128. |
 | **Leftover / well / memory glossary** | `sweep_experiment/reports/paper_tables/2026-09-20_leftover_well_memory_glossary.md` | **SAY:** context frames, KV cache, context-frame representation. Well ≠ fast weights. Old slang stays in old files only. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
@@ -364,13 +365,16 @@ Per-method `merged_summary.json` lives at:
   **context frames**, **KV cache**, **fast weights**.
   Do not say leftover / well / memory. Rule:
   `.cursor/rules/field-language.mdc`.
-- **Current next (2026-09-20):** **Prefix-
-  protected fast weights.** Write the living
-  T2V prefix into \(W_{\text{fast}}\); do not
-  let freeze / takeover overwrite it; fork a
-  slot on leave-support. 1.3B frozen. Spread
-  is not the title.
-  `paper_tables/2026-09-20_prefix_protected_fast_weights.md`.
+- **Current next (2026-09-20):** Prefix-protect
+  first-8 MovieGen T2V 30 s. `notta` (full KV
+  replay) vs `sf_window` (last 21, sink=0) vs
+  `sf_pprot` (window + gated legal bank).
+  First-chunk tokens leave the KV cache;
+  frozen \((\mu,\mathrm{scale})\) is admission
+  only. **SUBMIT-READY, not launched**
+  (`submit_t2v_pprot8.sh`). Do not letter n=2.
+  Do not launch 128. No I2V. No TTC. Spec:
+  `paper_tables/2026-09-20_t2v_pprot8_spec.md`.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official

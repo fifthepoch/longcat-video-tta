@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
-"""Chunked Wan T2V: baselines + first-chunk nwarp/pwarp.
+"""Chunked Wan T2V: baselines + first-chunk nwarp/pwarp + prefix-protect.
 
 Text start, then AR from own KV. Not I2V-from-still. Piece 0 is
 always seed 0 (shared prefix). Warp methods measure Farneback on
 chunk 0, then HIWYN extras (nwarp) or pred-slide (pwarp) from
 chunk 1. No leftover video.
 
+sf_window / sf_pprot drop first-chunk tokens from the KV cache
+once they leave the sliding window. No first-chunk sink.
+sf_pprot keeps frozen (mu, scale) as admission only; later
+chunks that pass go into a legal-chunk bank (stand-in for the
+W_fast write set) and are packed back with the window.
+
 30 s = 6 × 21 latents (Self-Forcing native 5 s unit → 81 px × 6).
 Do not add TTC.
 
     python wan_experiment/scripts/run_t2v_chunked.py \
-        --method notta --horizon-s 30 --n 2 --prompt-file datasets/moviegen_128.txt
+        --method notta --horizon-s 30 --n 8 --prompt-file datasets/moviegen_128.txt
 """
 from __future__ import annotations
 
@@ -44,6 +50,7 @@ from run_i2v_chunked import (  # noqa: E402
     _seed_torch,
     hybrid_gate_decision,
 )
+from v2v_hosts import apply_sink_size  # noqa: E402
 from run_i2v_continuation import (  # noqa: E402
     FPS,
     FRAME_SEQ_PER_LATENT,
@@ -65,6 +72,12 @@ from wan_pwarp import (  # noqa: E402
     DEFAULT_STEP as PWARP_DEFAULT_STEP,
     PWarpState,
 )
+from prefix_protect import (  # noqa: E402
+    LegalChunkBank,
+    PrefixCloud,
+    replay_ranges,
+    window_range,
+)
 
 import numpy as np
 
@@ -72,7 +85,10 @@ T2V_METHODS = (
     "notta", "always_bon", "gated_bon",
     "sf_nwarp", "sf_nwarp_live",
     "sf_pwarp", "sf_pwarp_live",
+    "sf_window", "sf_pprot",
 )
+WINDOW_METHODS = frozenset({"sf_window", "sf_pprot"})
+PPROT_METHODS = frozenset({"sf_pprot"})
 SF_NWARP_METHODS = frozenset({"sf_nwarp", "sf_nwarp_live"})
 SF_PWARP_METHODS = frozenset({"sf_pwarp", "sf_pwarp_live"})
 LIVE_SEARCH_MIN = 0.012
@@ -140,11 +156,22 @@ def _cache_clean_latents_t2v(pipeline, latents, conditional_dict) -> None:
 
 def _cache_clean_latents_slices(pipeline, latents, conditional_dict, ranges) -> None:
     """Replay selected [start, end) latent spans at their original RoPE starts."""
+    _cache_clean_latents_packed(pipeline, latents, conditional_dict, ranges, packed=False)
+
+
+def _cache_clean_latents_packed(pipeline, latents, conditional_dict, ranges, packed=True) -> int:
+    """Replay selected spans. Packed=True writes them from RoPE 0 with no holes.
+
+    Self-Forcing addresses K/V at ``current_start``. A hole of unwritten
+    frames would attend to zeros. Packing a suffix (and any legal later
+    chunks) from 0 keeps the first chunk out without that hole.
+    """
     import torch
 
     bsz = latents.shape[0]
     block = int(pipeline.num_frame_per_block)
     device = latents.device
+    rope = 0
     for start, end in ranges:
         if end <= start:
             continue
@@ -157,15 +184,18 @@ def _cache_clean_latents_slices(pipeline, latents, conditional_dict, ranges) -> 
             ts = torch.ones([bsz, block], device=device, dtype=torch.int64) * float(
                 getattr(getattr(pipeline, "args", None), "context_noise", 0) or 0
             )
+            cur = rope if packed else t
             pipeline.generator(
                 noisy_image_or_video=latents[:, t:t + block],
                 conditional_dict=conditional_dict,
                 timestep=ts,
                 kv_cache=getattr(pipeline, "kv_cache_clean", None) or pipeline.kv_cache1,
                 crossattn_cache=pipeline.crossattn_cache,
-                current_start=t * pipeline.frame_seq_length,
+                current_start=cur * pipeline.frame_seq_length,
             )
             t += block
+            rope += block
+    return rope
 
 
 def generate_chunked_t2v(
@@ -186,6 +216,11 @@ def generate_chunked_t2v(
     nwarp_gamma: float = NWARP_DEFAULT_GAMMA,
     pwarp_step: int = PWARP_DEFAULT_STEP,
     live_min: float = LIVE_SEARCH_MIN,
+    window_latents: int = 21,
+    pprot_tau_center: float = 2.0,
+    pprot_tau_lo: float = 0.4,
+    pprot_tau_hi: float = 2.5,
+    pprot_max_slots: int = 3,
 ):
     import torch
 
@@ -207,6 +242,16 @@ def generate_chunked_t2v(
     pred_fn = None
     chunk0_motion = None
     flow_armed = None
+    prefix_cloud = None
+    legal_bank = None
+    if method in PPROT_METHODS:
+        prefix_cloud = PrefixCloud(
+            tau_center=float(pprot_tau_center),
+            tau_lo=float(pprot_tau_lo),
+            tau_hi=float(pprot_tau_hi),
+        )
+        legal_bank = LegalChunkBank(max_slots=int(pprot_max_slots))
+    block = int(pipeline.num_frame_per_block)
 
     for ci in range(n_chunks):
         incoming_signals = None
@@ -245,11 +290,16 @@ def generate_chunked_t2v(
         elif method == "notta":
             n_try = 1
             gate_reason = "notta" if ci >= search_from_chunk else "forced_prefix"
+        elif method in WINDOW_METHODS:
+            n_try = 1
+            gate_reason = method
         else:
             n_try = 1
             gate_reason = "forced_prefix"
 
         cands = []
+        replayed = []
+        kv_start = None
         for c in range(n_try):
             cseed = _cand_seed(seed, c)
             rng = _chunk_rng(device, seed, c, ci)
@@ -258,13 +308,26 @@ def generate_chunked_t2v(
                 device=device, dtype=torch.bfloat16, generator=rng,
             )
             _reset_caches(pipeline, 1, output.dtype, device)
+            kv_start = None
+            replayed = []
             if committed > 0:
-                _cache_clean_latents_t2v(
-                    pipeline, output[:, :committed], conditional_dict,
-                )
+                if method in WINDOW_METHODS:
+                    win = window_range(committed, window_latents, block)
+                    spans = legal_bank.spans if legal_bank is not None else []
+                    ranges = replay_ranges(win, spans)
+                    replayed = list(ranges)
+                    packed = _cache_clean_latents_packed(
+                        pipeline, output[:, :committed], conditional_dict, ranges,
+                        packed=True,
+                    )
+                    kv_start = int(packed)
+                else:
+                    _cache_clean_latents_t2v(
+                        pipeline, output[:, :committed], conditional_dict,
+                    )
             _denoise_chunk(
                 pipeline, noise, committed, conditional_dict, output, rng,
-                extra_fn=extra_fn, pred_fn=pred_fn,
+                extra_fn=extra_fn, pred_fn=pred_fn, kv_start=kv_start,
             )
             end = committed + chunk_latents
             pixels = _decode_pixels(pipeline, output[:, :end])
@@ -413,6 +476,44 @@ def generate_chunked_t2v(
             if pwarp_state is not None else None
         )
         rec["chunk0_motion"] = _json_float(chunk0_motion)
+        rec["kv_replay"] = [[int(a), int(b)] for a, b in replayed]
+        rec["kv_packed"] = int(kv_start) if kv_start is not None else committed
+        rec["prefix_kept"] = (
+            True if method not in WINDOW_METHODS
+            else any(a == 0 for a, _ in replayed)
+        )
+        pprot = None
+        if prefix_cloud is not None:
+            chunk_lat = output[:, committed - chunk_latents:committed]
+            if ci == 0:
+                fit = prefix_cloud.fit(chunk_lat)
+                pprot = {"action": "fit", "reason": "prefix_stats_only", **fit}
+                print(
+                    f"  pprot chunk0 fit scale={fit['scale']:.4g} "
+                    f"(tokens not written to legal bank)",
+                    flush=True,
+                )
+            else:
+                decision = prefix_cloud.decide(chunk_lat)
+                wrote = legal_bank.maybe_write(
+                    ci, committed - chunk_latents, committed, decision,
+                )
+                pprot = {
+                    **decision,
+                    "wrote": bool(wrote),
+                    "bank_spans": [[int(a), int(b)] for a, b in legal_bank.spans],
+                    "prefix_scale": float(prefix_cloud.scale),
+                }
+                print(
+                    f"  pprot chunk{ci} {decision['action']}/{decision['reason']} "
+                    f"center={decision.get('center')} ratio={decision.get('scale_ratio')} "
+                    f"wrote={int(wrote)} bank={legal_bank.spans}",
+                    flush=True,
+                )
+        rec["pprot"] = (
+            {k: _json_float(v) if isinstance(v, float) else v for k, v in pprot.items()}
+            if pprot is not None else None
+        )
         chunk_logs.append(rec)
         if incoming_drift is not None:
             incoming_prev = incoming_drift
@@ -451,6 +552,12 @@ def main() -> int:
     ap.add_argument("--nwarp-gamma", type=float, default=NWARP_DEFAULT_GAMMA)
     ap.add_argument("--pwarp-step", type=int, default=PWARP_DEFAULT_STEP)
     ap.add_argument("--live-min", type=float, default=LIVE_SEARCH_MIN)
+    ap.add_argument("--window-latents", type=int, default=21,
+                    help="sf_window / sf_pprot: last N committed latents in KV")
+    ap.add_argument("--pprot-tau-center", type=float, default=2.0)
+    ap.add_argument("--pprot-tau-lo", type=float, default=0.4)
+    ap.add_argument("--pprot-tau-hi", type=float, default=2.5)
+    ap.add_argument("--pprot-max-slots", type=int, default=3)
     ap.add_argument("--search-k", type=int, default=4)
     ap.add_argument("--search-from-chunk", type=int, default=1)
     ap.add_argument("--seam-weight", type=float, default=1.0)
@@ -511,6 +618,9 @@ def main() -> int:
     _iff = getattr(getattr(pipeline, "args", None), "independent_first_frame", None)
     if _iff:
         raise RuntimeError("T2V runner requires independent_first_frame=False")
+    if args.method in WINDOW_METHODS:
+        apply_sink_size(pipeline, 0)
+        print("window/pprot: sink_size=0 (first chunk is not a permanent KV sink)")
     print(f"pipeline loaded in {time.time() - t_load:.1f}s")
 
     rows = []
@@ -540,6 +650,11 @@ def main() -> int:
                     nwarp_gamma=args.nwarp_gamma,
                     pwarp_step=args.pwarp_step,
                     live_min=args.live_min,
+                    window_latents=args.window_latents,
+                    pprot_tau_center=args.pprot_tau_center,
+                    pprot_tau_lo=args.pprot_tau_lo,
+                    pprot_tau_hi=args.pprot_tau_hi,
+                    pprot_max_slots=args.pprot_max_slots,
                 )
             write_mp4(mp4, video, fps=FPS)
             n_div = sum(
@@ -593,6 +708,12 @@ def main() -> int:
                 "chunk0_motion": (
                     chunk_logs[0].get("chunk0_motion") if chunk_logs else None
                 ),
+                "window_latents": args.window_latents,
+                "pprot_tau_center": args.pprot_tau_center,
+                "pprot_tau_lo": args.pprot_tau_lo,
+                "pprot_tau_hi": args.pprot_tau_hi,
+                "pprot_max_slots": args.pprot_max_slots,
+                "pprot_actions": [ch.get("pprot") for ch in chunk_logs],
                 "chunks": chunk_logs,
                 "horizon_s_requested": args.horizon_s,
                 "seed": args.seed,

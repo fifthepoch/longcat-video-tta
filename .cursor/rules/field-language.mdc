@@ -23,5 +23,7 @@ user, say **context frames**. Do not ask them to adopt our slang.
 
 The context-frame representation paper is **dropped** (too thin).
 Current method: **prefix-protected fast weights** — update /
-protect / fork. Do not call that a well. Do not title
-“motion = spread.”
+protect / fork. First experiment: first-chunk tokens leave
+the KV cache; frozen \((\mu,\mathrm{scale})\) admits later
+writes (`sf_window` / `sf_pprot`, first-8 MovieGen T2V).
+Do not call that a well. Do not title “motion = spread.”

@@ -6287,3 +6287,24 @@ this method). Runner may still name leftover.
 New speech uses the user’s terms.
 
 ---
+
+## 2026-09-20 — prefix-protect first-8 implemented
+**Tags:** method, t2v, kv-cache, fast-weights
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_t2v_pprot8_spec.md`,
+`wan_experiment/scripts/prefix_protect.py`
+
+User: do not keep the first chunk in the KV
+cache (at least initially); implement a test.
+Three MovieGen T2V 30 s arms on first-8:
+`notta` (full replay control), `sf_window`
+(last 21 packed, `sink_size=0`), `sf_pprot`
+(same window + prefix-cloud gate; legal later
+chunks are the \(W_{\text{fast}}\) write-set
+stand-in). Chunk 0 only fits \((\mu,\mathrm{scale})\).
+Fork is protect on this table. Packed replay
+avoids a hole of zero tokens. Submit script
+ready; not launched (Duo). Do not letter n=2.
+Do not launch 128.
+
+---

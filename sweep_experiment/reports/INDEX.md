@@ -9,7 +9,7 @@ update the Status / Findings columns when re-merged. NEVER delete rows
 even if results are superseded — mark them `superseded` and keep them
 for audit trail.
 
-**Owners:** Wenchen (PI) and any active agent. Last updated: 2026-09-08.
+**Owners:** Wenchen (PI) and any active agent. Last updated: 2026-09-20.
 Week talk: [`weekly_recap_2026-09-08.md`](../../weekly_recap_2026-09-08.md).
 
 ---
@@ -156,6 +156,8 @@ Timing: [`paper_tables/2026-08-16_wan_i2v_smoke.md`](paper_tables/2026-08-16_wan
 | Prefix-protected fast weights | Method after drawing board. No GPU. | Protect living T2V prefix in \(W_{\text{fast}}\); refuse freeze/takeover overwrite; fork on leave-support. | [`2026-09-20_prefix_protected_fast_weights.md`](paper_tables/2026-09-20_prefix_protected_fast_weights.md). |
 | KV sink vs FW gate | Can we argue first-chunk KV sink kills motion? | Yes for a *permanent* sink. Remedy is a hypothesis; drop the immortal sink tokens. | [`2026-09-20_kv_sink_vs_fw_gate.md`](paper_tables/2026-09-20_kv_sink_vs_fw_gate.md). |
 | Prefix stats as gate | Tokens evict; stats remain as write-set filter. | Medium. Prototype as admission, not attention. Titans’ criterion moves; ours is frozen until fork. | [`2026-09-20_prefix_stats_as_gate.md`](paper_tables/2026-09-20_prefix_stats_as_gate.md). |
+| Prefix-protect first-8 spec | MovieGen T2V 30 s. `notta` / `sf_window` / `sf_pprot`. | **SUBMIT-READY, not launched.** No first-chunk KV sink. Do not letter n=2. Do not launch 128. | [`2026-09-20_t2v_pprot8_spec.md`](paper_tables/2026-09-20_t2v_pprot8_spec.md). |
+| `t2v_moviegen_pprot_8v` | notta / sf_window / sf_pprot. MovieGen first-8, 30 s. | **NOT LAUNCHED.** Code on `run_t2v_chunked.py`. Cluster `wan_experiment/results/t2v_moviegen_pprot_8v/`. | Spec above. Harvest: `wan_experiment/scripts/harvest_t2v_pprot.py`. |
 | Leftover / well / memory glossary | User rejected our slang. Field language lock. | Say context frames, KV cache, context-frame representation. Well ≠ fast weights. | [`2026-09-20_leftover_well_memory_glossary.md`](paper_tables/2026-09-20_leftover_well_memory_glossary.md). |
 | Failure modes in plain language | What each failed family actually did to the videos. No GPU. | Glossary + nine stories. Imaging Quality 18 is a broken picture, not a −0.6 dip. | [`2026-09-04_failure_modes_plain.md`](paper_tables/2026-09-04_failure_modes_plain.md). |
 | Method hypotheses + motivation | Why each live idea follows from the appendix. No GPU. | Four hypotheses: V2V-prefix distill, official-judge distill, recaption, tiny selector. | [`2026-09-04_method_hypotheses_motivation.md`](paper_tables/2026-09-04_method_hypotheses_motivation.md). |
