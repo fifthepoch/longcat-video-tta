@@ -6079,6 +6079,23 @@ video chunks. No GPU.
 
 ---
 
+## 2026-09-20 — refuse is not distributional OOD
+**Tags:** fast-weights, ood, artifacts, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_beyond_ood_artifacts.md`
+
+User asked if artifact / degradation can be
+gauged without distributional divergence.
+Yes: split scores. Titans residual vs
+\(W_{\text{fast}}\) only **promotes**. Refuse
+is self-referenced: Imaging Quality drop vs
+this opening plus flicker or subject slip
+(failure_modes_plain). Official Dyn and
+aesthetic stay out. FM-OOD already cancelled.
+No GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent
