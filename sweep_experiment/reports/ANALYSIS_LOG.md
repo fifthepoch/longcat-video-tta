@@ -6219,6 +6219,24 @@ protect/fork never fire or IQ dies. No GPU.
 
 ---
 
+## 2026-09-20 — KV sink diagnosis vs FW-gate claim
+**Tags:** kv-cache, sink, fast-weights, motivation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_kv_sink_vs_fw_gate.md`
+
+User: can we argue storing the first chunk
+in the KV cache kills motion, and gating
+fast-weight writes by first-chunk center/
+spread is better? Diagnosis yes for a
+*permanent* sink (Reward Forcing; Rolling
+Dyn 28.9% vs SF 32.8%). Ordinary window
+use of the head is fine. Remedy is a
+hypothesis and requires removing the
+immortal KV sink. “Better” needs EMA-sink
+/ Titans / Rolling controls. No GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent
