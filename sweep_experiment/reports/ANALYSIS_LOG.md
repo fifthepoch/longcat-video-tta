@@ -6237,6 +6237,25 @@ immortal KV sink. “Better” needs EMA-sink
 
 ---
 
+## 2026-09-20 — prefix stats as admission, tokens gone
+**Tags:** fast-weights, prototype, novelty
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_prefix_stats_as_gate.md`
+
+User: first-chunk tokens evict from KV and
+from \(W_{\text{fast}}\); only center/spread
+guide the fast-weight training set. Is that
+novel? Partially. Unused clause: frozen
+prototype as admission control, never
+attention content. EMA stores the average
+as sink tokens; Titans uses a moving
+residual (would write the freeze); iCaRL
+keeps class means for classification.
+Medium. Dies if we keep a KV sink or write
+\((\mu,\mathrm{scale})\) as values. No GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent
