@@ -6021,3 +6021,19 @@ do not enter the well. Record so later notes
 define the words.
 
 ---
+
+## 2026-09-20 — field language lock
+**Tags:** language, glossary
+**Owner:** agent
+**Refs:** `.cursor/rules/field-language.mdc`,
+`paper_tables/2026-09-20_leftover_well_memory_glossary.md`
+
+User: the “well” is not fast weights; leftover
+must be called **context frames**; memory must
+be **KV cache**; stop inventing shorthand.
+Locked. Context-frame representation ≠
+\(W_{\text{fast}}\) (TTT/Titans; dropped from
+this method). Runner may still name leftover.
+New speech uses the user’s terms.
+
+---

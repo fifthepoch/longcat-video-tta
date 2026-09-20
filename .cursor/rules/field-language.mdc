@@ -1,0 +1,27 @@
+---
+description: Use the user's field language — context frames, KV cache; do not invent shorthand
+alwaysApply: true
+---
+
+# Field language (talk to a researcher)
+
+Speak in conventional video-generation / streaming terms. Do not
+invent project slang and then force the user to learn it.
+
+**Required names**
+
+| Say | Do not say (in new speech) | Meaning |
+|---|---|---|
+| **context frames** | leftover, leftover slice, leftover well | Real visual prefix already observed (V2V history). |
+| **KV cache** | memory, fast memory (unless you mean \(W_{\text{fast}}\)) | Attention K/V window. If you mean something else, name that thing. |
+| **context-frame representation** (or scene embedding / scene prototype of the context frames) | well, scene well | Compact code of the context frames. **Not** fast weights. |
+| **fast weights** / \(W_{\text{fast}}\) | well | TTT / Titans / delta-rule parameters. **Not** this method. |
+| **sink** | only when you mean the Forcing-paper KV sink (static / EMA) | First-frame or EMA of evicted **KV** tokens. |
+
+Code and old tables may still say `leftover`. When talking to the
+user, say **context frames**. Do not ask them to adopt our slang.
+
+The locked method is: a compact **context-frame representation**,
+updated or replaced when new context frames arrive; generated
+frames do not enter it; emit is select/skip; the 1.3B is frozen.
+Fast weights are not that object.
