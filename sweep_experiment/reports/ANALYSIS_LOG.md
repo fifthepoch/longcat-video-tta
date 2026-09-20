@@ -6133,6 +6133,23 @@ No GPU.
 
 ---
 
+## 2026-09-20 — T2V first chunks are the motion budget
+**Tags:** t2v, freeze, opening, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_opening_spread_match.md`
+
+User: on T2V the first generated chunks have
+more motion than the tail (long-horizon
+freeze is established). Agreed. Spread match
+copies that early budget; it does not assume
+a still opening. I2V-from-still is a different
+protocol and stays out of this T2V story. If
+a seed’s head is already frozen, we copy a
+freeze — report, do not add official Dyn. No
+GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent

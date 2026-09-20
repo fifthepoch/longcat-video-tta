@@ -65,29 +65,31 @@ still in this feature space still miss
 
 ---
 
-## When the opening has no spread
+## T2V assumption (this method)
 
-If the opening is a still (I2V from one
-frame; a static V2V room),
-\(\mathrm{scale}(d_{\text{open}})\approx 0\).
-Matching it **licenses** photo-stills.
-It cannot invent motion. That is the
-2026-08-17 I2V drift (30 s median
-motion −60%, sharpness +167%): the
-prefix did not contain a motion budget
-to copy.
+Long-horizon **motion freeze** is the
+established tail death: later chunks
+move less than early ones (our I2V 30 s
+median motion −60%, sharpness +167%;
+same family on forcing 30 s / 60 s
+tables). So on **T2V** the first few
+generated chunks are the **high-spread
+reference**, not a still. Matching their
+cloud is exactly “keep the early motion
+budget; do not collapse to a photo.”
 
-This score **copies the opening’s motion
-budget**. It does not replace a motion
-prior when the opening is degenerate.
-On those clips, only the support term
-(no takeover) is meaningful. Do not
-claim we “encouraged living video” from
-a still.
+The I2V-from-still caveat (opening scale
+\(\approx 0\) licenses freeze) is a
+**different protocol**. It is not this
+T2V assumption. Do not import it into
+the MovieGen / first-chunk story.
 
-T2V first chunk, or context frames that
-already move, are the clips where spread
-match can discourage freeze.
+If a particular T2V seed’s first chunks
+are already frozen, spread match will
+copy that freeze. That is the assumption
+failing on that clip, not a reason to
+put official Dyn in the write. Report
+those clips; do not retune Dyn.
 
 ---
 
@@ -118,3 +120,6 @@ not by official Dyn.
   (threshold too tight).
 - Static openings are reported as
   motion wins (we copied a still).
+- We treat a frozen T2V head as if it
+  were a living opening (assumption
+  failed; say so).
