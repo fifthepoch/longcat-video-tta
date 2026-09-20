@@ -6040,6 +6040,26 @@ a title.
 
 ---
 
+## 2026-09-20 — drawing board: banded fast-weight write
+**Tags:** fast-weights, ood, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_banded_fastweight_write.md`
+
+User: if a V2V/T2V swap kills the paper, the
+method is not novel; go back to the drawing
+board; the mid→mid-high OOD promote / high
+OOD refuse in **fast weights** was missing.
+Agreed. That band was never the title; we
+dropped \(W_{\text{fast}}\) and put the band
+on a context-frame representation. New
+center: linear/delta \(W_{\text{fast}}\)
+writes the shoulder and clips the tail
+(Titans inverted at the extreme). T2V 30 s
+is legal. Representation paper dropped. No
+GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent

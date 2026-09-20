@@ -21,7 +21,7 @@ invent project slang and then force the user to learn it.
 Code and old tables may still say `leftover`. When talking to the
 user, say **context frames**. Do not ask them to adopt our slang.
 
-The locked method is: a compact **context-frame representation**,
-updated or replaced when new context frames arrive; generated
-frames do not enter it; emit is select/skip; the 1.3B is frozen.
-Fast weights are not that object.
+The context-frame representation paper is **dropped** (too thin).
+Current drawing-board method: **fast weights** write medium →
+medium-high OOD chunks and **refuse** high OOD. Do not call
+that a well.

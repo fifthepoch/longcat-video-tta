@@ -60,6 +60,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Problem setting LOCKED** | `sweep_experiment/reports/paper_tables/2026-09-20_problem_setting_locked.md` | Caption V2V leftover → 30 s, first-32, leftover-only well, cite `wan_notta`. Do not re-ask task / N / store-self. |
 | **T2V compare vs success odds** | `sweep_experiment/reports/paper_tables/2026-09-20_t2v_compare_and_success.md` | T2V is easier to cite and hollows the well. Odds: low VBench title, moderate cut-hygiene if leftover grows. Setting stays V2V. |
 | **V2V vs T2V not principal** | `sweep_experiment/reports/paper_tables/2026-09-20_t2v_v2v_not_principal.md` | User analogy accepted: first generated chunk = clean prefix. T2V still not the run: that instance is Rolling/AdaState sink. |
+| **Banded fast-weight write** | `sweep_experiment/reports/paper_tables/2026-09-20_banded_fastweight_write.md` | Drawing board. Promote mid→mid-high OOD into \(W_{\text{fast}}\); refuse high. Representation paper dropped. |
 | **Leftover / well / memory glossary** | `sweep_experiment/reports/paper_tables/2026-09-20_leftover_well_memory_glossary.md` | **SAY:** context frames, KV cache, context-frame representation. Well ≠ fast weights. Old slang stays in old files only. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
@@ -350,20 +351,17 @@ Per-method `merged_summary.json` lives at:
   Outcomes: `paper_tables/2026-08-24_wan_v2v_caption_wave1_outcomes.md`.
   Spec: `paper_tables/2026-08-24_wan_v2v_caption_rerun_spec.md`.
 - **Language (2026-09-20):** To the user say
-  **context frames**, **KV cache**, **context-frame
-  representation**. Do not say leftover / well /
-  memory. The representation is **not** fast
-  weights. Rule: `.cursor/rules/field-language.mdc`.
-- **Current next (2026-09-20):** **SETTING LOCKED.**
-  Caption V2V **context frames → 30 s** generated
-  tail, first-32, context-frame representation
-  only, cite `wan_notta` (+ caption SF ablation).
-  Generated frames never enter that representation.
-  Mid error vs context updates it; extreme opens
-  a new one. Select/skip only. No student, no
-  \(W_{\text{fast}}\) title, no 8-GPU, no remake
-  cite-128. Do not ask the user to pick a protocol.
-  `paper_tables/2026-09-20_problem_setting_locked.md`.
+  **context frames**, **KV cache**, **fast weights**.
+  Do not say leftover / well / memory. Rule:
+  `.cursor/rules/field-language.mdc`.
+- **Current next (2026-09-20):** **Drawing board.**
+  Context-frame representation **dropped** (too
+  thin; V2V/T2V swap killed the claim). Method is
+  the user’s band: **promote medium → medium-high
+  OOD writes into \(W_{\text{fast}}\), refuse high
+  OOD.** Linear / delta fast weights. T2V 30 s is
+  legal. That band was never in the sink paper.
+  `paper_tables/2026-09-20_banded_fastweight_write.md`.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official
