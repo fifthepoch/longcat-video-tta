@@ -5923,3 +5923,25 @@ leftover → 30 s tail, full-clip VBench. Do not invent
 a wait-for-GT protocol. No GPU.
 
 ---
+
+## 2026-09-20 — leftover scene well as the method
+**Tags:** streaming, scene-well, method, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_leftover_scene_well_method.md`
+
+User asked for one method covering as many of the
+four field gaps as stay simple. Propose a leftover
+scene well, not a student+W_fast+well stack. KV
+window stays the fast cache. A compact leftover
+code is the slow object: delete illegal until it
+writes; leftover forecast error (mid / extreme)
+updates vs opens a well; emit only select/skip.
+Hits Gaps 1, 3, 4. Gap 2 (ranked SGD replay) is
+the same leftovers as a later train set — not v1,
+avoids 8-GPU A-minimum DMD. Neighbors: not
+EMA-sink, not AdaState, not ReMind self-retrieve.
+Kill: well≈EMA, band never fires, skip≈Always,
+backprop at emit. Setting remains caption V2V
+leftover → 30 s. No GPU.
+
+---
