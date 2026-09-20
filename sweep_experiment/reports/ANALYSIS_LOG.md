@@ -6167,6 +6167,21 @@ only a minimum. No GPU.
 
 ---
 
+## 2026-09-20 — KV cache vs fast weights
+**Tags:** kv-cache, fast-weights, glossary
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_kv_vs_fast_weights.md`
+
+User asked how the two are used differently.
+KV cache: every recent frame, exact K/V,
+attention, FIFO window. Fast weights: gated
+writes only (opening center + spread),
+compressed matrix, read at emit, can outlive
+evicted tokens. Not EMA-sink. 1.3B frozen.
+No GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent
