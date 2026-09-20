@@ -6096,6 +6096,24 @@ No GPU.
 
 ---
 
+## 2026-09-20 — opening-conditional refuse
+**Tags:** fast-weights, refuse, teacher, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_opening_conditional_refuse.md`
+
+User: IQ/flicker/subject are handcrafted; unknown
+artifacts will miss; want a general distributional
+stray from the opening. Refuse is
+\(-\log p(\text{chunk}\mid\text{opening})\), Wan
+teacher residual given the opening (T2V: first
+generated chunk), threshold = high quantile of
+the opening’s own spread. Pixel distance to the
+opening refuses pans. Checklist stays diagnostic.
+Promote stays Titans vs \(W_{\text{fast}}\). No
+GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent
