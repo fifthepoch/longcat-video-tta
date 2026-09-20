@@ -5,6 +5,10 @@ conjunction is a **diagnostic** of failures we have
 already seen. It is not the refuse score. Unknown
 artifacts will not move those three axes on cue.
 
+**Addendum:** one-sided residual misses photo-stills
+the teacher likes. Also **match the opening cloud’s
+spread** (`2026-09-20_opening_spread_match.md`).
+
 ---
 
 ## What to estimate

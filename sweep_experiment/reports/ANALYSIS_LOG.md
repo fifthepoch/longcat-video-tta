@@ -6114,6 +6114,25 @@ GPU.
 
 ---
 
+## 2026-09-20 — match opening support and spread
+**Tags:** fast-weights, stills, opening, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_opening_spread_match.md`
+
+User: discourage photo-stills by matching the
+opening chunk’s spread, and stop a new
+distribution from taking over. Two-sided
+opening cloud: center in-ball (no takeover),
+scale ratio near 1 (no collapse / twitch).
+One-sided teacher residual misses a clean
+still. If the opening is a still, spread
+match licenses freeze (I2V 30 s motion
+−60%). Promote only if Titans mid and both
+geometry terms hold. Official Dyn stays out.
+No GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent
