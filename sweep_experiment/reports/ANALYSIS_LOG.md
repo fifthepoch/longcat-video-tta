@@ -6150,6 +6150,23 @@ GPU.
 
 ---
 
+## 2026-09-20 — slow weights stay frozen
+**Tags:** fast-weights, protocol, lock
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_slow_stays_frozen.md`
+
+User sketched KV cache → gated write into
+fast weights (opening center + spread) and
+asked if fast weights later write into slow
+weights. No at test. The 1.3B stays frozen
+(AdaSteer / emit-loop). Fast weights are
+session-local. Train-time DMD of this recipe
+would be a different paper. Gate is also
+refuse-on-too-large spread (twitch), not
+only a minimum. No GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent

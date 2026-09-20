@@ -65,6 +65,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Beyond OOD for artifacts** | `sweep_experiment/reports/paper_tables/2026-09-20_beyond_ood_artifacts.md` | Promote = Titans residual. Refuse = IQ+flicker/subject vs this opening, not dataset divergence. |
 | **Opening-conditional refuse** | `sweep_experiment/reports/paper_tables/2026-09-20_opening_conditional_refuse.md` | General refuse: teacher residual \(p(\text{chunk}\mid\text{opening})\), quantile-calibrated on the opening. Checklist is diagnostic only. |
 | **Opening spread match** | `sweep_experiment/reports/paper_tables/2026-09-20_opening_spread_match.md` | Two-sided support + scale. **T2V:** first chunks are the high-spread reference (freeze is the tail death). I2V-still is another protocol. |
+| **Slow stays frozen** | `sweep_experiment/reports/paper_tables/2026-09-20_slow_stays_frozen.md` | User pipeline: KV then gated \(W_{\text{fast}}\) write. 1.3B not updated at test. Fast weights are session-local. |
 | **Leftover / well / memory glossary** | `sweep_experiment/reports/paper_tables/2026-09-20_leftover_well_memory_glossary.md` | **SAY:** context frames, KV cache, context-frame representation. Well ≠ fast weights. Old slang stays in old files only. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
@@ -358,14 +359,12 @@ Per-method `merged_summary.json` lives at:
   **context frames**, **KV cache**, **fast weights**.
   Do not say leftover / well / memory. Rule:
   `.cursor/rules/field-language.mdc`.
-- **Current next (2026-09-20):** **Drawing board.**
-  Context-frame representation **dropped** (too
-  thin; V2V/T2V swap killed the claim). Method is
-  the user’s band: **promote medium → medium-high
-  OOD writes into \(W_{\text{fast}}\), refuse high
-  OOD.** Linear / delta fast weights. T2V 30 s is
-  legal. That band was never in the sink paper.
-  `paper_tables/2026-09-20_banded_fastweight_write.md`.
+- **Current next (2026-09-20):** T2V 30 s. KV
+  cache as usual. Gate writes into linear/delta
+  \(W_{\text{fast}}\) by first-chunk cloud
+  (center + spread). **Slow 1.3B stays frozen**
+  — no fast→slow write at test (AdaSteer).
+  `paper_tables/2026-09-20_slow_stays_frozen.md`.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official
