@@ -6308,3 +6308,17 @@ ready; not launched (Duo). Do not letter n=2.
 Do not launch 128.
 
 ---
+
+## 2026-09-20 — sponsor summer report
+**Tags:** writing, sponsor, briefing
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_sponsor_summer_report.md`
+
+External-company progress note. Uses the 09/10 PI
+briefing numbers: short TTA null, router flip at
+N=1000, native 60 s drift, cite-128 search
+32.8%→50.8% Dyn at 3×, memory/path closed. No n=2
+smokes. Next paragraph is prefix-protect first-8,
+not claimed as a result.
+
+---
