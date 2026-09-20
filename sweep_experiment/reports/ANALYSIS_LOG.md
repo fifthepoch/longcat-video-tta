@@ -6200,6 +6200,25 @@ ready. No GPU.
 
 ---
 
+## 2026-09-20 — prefix-protected fast weights
+**Tags:** streaming, t2v, fast-weights, method
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_prefix_protected_fast_weights.md`
+
+User asked for a genuinely novel method for
+streaming T2V + CL after spread-as-motion
+was judged thin. Propose: write the living
+prefix into \(W_{\text{fast}}\); protect it
+from freeze/takeover overwrite; fork a new
+slot on leave-support. Titans would write
+the freeze; EMA-sink smears it; Rolling
+protects the head for identity. 1.3B frozen.
+FlowMo’s \(\Delta\)-scale is the gate form
+only. Not a new backbone. Kill if
+protect/fork never fire or IQ dies. No GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent

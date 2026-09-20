@@ -22,6 +22,6 @@ Code and old tables may still say `leftover`. When talking to the
 user, say **context frames**. Do not ask them to adopt our slang.
 
 The context-frame representation paper is **dropped** (too thin).
-Current drawing-board method: **fast weights** write medium →
-medium-high OOD chunks and **refuse** high OOD. Do not call
-that a well.
+Current method: **prefix-protected fast weights** — update /
+protect / fork. Do not call that a well. Do not title
+“motion = spread.”

@@ -68,6 +68,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Slow stays frozen** | `sweep_experiment/reports/paper_tables/2026-09-20_slow_stays_frozen.md` | User pipeline: KV then gated \(W_{\text{fast}}\) write. 1.3B not updated at test. Fast weights are session-local. |
 | **KV cache vs fast weights** | `sweep_experiment/reports/paper_tables/2026-09-20_kv_vs_fast_weights.md` | KV = every recent token for attention. \(W_{\text{fast}}\) = gated compression that can outlive the window. |
 | **Spread-as-motion novelty** | `sweep_experiment/reports/paper_tables/2026-09-20_spread_motion_novelty.md` | Gauge is old (FlowMo / AdaIN / \(\|\Delta\mathrm{frame}\|\)). Paper must stay the gated \(W_{\text{fast}}\) write. |
+| **Prefix-protected fast weights** | `sweep_experiment/reports/paper_tables/2026-09-20_prefix_protected_fast_weights.md` | Proposed method: protect / update / fork on \(W_{\text{fast}}\). Titans inverted on freeze; EMA inverted on smear. |
 | **Leftover / well / memory glossary** | `sweep_experiment/reports/paper_tables/2026-09-20_leftover_well_memory_glossary.md` | **SAY:** context frames, KV cache, context-frame representation. Well ≠ fast weights. Old slang stays in old files only. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
@@ -361,12 +362,13 @@ Per-method `merged_summary.json` lives at:
   **context frames**, **KV cache**, **fast weights**.
   Do not say leftover / well / memory. Rule:
   `.cursor/rules/field-language.mdc`.
-- **Current next (2026-09-20):** T2V 30 s. KV
-  cache as usual. Gate writes into linear/delta
-  \(W_{\text{fast}}\) by first-chunk cloud
-  (center + spread). **Slow 1.3B stays frozen**
-  — no fast→slow write at test (AdaSteer).
-  `paper_tables/2026-09-20_slow_stays_frozen.md`.
+- **Current next (2026-09-20):** **Prefix-
+  protected fast weights.** Write the living
+  T2V prefix into \(W_{\text{fast}}\); do not
+  let freeze / takeover overwrite it; fork a
+  slot on leave-support. 1.3B frozen. Spread
+  is not the title.
+  `paper_tables/2026-09-20_prefix_protected_fast_weights.md`.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official
