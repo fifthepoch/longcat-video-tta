@@ -8,6 +8,14 @@ from the 2026 streaming-gen and video-CL benches
 plus our atlas. Later agents write methods
 *inside* this box.
 
+**Addendum (same day):** V2V vs T2V is **not**
+a principal method split. The first generated
+chunk can play the same “clean prefix” role
+as context frames (`2026-09-20_t2v_v2v_not_principal.md`,
+and already `2026-09-08_idea2_occupied_rolling.md`).
+We still do not switch the run to T2V: that
+instance is the field’s first-chunk KV sink.
+
 ---
 
 ## The problem (one paragraph)

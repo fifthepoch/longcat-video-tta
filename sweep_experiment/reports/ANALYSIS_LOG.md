@@ -6020,6 +6020,26 @@ KV sinks onto caption V2V first-32.
 
 ---
 
+## 2026-09-20 — V2V vs T2V not a principal split
+**Tags:** protocol, t2v, idea-2, occupancy
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_t2v_v2v_not_principal.md`,
+`paper_tables/2026-09-08_idea2_occupied_rolling.md`
+
+User: T2V and V2V are not principally different;
+T2V would use the first generated chunks as the
+clean prefix. Accepted. That is the 2026-09-08
+line: opening source is protocol, not method.
+T2V still makes this paper weaker: that prefix
+is Rolling / static / AdaState / ReMind. On
+MovieGen the representation is fitted once and
+frozen (later frames are generated and must
+not be stored). Do not switch the run to T2V
+to ease cite. Do not revive “real vs self” as
+a title.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent
