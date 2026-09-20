@@ -6005,3 +6005,19 @@ if leftover grows through a cut. One-shot
 locked V2V. No GPU.
 
 ---
+
+## 2026-09-20 — leftover / well / memory glossary
+**Tags:** glossary, leftover, scene-well
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_leftover_well_memory_glossary.md`
+
+User did not know what leftover, well, and
+memory referred to. Leftover = real V2V prefix
+(Panda file start; tail is generated). Memory
+in these notes = bounded KV cache (plus other
+papers’ sink). Well = our compact leftover
+scene code, not a Wan API. Generated frames
+do not enter the well. Record so later notes
+define the words.
+
+---
