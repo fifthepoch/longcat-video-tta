@@ -5845,3 +5845,23 @@ Vanilla BOND / leftover unroll / online AdaSteer stay
 non-titles.
 
 ---
+
+## 2026-09-20 — fast/slow streaming is not a title yet
+**Tags:** streaming, fast-weights, review, no-gpu
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_fast_slow_streaming_review.md`
+
+User asked how defensible (b) is (delta-rule memory,
+named evict, slow net eats those frames first) and
+what the latency looks like. Hostile read: incremental
+on Titans / Nested Learning sleep / TTT-Video / ARL²
+/ EMA-sink. Linear attention is compressed KV, so
+EMA-sink is the activation twin. SOTA streaming
+objective is FPS + self-drift, not env adaptation.
+17–23 FPS (~50 ms/frame) cannot hold a backbone DMD
+step. TTT-Video already 1.8–2.5× local attn. Only
+defensible split: cheap fast path every frame; rare
+sleep off the emit loop; beat EMA-sink on a
+scene-shift leftover protocol. No GPU.
+
+---
