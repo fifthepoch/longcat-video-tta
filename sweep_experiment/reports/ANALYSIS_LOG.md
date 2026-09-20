@@ -5945,3 +5945,24 @@ backprop at emit. Setting remains caption V2V
 leftover → 30 s. No GPU.
 
 ---
+
+## 2026-09-20 — named evict vs OOD store-cap
+**Tags:** streaming, scene-well, ood, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_named_evict_and_ood_store.md`
+
+User asked if named evict has real benefits, and
+whether we should only store sequences below an
+OOD score so slow weights never see broken
+frames. Named evict is real against EMA-blur at
+a leftover cut and against silent drop before
+consolidation. It is ceremony if the well is a
+mean (kill: well ≈ leftover-EMA). An OOD cap is
+correct on generated (do not write twitch/paint
+into cortex) and wrong as a one-sided filter on
+leftover: high leftover error is a scene cut and
+must open a new well. Leftover-only wells already
+keep broken self out of the slow object. Do not
+reuse leftover FM-OOD as “broken.” No GPU.
+
+---
