@@ -5985,3 +5985,23 @@ error diagnostic. Do not re-ask T2V, wait-for-
 GT, store-self, n=2, or cite-128. No GPU tonight.
 
 ---
+
+## 2026-09-20 — T2V comparison vs leftover-well odds
+**Tags:** streaming, t2v, scene-well, assessment
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_t2v_compare_and_success.md`
+
+User asked if staging the leftover well as T2V
+would ease comparison, and how likely success
+is. T2V 30 s MovieGen is the field scoreboard
+(AdaState / Steady-Forcing / SF). On that
+protocol leftover does not exist; the well
+becomes a self-sink and the method is occupied.
+Compare by porting sinks onto leftover first-32.
+Success: low as a VBench quality title (frozen
+skip + well≈EMA kill); moderate as cut-hygiene
+if leftover grows through a cut. One-shot
+2 s→30 s freezes the well. Setting stays
+locked V2V. No GPU.
+
+---
