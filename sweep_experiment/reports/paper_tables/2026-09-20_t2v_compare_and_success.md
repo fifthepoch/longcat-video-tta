@@ -1,11 +1,21 @@
 # T2V as a cite table vs success odds of the leftover well (2026-09-20)
 
-**Not a submit. No GPU.** The user asked two
-questions: would staging the leftover-well
-method as T2V make comparison easier, and how
-likely is the method to work. Setting stays
-locked (`2026-09-20_problem_setting_locked.md`).
-This note does not reopen T2V as the problem.
+**Not a submit. No GPU.**
+
+**This is not a switch to T2V.** T2V (text →
+self-rollout) has **no context frames**. The
+context-frame representation then has nothing
+legal to fit on. That object exists only in
+**V2V**: real context frames, then a 30 s
+generated continuation. Comparison with
+AdaState / Self Forcing is done by running
+**their KV sinks on our V2V first-32**, not
+by deleting the context frames.
+
+The user asked two questions: would staging
+as T2V make comparison easier, and how likely
+is the method to work. Setting stays locked
+(`2026-09-20_problem_setting_locked.md`).
 
 ---
 

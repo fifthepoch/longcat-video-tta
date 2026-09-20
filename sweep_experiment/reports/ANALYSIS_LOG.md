@@ -6006,6 +6006,20 @@ locked V2V. No GPU.
 
 ---
 
+## 2026-09-20 — T2V does not host the representation
+**Tags:** language, t2v, protocol
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_t2v_compare_and_success.md`
+
+User read the T2V-comparison note as a switch
+to T2V and asked how the “well” can exist
+then. It cannot. T2V has no context frames.
+The context-frame representation is a V2V
+object. We do not switch. Compare by porting
+KV sinks onto caption V2V first-32.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent
