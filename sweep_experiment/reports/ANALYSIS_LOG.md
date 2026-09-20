@@ -6182,6 +6182,24 @@ No GPU.
 
 ---
 
+## 2026-09-20 — spread-as-motion is not a title
+**Tags:** motion, novelty, fast-weights
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_spread_motion_novelty.md`
+
+User asked how novel gauging motion with
+spread is, and whether the method needs more
+work. Low as a metric: temporal variance,
+FlowMo (they minimize patch-wise variance of
+latent Δ), AdaIN first-frame var for identity,
+our \(\|\Delta\mathrm{frame}\|\). The paper must
+stay the gated \(W_{\text{fast}}\) write. Work
+that rule; do not workshop the scalar. If it
+still reads as Titans + a threshold, not
+ready. No GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent
