@@ -5865,3 +5865,61 @@ sleep off the emit loop; beat EMA-sink on a
 scene-shift leftover protocol. No GPU.
 
 ---
+
+## 2026-09-20 — streaming × CL field buckets; keep the policy
+**Tags:** streaming, continual-learning, buckets, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_streaming_cl_field_buckets.md`
+
+User accepted the hostile review and asked to keep
+developing via field challenges, failure modes, and
+what each approach fights. Split: streaming-gen =
+latency + self-drift (frozen weights); CL =
+stability–plasticity (slow updates OK). Mapped 11
+challenge buckets, three failure lanes, and the
+approach families. Nobody fights non-stationary env +
+50 ms + identity/motion on a few-step Wan student.
+We keep evict-blocked-until-rare-sleep, not the Titans
++ EMA + ARL² stack. Slow loss still unnamed. No GPU.
+
+---
+
+## 2026-09-20 — slow object: train-time DMD vs scene well
+**Tags:** streaming, territory-a, scene-well, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_slow_object_dmd_vs_well.md`
+
+User asked to elaborate teacher-DMD sleep vs a tiny
+scene well. Same chassis (linear fast memory, delete
+blocked until sleep). DMD sleep is a student paper
+only if it is **train-time**: eviction curriculum
+inside leftover-locked DMD; test freezes the 1.3B.
+Test-time teacher DMD is not streaming and reopens
+AdaSteer. A-minimum leftover unroll stays a control.
+Scene well: DiT frozen, sleep fits a well, replay so
+A does not die, select/skip only. Do not stack. Name
+the slow loss before any spec. No GPU.
+
+---
+
+## 2026-09-20 — field gaps and attached settings
+**Tags:** streaming, continual-learning, literature, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_field_gaps_and_settings.md`
+
+User asked not to stall on leftover-delay settings.
+Surveyed 2026 streaming-gen (AdaState, Steady-Forcing,
+Rolling Sink, MemRoPE, ReMind) and video CL (Yoo
+lifelong VDM, VidCLearn, 2505.11936). Real empty
+clause: named, subtractable write that is not deleted
+until a slow semantic object (well or train-time DMD)
+has seen those frames, with a mid/extreme band so a
+scene cut opens a new well instead of blurring into
+EMA. Replay for video generators is still a reservoir.
+ReMind retrieves old *generated* frames, not leftover
+wells. Official Dyn still rewards drift. Default
+setting is their bench we already run: caption V2V
+leftover → 30 s tail, full-clip VBench. Do not invent
+a wait-for-GT protocol. No GPU.
+
+---

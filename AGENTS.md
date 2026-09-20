@@ -50,6 +50,11 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Winners / losers / energy** | `sweep_experiment/reports/paper_tables/2026-09-08_winner_loser_energy.md` | Negatives yes. Do not teacher-match losers. Low-energy well must be in-scene and living. |
 | **Streaming / CL novel methods** | `sweep_experiment/reports/paper_tables/2026-09-18_streaming_cl_novel.md` | Fills the briefing blank. Rank-1: reality-ranked amortize (world as judge). Rank-2: scene-well energy. No GPU until user picks. |
 | **Fast/slow streaming reviewer pass** | `sweep_experiment/reports/paper_tables/2026-09-20_fast_slow_streaming_review.md` | (b) delta-memory + evict-after-slow is not a title yet. ARL² / TTT-Video / EMA-sink occupy. Slow step cannot sit in the 17–23 FPS loop. |
+| **Streaming × CL field buckets** | `sweep_experiment/reports/paper_tables/2026-09-20_streaming_cl_field_buckets.md` | Challenges / failures / approaches mapped to fights. Keep the evict-blocked-until-sleep policy, not the name stack. |
+| **Slow object: DMD sleep vs scene well** | `sweep_experiment/reports/paper_tables/2026-09-20_slow_object_dmd_vs_well.md` | Same eviction chassis. Train-time teacher-DMD = student paper. Tiny well bank = frozen generator. Do not stack. |
+| **Surprise replay + fast-weight read** | `sweep_experiment/reports/paper_tables/2026-09-20_surprise_replay_and_fastweight_read.md` | Surprise-weighted replay is Titans/SuRe. Forcing SOTA reads KV+sink, not W_fast. ARL²/TTT-Video already read a fast state at emit. |
+| **GT stream vs no-GT assessment** | `sweep_experiment/reports/paper_tables/2026-09-20_gt_stream_vs_nagt_assessment.md` | Pursue leftover-growth hybrid. Pure no-GT CL is a motivation swap. GT of the generated horizon is prediction. |
+| **Field gaps + settings** | `sweep_experiment/reports/paper_tables/2026-09-20_field_gaps_and_settings.md` | Four real gaps from 2026 streaming-gen + video-CL. Default first: Gap 1 on caption V2V leftover → 30 s. Do not invent a GT delay. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
@@ -291,7 +296,7 @@ Per-method `merged_summary.json` lives at:
 
 ## 3. Active project state (snapshot — keep current)
 
-**Date:** Updated 2026-09-08.
+**Date:** Updated 2026-09-20.
 
 - **Paper target:** CVPR 2027.
 - **Paper method (2026-09-04):** Pseudo-future Search is **dropped**
@@ -338,6 +343,13 @@ Per-method `merged_summary.json` lives at:
   caption tables.
   Outcomes: `paper_tables/2026-08-24_wan_v2v_caption_wave1_outcomes.md`.
   Spec: `paper_tables/2026-08-24_wan_v2v_caption_rerun_spec.md`.
+- **Current next (2026-09-20):** Field-gap default is
+  **Gap 1** on caption V2V leftover → 30 s
+  (`paper_tables/2026-09-20_field_gaps_and_settings.md`).
+  Named evict blocked until a well or train-time DMD;
+  mid/extreme band. Do not invent a GT delay. No GPU
+  until the slow object is named in one line. Prior
+  Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official
   Wan2.1-T2V-1.3B, no `self_forcing_dmd.pt`).
