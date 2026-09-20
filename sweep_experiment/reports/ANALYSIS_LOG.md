@@ -6060,6 +6060,25 @@ GPU.
 
 ---
 
+## 2026-09-20 — banded FW conceptual overlaps
+**Tags:** fast-weights, literature, ideation
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_banded_fw_overlaps.md`
+
+User asked to list overlapping concepts:
+what, how, published neighbor, our
+difference. Five: fast-weight read (TTT /
+ARL² / Titans); surprise-scaled write
+(Titans monotone); promote the middle
+(InfoRS / SuRe buffer); refuse high OOD
+(robust updates; Alice does the opposite);
+frozen slow host (Nested Learning /
+AdaSteer closed). Remaining sentence:
+shoulder write + tail refuse on streaming
+video chunks. No GPU.
+
+---
+
 ## 2026-09-20 — leftover / well / memory glossary
 **Tags:** glossary, leftover, scene-well
 **Owner:** agent
