@@ -57,6 +57,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Field gaps + settings** | `sweep_experiment/reports/paper_tables/2026-09-20_field_gaps_and_settings.md` | Four real gaps from 2026 streaming-gen + video-CL. Default first: Gap 1 on caption V2V leftover → 30 s. Do not invent a GT delay. |
 | **Leftover scene well method** | `sweep_experiment/reports/paper_tables/2026-09-20_leftover_scene_well_method.md` | One method for Gaps 1+3+4. Blocked KV evict until a leftover well writes. Gap 2 is a later student. No GPU. |
 | **Named evict vs OOD store-cap** | `sweep_experiment/reports/paper_tables/2026-09-20_named_evict_and_ood_store.md` | Name is real only vs blend-at-cut. OOD cap: yes on generated, no on leftover (that opens a new well). |
+| **Problem setting LOCKED** | `sweep_experiment/reports/paper_tables/2026-09-20_problem_setting_locked.md` | Caption V2V leftover → 30 s, first-32, leftover-only well, cite `wan_notta`. Do not re-ask task / N / store-self. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
 | **RF schedule neighbors** | `sweep_experiment/reports/paper_tables/2026-09-01_rf_noise_schedule_neighbors.md` | Deep / Relax / Ms. / Stream / Reward / FIFO. Most RF follow-ons are memory. TTA cousins: lookahead, shallower / local-steep diagonal. |
@@ -345,14 +346,16 @@ Per-method `merged_summary.json` lives at:
   caption tables.
   Outcomes: `paper_tables/2026-08-24_wan_v2v_caption_wave1_outcomes.md`.
   Spec: `paper_tables/2026-08-24_wan_v2v_caption_rerun_spec.md`.
-- **Current next (2026-09-20):** Proposed method is a
-  **leftover scene well** (Gaps 1+3+4). KV delete
-  blocked until a leftover well writes; leftover
-  forecast error is the scene switch; select/skip
-  only. Gap 2 (student replay) is a sequel. No
-  \(W_{\text{fast}}\) title, no 8-GPU DMD.
-  `paper_tables/2026-09-20_leftover_scene_well_method.md`.
-  Setting still caption V2V leftover → 30 s. No GPU.
+- **Current next (2026-09-20):** **SETTING LOCKED.**
+  Caption V2V leftover → 30 s tail, first-32,
+  leftover-only scene well, cite `wan_notta`
+  (+ caption SF ablation). Generated frames never
+  enter the well. Mid leftover error updates the
+  well; extreme opens a new well. Select/skip
+  only. No student, no \(W_{\text{fast}}\) title,
+  no 8-GPU, no remake cite-128. Do not ask the
+  user to pick a protocol.
+  `paper_tables/2026-09-20_problem_setting_locked.md`.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official

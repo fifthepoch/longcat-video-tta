@@ -5966,3 +5966,22 @@ keep broken self out of the slow object. Do not
 reuse leftover FM-OOD as “broken.” No GPU.
 
 ---
+
+## 2026-09-20 — problem setting locked
+**Tags:** streaming, protocol, lock
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_problem_setting_locked.md`
+
+User called out that we kept handing protocol
+forks back after they asked for a literature-
+chosen setting. Lock: caption V2V leftover →
+30 s imagined tail, Panda `metadata.csv`,
+first-32, portable host `wan_notta`, caption
+SF as forcing ablation, leftover-only scene
+well (mid update / extreme new well), generated
+never stored, select/skip only, full-clip
+VBench, Dyn as % of clips, leftover-slice
+error diagnostic. Do not re-ask T2V, wait-for-
+GT, store-self, n=2, or cite-128. No GPU tonight.
+
+---

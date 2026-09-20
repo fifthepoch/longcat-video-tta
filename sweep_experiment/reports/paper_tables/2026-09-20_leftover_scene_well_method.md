@@ -108,8 +108,8 @@ Do not AdaSteer.
 ## Setting (already named)
 
 Caption V2V leftover → 30 s tail. Cite
-`wan_notta` / caption SF. Same eight or
-first-32. Full-clip VBench; subject + IQ held;
+`wan_notta` / caption SF. **First-32**
+(locked). Full-clip VBench; subject + IQ held;
 Dyn = percent of clips; leftover-slice forecast
 error as a **held-out diagnostic**. Compare
 static sink, EMA-sink, do-nothing, Always-search
