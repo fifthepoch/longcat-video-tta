@@ -6425,3 +6425,27 @@ CVPR. Novel enough to run, not to
 write the intro first.
 
 ---
+
+## 2026-09-21 — other uses of neuronal timing
+**Tags:** method, streaming, CL
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-21_temporal_logic_other_uses.md`
+
+User asked for other applications of
+temporally dependent firing on
+streaming + CL, not only the W_fast
+write. Mapped: louder read when
+coincidence collapses (quiet replay);
+KV split still-vs-moving (identity
+without a first-frame sink); evict
+silence not oldest; asynchrony +
+habituation for flicker; bind-by-time
+and winner-take-all for cuts; confirm
+coincidence on the clean pass; CL
+bank only for recurrent living
+events. Next two if the write
+isolates: read-on-stillness and KV
+split. Do not stack. Do not make
+another search gate.
+
+---
