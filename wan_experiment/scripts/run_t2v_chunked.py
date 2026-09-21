@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Chunked Wan T2V: baselines + first-chunk nwarp/pwarp + prefix-protect.
+"""Chunked Wan T2V: baselines + first-chunk nwarp/pwarp + prefix-protect
++ coincidence-gated fast weights.
 
 Text start, then AR from own KV. Not I2V-from-still. Piece 0 is
 always seed 0 (shared prefix). Warp methods measure Farneback on
@@ -11,6 +12,11 @@ once they leave the sliding window. No first-chunk sink.
 sf_pprot keeps frozen (mu, scale) as admission only; later
 chunks that pass go into a legal-chunk bank (stand-in for the
 W_fast write set) and are packed back with the window.
+
+sf_coinc / sf_writeevery / sf_titans / sf_meandelta use the same
+window + sink_size=0, plus a session-local DeltaNet matrix on
+the last 8 self-attention blocks. Coincidence (or a control
+write rule) decides the update. Silence does not decay W.
 
 30 s = 6 × 21 latents (Self-Forcing native 5 s unit → 81 px × 6).
 Do not add TTC.
@@ -78,6 +84,12 @@ from prefix_protect import (  # noqa: E402
     replay_ranges,
     window_range,
 )
+from coincidence_fastweight import (  # noqa: E402
+    CoincidenceTape,
+    FastWeightSession,
+    decide_write,
+    install_fastweight_hooks,
+)
 
 import numpy as np
 
@@ -86,9 +98,20 @@ T2V_METHODS = (
     "sf_nwarp", "sf_nwarp_live",
     "sf_pwarp", "sf_pwarp_live",
     "sf_window", "sf_pprot",
+    "sf_coinc", "sf_writeevery", "sf_titans", "sf_meandelta",
 )
-WINDOW_METHODS = frozenset({"sf_window", "sf_pprot"})
+FW_MODE = {
+    "sf_coinc": "coinc",
+    "sf_writeevery": "writeevery",
+    "sf_titans": "titans",
+    "sf_meandelta": "meandelta",
+}
+WINDOW_METHODS = frozenset({
+    "sf_window", "sf_pprot",
+    "sf_coinc", "sf_writeevery", "sf_titans", "sf_meandelta",
+})
 PPROT_METHODS = frozenset({"sf_pprot"})
+FW_METHODS = frozenset(FW_MODE)
 SF_NWARP_METHODS = frozenset({"sf_nwarp", "sf_nwarp_live"})
 SF_PWARP_METHODS = frozenset({"sf_pwarp", "sf_pwarp_live"})
 LIVE_SEARCH_MIN = 0.012
@@ -221,6 +244,10 @@ def generate_chunked_t2v(
     pprot_tau_lo: float = 0.4,
     pprot_tau_hi: float = 2.5,
     pprot_max_slots: int = 3,
+    fw_session: FastWeightSession | None = None,
+    coinc_window: int = 3,
+    coinc_beta: float = 0.15,
+    coinc_eta_max: float = 0.3,
 ):
     import torch
 
@@ -244,13 +271,28 @@ def generate_chunked_t2v(
     flow_armed = None
     prefix_cloud = None
     legal_bank = None
-    if method in PPROT_METHODS:
+    coinc_tape = None
+    fw_mode = FW_MODE.get(method)
+    if method in PPROT_METHODS or method in FW_METHODS:
         prefix_cloud = PrefixCloud(
             tau_center=float(pprot_tau_center),
             tau_lo=float(pprot_tau_lo),
             tau_hi=float(pprot_tau_hi),
         )
+    if method in PPROT_METHODS:
         legal_bank = LegalChunkBank(max_slots=int(pprot_max_slots))
+    if method in FW_METHODS:
+        if fw_session is None:
+            raise RuntimeError(f"{method} needs an installed FastWeightSession")
+        fw_session.mode = fw_mode
+        fw_session.beta = float(coinc_beta)
+        fw_session.eta_max = float(coinc_eta_max)
+        fw_session.enabled = True
+        fw_session.reset(device=device)
+        coinc_tape = CoincidenceTape(window=int(coinc_window))
+        coinc_tape.reset()
+    elif fw_session is not None:
+        fw_session.enabled = False
     block = int(pipeline.num_frame_per_block)
 
     for ci in range(n_chunks):
@@ -483,7 +525,7 @@ def generate_chunked_t2v(
             else any(a == 0 for a, _ in replayed)
         )
         pprot = None
-        if prefix_cloud is not None:
+        if prefix_cloud is not None and method in PPROT_METHODS:
             chunk_lat = output[:, committed - chunk_latents:committed]
             if ci == 0:
                 fit = prefix_cloud.fit(chunk_lat)
@@ -513,6 +555,56 @@ def generate_chunked_t2v(
         rec["pprot"] = (
             {k: _json_float(v) if isinstance(v, float) else v for k, v in pprot.items()}
             if pprot is not None else None
+        )
+        coinc = None
+        if coinc_tape is not None and fw_session is not None:
+            chunk_lat = output[:, committed - chunk_latents:committed]
+            obs = coinc_tape.observe(chunk_lat)
+            if ci == 0:
+                fit = prefix_cloud.fit(chunk_lat)
+                cloud_action = "fit"
+                cloud_rec = {"action": "fit", **fit}
+            else:
+                cloud_rec = prefix_cloud.decide(chunk_lat)
+                cloud_action = cloud_rec.get("action") or "protect"
+            decision = decide_write(fw_mode, coinc_tape, obs, cloud_action)
+            S = obs["S"]
+            if fw_mode in ("writeevery", "titans"):
+                S = S.new_ones(S.shape)
+            wrote = False
+            write_log = {"wrote": False, "reason": "skipped", "n_tok": 0, "eta": 0.0}
+            if decision["do_fork"]:
+                fw_session.fork()
+            if decision["do_write"]:
+                write_log = fw_session.write_from_stash(S, obs["u_bar"])
+                wrote = bool(write_log.get("wrote"))
+                if wrote:
+                    coinc_tape.mark_write()
+            coinc = {
+                **decision,
+                "cloud": {
+                    k: _json_float(v) if isinstance(v, float) else v
+                    for k, v in cloud_rec.items()
+                },
+                "eps": float(coinc_tape.eps),
+                "theta0": float(coinc_tape.theta0),
+                "opening_c": float(coinc_tape.opening_c),
+                "slot": int(fw_session.current),
+                "wrote": bool(wrote),
+                "n_tok": int(write_log.get("n_tok") or 0),
+                "eta": _json_float(write_log.get("eta")),
+                "write_reason": write_log.get("reason"),
+            }
+            print(
+                f"  coinc chunk{ci} {decision['action']}/{decision['reason']} "
+                f"C={decision['C']:.3f} theta={decision['theta']:.3f} "
+                f"u={decision['u_bar']:.3f} wrote={int(wrote)} "
+                f"n_tok={coinc['n_tok']} eta={coinc['eta']} slot={fw_session.current}",
+                flush=True,
+            )
+        rec["coinc"] = (
+            {k: _json_float(v) if isinstance(v, float) else v for k, v in coinc.items()}
+            if coinc is not None else None
         )
         chunk_logs.append(rec)
         if incoming_drift is not None:
@@ -558,6 +650,9 @@ def main() -> int:
     ap.add_argument("--pprot-tau-lo", type=float, default=0.4)
     ap.add_argument("--pprot-tau-hi", type=float, default=2.5)
     ap.add_argument("--pprot-max-slots", type=int, default=3)
+    ap.add_argument("--coinc-window", type=int, default=3)
+    ap.add_argument("--coinc-beta", type=float, default=0.15)
+    ap.add_argument("--coinc-eta-max", type=float, default=0.3)
     ap.add_argument("--search-k", type=int, default=4)
     ap.add_argument("--search-from-chunk", type=int, default=1)
     ap.add_argument("--seam-weight", type=float, default=1.0)
@@ -620,7 +715,21 @@ def main() -> int:
         raise RuntimeError("T2V runner requires independent_first_frame=False")
     if args.method in WINDOW_METHODS:
         apply_sink_size(pipeline, 0)
-        print("window/pprot: sink_size=0 (first chunk is not a permanent KV sink)")
+        print("window/pprot/fw: sink_size=0 (first chunk is not a permanent KV sink)")
+    fw_session = None
+    if args.method in FW_METHODS:
+        fw_session = FastWeightSession(
+            beta=float(args.coinc_beta),
+            eta_max=float(args.coinc_eta_max),
+            mode=FW_MODE[args.method],
+        )
+        n_hooked = install_fastweight_hooks(pipeline, fw_session)
+        print(
+            f"fast weights: hooked last {n_hooked} blocks "
+            f"heads={fw_session.n_heads} dim={fw_session.head_dim} "
+            f"mode={fw_session.mode} beta={fw_session.beta}",
+            flush=True,
+        )
     print(f"pipeline loaded in {time.time() - t_load:.1f}s")
 
     rows = []
@@ -655,6 +764,10 @@ def main() -> int:
                     pprot_tau_lo=args.pprot_tau_lo,
                     pprot_tau_hi=args.pprot_tau_hi,
                     pprot_max_slots=args.pprot_max_slots,
+                    fw_session=fw_session,
+                    coinc_window=args.coinc_window,
+                    coinc_beta=args.coinc_beta,
+                    coinc_eta_max=args.coinc_eta_max,
                 )
             write_mp4(mp4, video, fps=FPS)
             n_div = sum(
@@ -714,6 +827,10 @@ def main() -> int:
                 "pprot_tau_hi": args.pprot_tau_hi,
                 "pprot_max_slots": args.pprot_max_slots,
                 "pprot_actions": [ch.get("pprot") for ch in chunk_logs],
+                "coinc_actions": [ch.get("coinc") for ch in chunk_logs],
+                "coinc_window": args.coinc_window,
+                "coinc_beta": args.coinc_beta,
+                "coinc_eta_max": args.coinc_eta_max,
                 "chunks": chunk_logs,
                 "horizon_s_requested": args.horizon_s,
                 "seed": args.seed,

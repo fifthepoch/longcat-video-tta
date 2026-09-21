@@ -410,26 +410,13 @@ has Hebb and delta).
 
 ---
 
-## 12. Implementation order (later)
+## 12. Implementation order
 
-1. Coincidence tape + log
-   \((C,\bar u,\theta,\mathrm{action})\)
-   on committed latents. No \(W\)
-   hook. This can replace the
-   `sf_pprot` gate on the legal
-   bank as a **protocol** check.
-2. Per-head DeltaNet hook on last
-   8 blocks, seed on chunk 0, no
-   decay, coincident tokens only.
-3. First-8 MovieGen T2V 30 s:
-   `notta` / `sf_window` /
-   write-every / Titans-\(\eta\) /
-   cloud-only / coincidence.
-   Cite the Self-Forcing host.
-   No first-chunk KV sink.
-
-No GPU until the user picks a
-submit. Do not launch the pprot8
-script as a substitute for this
-hook — that bank is activation
-replay, not a matrix.
+First-8 is **SUBMIT-READY**
+(`2026-09-21_t2v_coinc8_spec.md`).
+Tape + last-8 DeltaNet hook +
+`sf_coinc` / `sf_writeevery` /
+`sf_titans` / `sf_meandelta`.
+Do not launch 128. Do not letter
+n=2. Do not treat `sf_pprot`
+legal-bank replay as this hook.

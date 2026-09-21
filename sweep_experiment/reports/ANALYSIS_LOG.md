@@ -6449,3 +6449,23 @@ split. Do not stack. Do not make
 another search gate.
 
 ---
+
+## 2026-09-21 — coincidence first-8 implemented
+**Tags:** method, impl, t2v
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-21_t2v_coinc8_spec.md`;
+`wan_experiment/scripts/coincidence_fastweight.py`
+
+User asked to build the initial experiment
+for temporally dependent firing on fast
+weights. Landed: event tape (end-of-chunk
+W=3, theta0 floor 0.02), last-8-block
+DeltaNet hook, arms `sf_coinc` /
+`sf_writeevery` / `sf_titans` /
+`sf_meandelta` plus `notta` / `sf_window`.
+CPU tape test PASS (live fires, freeze
+and 1-cell twitch do not). Submit script
+ready. Not launched. Do not letter n=2.
+Do not launch 128.
+
+---

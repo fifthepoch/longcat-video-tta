@@ -77,6 +77,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Coincidence-gated FW update** | `sweep_experiment/reports/paper_tables/2026-09-21_coincidence_fastweight_update.md` | Detailed write: event tape, high-pass, spatial \(C\), Azouz \(\theta\), DeltaNet on \(S\) only, no decay. Not a submit. |
 | **Coincidence write publishability** | `sweep_experiment/reports/paper_tables/2026-09-21_coincidence_publishability.md` | Medium novelty. Top venue only if isolation holds on 128. Not on the sentence alone. |
 | **Temporal logic, other uses** | `sweep_experiment/reports/paper_tables/2026-09-21_temporal_logic_other_uses.md` | Same timing rule on freeze / KV split / eviction / flicker / fork / CL. Write stays first. |
+| **Coincidence first-8 spec** | `sweep_experiment/reports/paper_tables/2026-09-21_t2v_coinc8_spec.md` | MovieGen T2V 30 s. `notta` / `sf_window` / `sf_coinc` / writeevery / titans / meandelta. **SUBMIT-READY, not launched.** |
 | **Leftover / well / memory glossary** | `sweep_experiment/reports/paper_tables/2026-09-20_leftover_well_memory_glossary.md` | **SAY:** context frames, KV cache, context-frame representation. Well ≠ fast weights. Old slang stays in old files only. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
@@ -371,17 +372,14 @@ Per-method `merged_summary.json` lives at:
   Do not say leftover / well / memory. Rule:
   `.cursor/rules/field-language.mdc`.
 - **Current next (2026-09-21):** Coincidence-gated
-  fast-weight update. Event tape + high-pass +
-  spatial \(C\) + Azouz \(\theta\); DeltaNet on
-  coincident tokens only; no decay on silence;
-  fork on leave-support. Prefix cloud stays
-  which-pattern. **Not a submit. No GPU.**
-  Note: `paper_tables/2026-09-21_coincidence_fastweight_update.md`.
-  Prefix-protect first-8 remains the cloud-only
-  control (**SUBMIT-READY, not launched**).
+  fast-weight first-8. `notta` / `sf_window` /
+  `sf_coinc` / `sf_writeevery` / `sf_titans` /
+  `sf_meandelta`. Window + `sink_size=0`. Last
+  8 blocks read \(W_{\text{fast}}\). **SUBMIT-READY,
+  not launched** (`submit_t2v_coinc8.sh`).
   Do not letter n=2. Do not launch 128. No I2V.
-  No TTC. Do not treat `sf_pprot` legal-bank
-  replay as this matrix hook.
+  No TTC. Spec:
+  `paper_tables/2026-09-21_t2v_coinc8_spec.md`.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official

@@ -13,7 +13,8 @@
 
 # Chunked Wan T2V: METHOD=notta|always_bon|gated_bon|
 #   sf_nwarp|sf_nwarp_live|sf_pwarp|sf_pwarp_live|
-#   sf_window|sf_pprot
+#   sf_window|sf_pprot|
+#   sf_coinc|sf_writeevery|sf_titans|sf_meandelta
 #   sbatch --export=ALL,METHOD=notta,HORIZON_S=30,N_VIDEOS=8,SEARCH_K=1 \
 #       wan_experiment/sbatch/run_t2v_chunked.sbatch
 
@@ -51,6 +52,9 @@ PPROT_TAU_CENTER="${PPROT_TAU_CENTER:-2.0}"
 PPROT_TAU_LO="${PPROT_TAU_LO:-0.4}"
 PPROT_TAU_HI="${PPROT_TAU_HI:-2.5}"
 PPROT_MAX_SLOTS="${PPROT_MAX_SLOTS:-3}"
+COINC_WINDOW="${COINC_WINDOW:-3}"
+COINC_BETA="${COINC_BETA:-0.15}"
+COINC_ETA_MAX="${COINC_ETA_MAX:-0.3}"
 OUT_DIR="${OUT_DIR:-${PROJECT_ROOT}/wan_experiment/results/${SERIES}/${METHOD}_h${HORIZON_S}s_shard${SHARD_ID}}"
 
 export PYTHONHASHSEED="${SEED}"
@@ -120,6 +124,9 @@ cd "${PROJECT_ROOT}"
     --pprot-tau-lo "${PPROT_TAU_LO}" \
     --pprot-tau-hi "${PPROT_TAU_HI}" \
     --pprot-max-slots "${PPROT_MAX_SLOTS}" \
+    --coinc-window "${COINC_WINDOW}" \
+    --coinc-beta "${COINC_BETA}" \
+    --coinc-eta-max "${COINC_ETA_MAX}" \
     --shard-id "${SHARD_ID}" \
     --num-shards "${NUM_SHARDS}"
 
