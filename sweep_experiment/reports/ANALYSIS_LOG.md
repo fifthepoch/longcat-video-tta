@@ -6403,3 +6403,25 @@ Not a submit. Do not treat `sf_pprot`
 legal-bank replay as this hook.
 
 ---
+
+## 2026-09-21 — coincidence write publishability
+**Tags:** method, novelty, venue
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-21_coincidence_publishability.md`
+
+User: is this novel enough for a top
+venue if it performs well? Verdict:
+medium. Unused clause is Irie §4.2
+plasticity time window + spatial
+coincidence / no-decay on a frozen
+video DiT. Store and algebra are
+occupied (Irie, TTT-Video, ARL²,
+Titans). “Performs well” must be
+isolation vs write-every / Titans /
+mean-Δ / decay on MovieGen-128,
+IQ held, Dyn = percent of clips,
+twitch = NO. Sentence alone is not
+CVPR. Novel enough to run, not to
+write the intro first.
+
+---
