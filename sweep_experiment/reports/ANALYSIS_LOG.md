@@ -6338,3 +6338,23 @@ on disk. Frame strips need a Duo scp of cite-128
 0003 / 0001 (`export_sponsor_frame_strips.py`).
 
 ---
+
+## 2026-09-21 — temporal threshold for fast-weight writes
+**Tags:** method, fast-weights, neuroscience
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-21_temporal_threshold_fast_weights.md`
+
+User: use the temporal threshold of real
+neurons, not just “neurons fire over
+time,” because video is temporal. Bio
+core is König et al. 1996 (integrator vs
+coincidence) plus Azouz & Gray 2000
+(threshold falls when dV/dt is large).
+Write \(W_{\text{fast}}\) only if enough
+coherent change events hit θ in a short
+W; freeze is DC and does not fire;
+Titans residual is the integrator. Prefix
+cloud can stay as which-pattern. Do not
+port a spiking DiT.
+
+---
