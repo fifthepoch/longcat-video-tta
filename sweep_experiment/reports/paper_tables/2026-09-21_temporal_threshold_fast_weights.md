@@ -186,27 +186,12 @@ residual, (c) static prefix cloud.
 
 ## What we would actually implement (later)
 
+The detailed write rule is now
+`2026-09-21_coincidence_fastweight_update.md`.
 Do not start a spike-based backbone.
 Keep the frozen 1.3B and the KV window.
-
-On each new chunk, compute a cheap
-event tape (token- or patch-wise
-\(\|\Delta\|\) in time). Count how many
-events fall in the last \(W\) frames
-and how synchronized they are (rise
-time of the spatial-mean signal).
-Write \(W_{\text{fast}}\) only if
-count \(\ge \theta(t)\), with
-\(\theta\) lower when the rise is
-fast and higher for a refractory
-period after the last write. Prefix
-cloud can still refuse leave-support.
-
-First table can stay first-8 MovieGen
-T2V: `sf_window` vs a
-coincidence-gated write. No first-chunk
-KV sink. Do not letter n=2. Do not
-launch 128.
+No first-chunk KV sink. Do not letter
+n=2. Do not launch 128.
 
 ---
 

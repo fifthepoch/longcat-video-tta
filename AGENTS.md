@@ -74,6 +74,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Prefix-protect first-8 spec** | `sweep_experiment/reports/paper_tables/2026-09-20_t2v_pprot8_spec.md` | MovieGen T2V 30 s. `notta` / `sf_window` / `sf_pprot`. No first-chunk KV sink. **SUBMIT-READY, not launched.** Do not letter n=2. Do not launch 128. |
 | **Sponsor summer report** | `sweep_experiment/reports/paper_tables/2026-09-20_sponsor_summer_report.md` | External partner note. Classes + outcomes only; no unpublished recipe. Figures: `paper_tables/sponsor_summer_2026_figures/`. |
 | **Temporal threshold → FW write** | `sweep_experiment/reports/paper_tables/2026-09-21_temporal_threshold_fast_weights.md` | Coincidence window + dynamic spike threshold as the \(W_{\text{fast}}\) write. Not STDP. Not a spiking backbone. |
+| **Coincidence-gated FW update** | `sweep_experiment/reports/paper_tables/2026-09-21_coincidence_fastweight_update.md` | Detailed write: event tape, high-pass, spatial \(C\), Azouz \(\theta\), DeltaNet on \(S\) only, no decay. Not a submit. |
 | **Leftover / well / memory glossary** | `sweep_experiment/reports/paper_tables/2026-09-20_leftover_well_memory_glossary.md` | **SAY:** context frames, KV cache, context-frame representation. Well ≠ fast weights. Old slang stays in old files only. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
@@ -316,7 +317,7 @@ Per-method `merged_summary.json` lives at:
 
 ## 3. Active project state (snapshot — keep current)
 
-**Date:** Updated 2026-09-20.
+**Date:** Updated 2026-09-21.
 
 - **Paper target:** CVPR 2027.
 - **Paper method (2026-09-04):** Pseudo-future Search is **dropped**
@@ -367,16 +368,18 @@ Per-method `merged_summary.json` lives at:
   **context frames**, **KV cache**, **fast weights**.
   Do not say leftover / well / memory. Rule:
   `.cursor/rules/field-language.mdc`.
-- **Current next (2026-09-20):** Prefix-protect
-  first-8 MovieGen T2V 30 s. `notta` (full KV
-  replay) vs `sf_window` (last 21, sink=0) vs
-  `sf_pprot` (window + gated legal bank).
-  First-chunk tokens leave the KV cache;
-  frozen \((\mu,\mathrm{scale})\) is admission
-  only. **SUBMIT-READY, not launched**
-  (`submit_t2v_pprot8.sh`). Do not letter n=2.
-  Do not launch 128. No I2V. No TTC. Spec:
-  `paper_tables/2026-09-20_t2v_pprot8_spec.md`.
+- **Current next (2026-09-21):** Coincidence-gated
+  fast-weight update. Event tape + high-pass +
+  spatial \(C\) + Azouz \(\theta\); DeltaNet on
+  coincident tokens only; no decay on silence;
+  fork on leave-support. Prefix cloud stays
+  which-pattern. **Not a submit. No GPU.**
+  Note: `paper_tables/2026-09-21_coincidence_fastweight_update.md`.
+  Prefix-protect first-8 remains the cloud-only
+  control (**SUBMIT-READY, not launched**).
+  Do not letter n=2. Do not launch 128. No I2V.
+  No TTC. Do not treat `sf_pprot` legal-bank
+  replay as this matrix hook.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official

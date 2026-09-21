@@ -6377,3 +6377,29 @@ Occupancy is the matrix store, not our
 temporal-threshold admission.
 
 ---
+
+## 2026-09-21 — coincidence-gated fast-weight update locked
+**Tags:** method, fast-weights, write-rule
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-21_coincidence_fastweight_update.md`
+
+User asked for a strong detailed write
+after pursuing the temporal-threshold
+direction. Locked rule: per-cell event
+tape with opening-quantile ε; Fontaine
+high-pass \(u=V_{\mathrm{fast}}-V_{\mathrm{slow}}\);
+spatial coincidence \(C=|S|/N\) in
+\(W=3\) latents; Azouz \(\theta\) falls
+with rise and rises after a write;
+DeltaNet residual **only on** \(S\),
+\(\eta\) from rise not Titans residual;
+no decay on silence; chunk 0 seeds
+\(W_{\text{fast}}\) (tokens still leave
+KV); prefix cloud is which-pattern;
+leave-support + fire = fork. Isolation
+vs write-every / Titans / cloud-only /
+mean-\(\|\Delta\|\) / coincidence+decay.
+Not a submit. Do not treat `sf_pprot`
+legal-bank replay as this hook.
+
+---

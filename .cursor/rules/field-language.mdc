@@ -22,8 +22,9 @@ Code and old tables may still say `leftover`. When talking to the
 user, say **context frames**. Do not ask them to adopt our slang.
 
 The context-frame representation paper is **dropped** (too thin).
-Current method: **prefix-protected fast weights** — update /
-protect / fork. First experiment: first-chunk tokens leave
-the KV cache; frozen \((\mu,\mathrm{scale})\) admits later
-writes (`sf_window` / `sf_pprot`, first-8 MovieGen T2V).
-Do not call that a well. Do not title “motion = spread.”
+Current method: **coincidence-gated fast weights** —
+update / protect / fork. Prefix cloud is which-pattern.
+Coincidence window + rise-time θ decides when / which
+tokens write. First-chunk tokens leave the KV cache.
+`sf_pprot` remains the cloud-only control. Do not call
+that a well. Do not title “motion = spread.”
