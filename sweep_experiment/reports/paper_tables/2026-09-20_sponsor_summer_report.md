@@ -1,298 +1,233 @@
 # Summer 2026 Progress Report
 
-**Long-horizon video generation: what test-time methods can and cannot do**
+**Long-horizon video generation**
+May–September 2026 · confidential partner briefing
 
-Period: May–September 2026
-Audience: project sponsor (external)
+This note follows the disclosure style of commercial lab technical
+reports (for example OpenAI’s GPT-4 report and Anthropic’s Claude 3
+model card). We describe the *problem*, the *class* of approach, and
+*measured outcomes*. We do not disclose unpublished algorithm designs,
+hyperparameters, training recipes, or the exact interventions now under
+investigation.
 
-This note is a talk-through, not a paper. Official quality numbers below
-are full-clip [VBench](https://vchitect.github.io/VBench-project/) on the
-generated video. **Dynamic Degree** is the share of clips that still
-contain living motion (percent of clips, not a median). We do not treat
-small protocol checks as results.
+Official quality is full-clip [VBench](https://vchitect.github.io/VBench-project/).
+**Dynamic Degree** is the share of clips that still contain living
+motion, not a median. Small protocol checks are not treated as results.
 
----
-
-## Executive summary
-
-We spent the summer answering a practical question: if a frozen video
-generator starts to lose identity, motion, or picture quality as it
-rolls out, can a cheap inference-time method keep the continuation
-faithful — without retraining the foundation model?
-
-Three results are now solid enough to brief.
-
-1. **A small test-time weight update is not a product lever on the
-   short, in-domain task.** A global bias (AdaSteer), a rank-2 adapter,
-   and a rank-8 LoRA are all ~null versus doing nothing at N≈1000.
-   About a quarter of videos improve and a quarter get worse. We could
-   not predict the winners from the opening of the clip.
-
-2. **The live problem is long autoregressive rollout.** Once the model
-   conditions on its own previous output, error compounds. On a native
-   ~60 s rollout, sharpness rose ~48% and temporal motion ~45% by the
-   last chunk, while contrast fell. That is why the short 14→14 loop
-   looked saturated: the host was already strong there.
-
-3. **On a 30 s, 128-clip video-to-video table, selecting among the
-   student’s own futures is the only intervention that raised living
-   motion without breaking picture quality.** Always-search (k=4) moved
-   Dynamic Degree from 32.8% to 50.8% and held Imaging Quality.
-   The cost is about 3× wall time (108 s → 354 s per clip). Pinning or
-   re-anchoring the opening, and editing the noise path of a frozen
-   few-step student, did not give a quality win.
-
-We have closed the “frozen gadget” hunt (warp the starting noise, slide
-the predicted picture, rewrite the timestep list). Those edits either
-paint the frame or invent motion the caption did not ask for. The next
-bet is streaming memory that does **not** permanently park the first
-chunk in the KV cache — a first-8 experiment is specified and ready.
+Figures live in `sponsor_summer_2026_figures/` next to this file.
 
 ---
 
-## 1. Setting
+## What we studied
 
-**Task.** Video continuation: the model sees a short real opening
-(context frames) and must invent the unseen future. History is visual,
-not only a text prompt. We also measure text-to-video self-continuation
-when we need a table the adjacent papers already publish.
+A shipped video model will be asked for 30–60 seconds (and longer)
+from a text prompt or from a short user clip. The failure we care about
+is not a single bad frame. It is a tail that freezes, twitches, or
+quietly rewrites the scene while still looking sharp.
 
-**Constraint.** Do not retrain the 1.3B backbone at test. Extra compute
-at inference is allowed. A method should be backbone- and
-dataset-agnostic in concept.
+The practical question for the summer was: if a frozen generator starts
+to lose identity, motion, or picture quality as it rolls out, can extra
+work *at inference* keep the continuation faithful — without retraining
+the foundation model?
 
-**Hosts.** Early work used LongCat-Video (13.6B) as a saturated
-large-model audit. The long-horizon table uses Wan2.1-T2V-1.3B with the
-[Self Forcing](https://arxiv.org/abs/2506.08009) few-step student, and
-[Rolling Forcing](https://arxiv.org/abs/2509.25161) as the cheap
-one-pass baseline. That is the stack the 2025–26 long-horizon papers
-already cite.
-
-**Why this matters commercially.** A shipped video model will be asked
-for 30–60 s (and longer) from a prompt or a user clip. The failure mode
-we see is not a single bad frame. It is a tail that freezes, twitches,
-or quietly rewrites the scene while still looking “sharp.”
+We evaluated on two related tasks. **Video continuation** gives the
+model a few seconds of real context frames and asks it to invent the
+unseen future. **Text-to-video self-continuation** starts from a prompt
+and then conditions on its own output. Both become hard once generation
+is autoregressive: each new chunk is fed the model’s previous pixels or
+attention state.
 
 ---
 
-## 2. Parameter-space test-time adaptation (May–July)
+## Why we left parameter-space methods
 
-The starting method was a **tiny global bias** in the forward process,
-fit on the frames we can see and left on for the invented tail. The
-transfer hypothesis: if the default continuation is slightly off for
-*this* video (identity, lighting, motion style), a steer that helps on
-the opening should help on the future.
+The first half of the summer stayed in **parameter space**: a small
+test-time update (a global bias or a low-rank adapter), fit on the
+frames we can see and left on for the invented tail. The hypothesis is
+familiar from other domains — if this video is slightly off in identity
+or motion style, a cheap correction on the opening should transfer to
+the future.
 
-We ran the same idea at three handle sizes on short in-domain
-continuation (N=1000 unless noted):
+On the short, in-domain continuation task (N=1000), that class of
+method is not a product lever.
 
-| Handle | What moved |
-|---|---|
-| Global bias (AdaSteer) | PSNR 17.93 → 17.94. VBench flat. FVD 155.94 → 156.22. |
-| Rank-2 adapter | Pixel metrics and FVD ≈ do-nothing. |
-| Rank-8 LoRA | Aesthetic +0.047 and Dynamic Degree +0.031, **Imaging Quality −0.034**. A trade, not a win. |
+Always-on parameter-space adaptation sits on the do-nothing mean
+(PSNR 17.93 → 17.94 dB). A larger adapter trades picture quality for
+aesthetic and motion (Imaging Quality −0.034). About a quarter of
+videos improve by more than 0.1 dB and about a quarter get worse. A
+hindsight oracle that knew which videos to touch is +0.19 dB — real
+headroom that requires a skip rule we do not have.
 
-The mean is a wash. The tails are real: about **26%** of videos improve
-by more than 0.1 dB under AdaSteer, and about **28%** degrade by more
-than 0.1 dB. A hindsight oracle that picked “adapt or skip” per video
-is +0.193 dB (three-way, adding LoRA, +0.226 dB and FVD 155.94 → 149.57).
-That headroom requires knowing which videos to touch.
+![Short in-domain continuation: always-on parameter TTA versus a hindsight skip](sponsor_summer_2026_figures/fig1_tta_mean_vs_oracle.png)
 
-**We could not learn that gate.** Pixel, text, VAE, and embedding
-scores of the opening never cleared |ρ| = 0.2 against “TTA will help.”
-The model’s own training loss on the opening — our “this clip surprises
-the network” proxy — had the **wrong sign**: high loss predicted *less*
-gain, not more (lowest-surprise quintile +0.11 dB; highest −0.13 dB).
-Every quintile still had large winners and large losers. A skip-the-
-surprising-clips rule would throw away real wins.
+We tried to learn that skip rule from the opening alone: pixel
+statistics, caption features, compressed-clip fingerprints, and the
+frozen model’s own training loss on the observed frames. None of those
+scores predicted “adaptation will help this video” at a useful
+accuracy. The surprise proxy had the **wrong sign**. Clips that already
+looked easy to the model gained a little; clips that surprised it lost
+on average (lowest-surprise quintile +0.11 dB, highest −0.13 dB). Every
+bucket still had large winners and large losers. A router that looked
+useful on a 200-video pilot flipped sign at N=1000.
 
-A 12-budget router looked useful on an N=200 pilot and **flipped sign
-at N=1000**. The 12-config “oracle” itself sits on the max-over-noise
-floor. Routing a near-flat actuator is not a quality method.
+![Parameter-space TTA gain versus how much the opening surprised the frozen model](sponsor_summer_2026_figures/fig2_tta_surprise_quintiles.png)
 
-AdaSteer on native long-horizon autoregressive rollout (fixed,
-streaming, or chunk-0-guided) was still null (paired p ≥ 0.26). A
-global activation bias can shift population statistics. It does not
-cut per-video drift.
+The same class of update remained null on native long-horizon
+autoregressive rollout (paired test p ≥ 0.26). A global activation
+nudge can shift population statistics. It does not cut per-video drift.
 
-Independent confirmation in the field: Pathwise Test-Time Correction
-(Feb 2026, [arXiv:2602.05871](https://arxiv.org/abs/2602.05871)), §4 —
-test-time parameter optimization collapses; pretrained video models
-are sensitive to weight changes; the remaining lever is sampling-space
-/ conditioning correction.
+This is not only our measurement. Pathwise Test-Time Correction
+(February 2026, [arXiv:2602.05871](https://arxiv.org/abs/2602.05871))
+reaches the same conclusion in print: test-time parameter optimization
+collapses on modern video generators; pretrained weights are sensitive
+to small changes; the remaining lever is the **sampling trajectory**.
 
-**Takeaway for a product stack.** Do not expect a small inference-time
-LoRA or bias to rescue long video. If you adapt weights at test, you
-need a reliable skip rule we do not yet have, and you should expect
-Imaging Quality to pay for any aesthetic or motion bump.
+That is why we moved. Parameter space was the right first question on
+the short task. Once the host is already strong there, the live problem
+is long self-conditioning, and weight tweaks are the wrong handle.
 
 ---
 
-## 3. Where the headroom actually is
+## Why sampling space — and why distillation is on the table
 
-On the short in-domain loop the host is already strong. Once generation
-is **autoregressive** — each chunk is conditioned on the model’s own
-previous pixels or KV cache — drift grows with length.
+Once each chunk is conditioned on the model’s own previous output,
+error compounds with length. On a native ~60 s rollout (N=8),
+sharpness rose about 48% and temporal motion about 45% by the last
+chunk, while contrast fell about 16%. The 30 s read understated the
+problem.
 
-On native geometry, N=8, ~60 s (12 chunks):
+![Native ~60 s autoregressive drift (percent versus the first chunk)](sponsor_summer_2026_figures/fig3_long_horizon_drift.png)
 
-- sharpness +48% by the last chunk (versus +28% at ~30 s)
-- temporal motion +45% (versus +8% at ~30 s)
-- contrast −16%
+Sampling-space work means: keep the backbone frozen, and intervene on
+the *draw* — emit more than one future and pick; change what later
+chunks are allowed to attend to; or edit the path inside a chunk. Those
+are classes, not a recipe.
 
-So the 30 s read understated the problem. This is also the failure the
-2025–26 streaming papers name: over-saturation, freeze, and
-motion-diversity loss as the model eats its own tail.
-
-We therefore moved the experiment from “which bias vector?” to
-**training-free interventions on the trajectory**, still with frozen
-weights. Three buckets:
-
-- **Search** — emit more than one future; pick.
-- **Memory** — later chunks forget the opening; keep or re-anchor it
-  without new weights (KV cache, attention sink).
-- **Path** — change the starting noise, the timestep list, or the
-  predicted picture inside a chunk.
+Distillation is the cost conversation. Selection among multiple futures
+can raise quality, but it multiplies wall time. A later student that
+sees the same recipe in training can, in principle, amortize that
+search into one forward pass. We treat distillation as a *direction*,
+not as a method we are ready to specify here.
 
 ---
 
-## 4. Sampling-space results (August–September)
+## What we measured after the move
 
-Same video-to-video task, long enough that the model feeds on itself:
-real captioned openings, 30 s continuation, **128 clips**. This is the
-table we would cite.
+The citeable table is 30 s video continuation on 128 clips, using a
+public few-step student and a public streaming baseline already
+reported in the 2025–26 long-horizon literature. We compare those
+published systems to **inference-time selection among the student’s
+own futures**.
 
-| Method | Subject | Imaging Quality | Dynamic Degree | Seconds / clip |
+| | Subject | Imaging quality | Living clips | Seconds / clip |
 |---|---:|---:|---|---:|
-| Self Forcing (do-nothing) | 0.666 | 72.07 | 32.8% (42 / 128) | 108 |
-| Rolling Forcing | 0.685 | 71.52 | 28.9% (37 / 128) | 47 |
-| Gated search, k=4 | 0.660 | 72.38 | 47.7% (61 / 128) | 294 |
-| Always-search, k=4 | 0.661 | 72.19 | **50.8% (65 / 128)** | 354 |
+| Published few-step baseline | 0.666 | 72.07 | 32.8% (42 / 128) | 108 |
+| Published streaming baseline | 0.685 | 71.52 | 28.9% (37 / 128) | 47 |
+| Inference-time selection | 0.661 | 72.19 | **50.8% (65 / 128)** | 354 |
 
-**Search is the quality method.** Always-search raises living clips
-32.8% → 50.8% and holds Imaging Quality and subject consistency.
-Reconstruction versus the real tail is essentially unchanged (PSNR
-9.25 → 9.21). The win is clips that *start moving*: 25 became living,
-2 lost living, 40 were already living, 61 stayed still. Net +23 clips.
+Selection is the quality method in this table. Living clips move from
+32.8% to 50.8% while Imaging Quality and subject consistency hold.
+Reconstruction versus the real tail is essentially unchanged. The
+tradeoff is cost: about **3×** the few-step baseline. The published
+streaming system is cheaper (47 s) and *loses* living motion while
+gaining identity — the two fight.
 
-The tradeoff is cost: roughly **3×** Self Forcing. Rolling is the cheap
-one-pass baseline (47 s) and *loses* Dynamic Degree while gaining
-subject consistency. Identity and living motion fight.
+![Living-clip rate and generation time on the 128-clip, 30 s table](sponsor_summer_2026_figures/fig4_selection_dyn_and_cost.png)
 
-Gated search keeps 61 of Always-search’s 65 living clips at about
-−17% wall versus always-on. That is an **efficiency controller**, not a
-new idea — CachedSearch / Video-T1 already occupy “cheapen the search.”
+The win is not a uniform lift. Twenty-five clips became living, two
+lost living, forty were already living, and sixty-one stayed still.
 
-**Memory, without a new student.**
+![Per-clip Dynamic Degree transitions under inference-time selection](sponsor_summer_2026_figures/fig5_selection_clip_transitions.png)
 
-- Pick the candidate closest to the opening: subject rises (0.746 on
-  N=32) and tail motion falls (−18%). Official Dynamic Degree does not
-  rise. The opening is a good appearance prior and a bad motion prior.
-- Extra attention sink, no new training: taxes subject or Imaging
-  Quality.
-- Re-anchor later chunks to frame 0: motion freezes.
-- Rolling’s permanent first-chunk sink is the published version of this
-  trade: cheaper and more identity-stable, fewer living clips.
+![Selection sits with the few-step baseline on identity and picture quality](sponsor_summer_2026_figures/fig6_identity_vs_picture.png)
 
-**Path edits on a frozen few-step student** failed as quality methods.
-Warping the starting noise collapsed Imaging Quality (high 40s–50s
-versus ~72). Sliding the predicted picture was a crop, not a pan.
-Changing the timestep list produced twitch or paint — the student never
-trained on that path. Longer / rewritten captions can raise Dynamic
-Degree by inventing pans the opening did not contain, and subject
-consistency falls (0.576 on the N=8 caption-extend harvest).
+A cheaper selection policy recovered most of the living-clip gain at
+somewhat lower wall time. We read that as an efficiency controller, not
+as a new idea — the academic literature already occupies “make search
+cheaper.”
 
-**Selecting among the student’s own futures is safe. Editing the path
-of a frozen student is not.** That matches how Self Forcing and Rolling
-are trained: train with the same recipe you will use at test. A new
-path needs a new student, not a test-time patch.
+**Other sampling-space classes did not give a quality win.** Rewarding
+a continuation that stays close to the opening raises subject
+consistency and drops tail motion: the opening is a good appearance
+prior and a bad motion prior. Permanently pinning early frames in
+attention buys identity and taxes living motion — the same trade the
+published streaming baseline already makes. Edits to the noise path of
+a frozen few-step student either collapse Imaging Quality or invent
+camera motion the opening did not contain. Selecting among futures the
+student already knows how to emit is safe. Changing the path of a
+student that never trained on that path is not. That is also how the
+published few-step and streaming systems are trained: train with the
+recipe you will use at test.
 
 ---
 
-## 5. What this changes about the next method
+## Frame-by-frame examples
 
-A 13-point gate on Always-search is not a paper, and it is not a
-product differentiator — it is a scheduler. The closed negative catalog
-is still useful:
+The strips below are matched clips from the 128-clip table. Each row is
+one system; columns are 1 s, 10 s, 20 s, and 29 s. Row labels are
+generic on purpose.
 
-| Tempting lever | What we measured |
-|---|---|
-| Small test-time LoRA / bias | Mean null; cannot route the tails |
-| Pin the first chunk in the KV cache / sink | Identity up, living motion down |
-| Warp noise or slide the predicted frame | Picture quality dies, or no extra motion |
-| Rewrite the prompt to “add motion” | Invented camera; identity loss |
+**Clip A — selection woke a still continuation.** The published
+baseline stays near-static through the tail. Selection starts living
+motion without a visible identity rewrite.
 
-The open problem the field is actually fighting is **streaming
-generation with a bounded KV cache**: later tokens must leave, the
-opening must not be copied forever (that kills motion), and a collapse
-or scene rewrite must not be written back into whatever outlives the
-window.
+![Clip A. Top: published few-step baseline. Bottom: inference-time selection](sponsor_summer_2026_figures/fig7_frames_became_living.png)
 
-Our current method sentence, now implemented as a first-8 MovieGen
-text-to-video 30 s experiment (not yet run):
+**Clip B — both stay still.** Selection does not invent motion on every
+prompt. Sixty-one of 128 clips remain static under both systems. That
+is part of the honest read: the method moves a minority of borderline
+clips, not the whole set.
 
-- Do **not** keep the first chunk in the KV cache.
-- Keep only a frozen summary of that opening — its center and spread —
-  as **admission control**.
-- Later chunks may update a small session-local store (the write set
-  of fast weights) only if they are still in-support and still living.
-- A freeze or a takeover is refused. A true scene change forks a new
-  slot instead of blending. The 1.3B stays frozen.
+![Clip B. Both rows stay static to 30 s](sponsor_summer_2026_figures/fig8_frames_stayed_static.png)
 
-That inverts two published defaults. Titans-style surprise would
-*write* a freeze (it is new relative to a moving state). A first-chunk
-KV sink would *attend to* the opening forever. We evict the tokens and
-keep the statistics as a gate.
+If a strip is missing in a local checkout, it is produced on the
+cluster by `scripts/export_sponsor_frame_strips.py` after the 128-clip
+videos are present.
 
 ---
 
-## 6. What we will do next
+## Research direction (without the recipe)
 
-1. Run the first-8 prefix-protect table
-   (`notta` / window-only / gated store). Call it on full-clip VBench
-   and Dynamic Degree percent. Do not scale until that protocol passes
-   and quality does not die.
-2. If the window-only arm already recovers motion versus a permanent
-   first-chunk sink, the eviction claim is real. The gate then has to
-   beat “just forget the opening.”
-3. A trained student (search distilled into one shot, or a new memory
-   recipe under the same train=test rule) is a later, more expensive
-   paper. We will not start that job to relabel a published sink.
+The summer’s usable conclusion is a map, not a named gadget.
 
-We are targeting a CVPR 2027 method paper. The summer’s deliverable
-for the sponsor is the measurement: **where adaptation fails, where
-search pays, and which frozen edits are unsafe.** That catalog is what
-lets the next method be small.
+Parameter-space test-time updates are the wrong handle on a saturated
+short task and do not flatten long-horizon drift. Sampling-space
+**selection** is the only class that raised living motion on the
+128-clip table without breaking picture quality, and it is expensive.
+Frozen path edits and permanently pinning the opening are unsafe or
+identity-for-motion trades.
 
----
+What we will work on next sits in the gap those facts leave. Long
+sessions need some way to remember the opening after early frames leave
+a bounded attention window — without copying those frames forever,
+which published streaming systems already show collapses motion. They
+also need a way to refuse a freeze or a scene rewrite so it is not
+written back into whatever outlives the window. Separately, if
+selection remains the quality lever, a student trained under the same
+rule could in principle pay the search cost once, at train time.
 
-## Figures we can walk in a meeting
-
-These are already in the PI briefing pack
-(`sweep_experiment/reports/briefing_charts_raw/figures_formal/`):
-
-| File | One-line read |
-|---|---|
-| `01_dpsnr_vs_baseline.png` | AdaSteer / LoRA vs do-nothing: mean on the line, tails real |
-| `02_oracle_vs_baseline.png` | Hindsight skip/adapt is the only pixel win |
-| `03_vbench_by_method_scores.png` | LoRA is an aesthetic–quality trade |
-| `04_ood_vs_adasteer_quintiles.png` | High surprise predicted *less* TTA gain |
-| `05_router_metrics_n200_n1000.png` | Pilot router dies at N=1000 |
-| `07_ar_drift_12chunks.png` | Native ~60 s drift compounds |
-| `08_cite128_dyn_wall.png` | Search buys Dynamic Degree at 3× cost |
-| `09_dyn_transitions_search.png` | +23 living clips; 61 stay still |
-| `10_subject_vs_iq_cite128.png` | Search sits on Self Forcing for identity and IQ |
-| `11_prefix_subject_tail.png` | Matching the opening freezes the tail |
-| `12_path_iq_dyn_n8.png` | Frozen path edits kill Imaging Quality |
+We are not specifying the mechanism here. The forthcoming academic
+paper is the place for that design. The first empirical check is
+intentionally small; we will not scale a table until quality holds on
+the official full-clip metrics.
 
 ---
 
-## One-page numbers (for a slide)
+## Limitations
 
-**Short TTA (N=1000).** AdaSteer +0.008 dB; LoRA IQ −0.034; gate AUC ≈ 0.50;
-2-way oracle +0.193 dB.
+- The 60 s drift audit is N=8. The direction is clear; the exact
+  percentages should not be over-read.
+- Dynamic Degree is a binary living/still call. We inspect clips when
+  a Dyn-only lift could be flicker.
+- Selection cost is hardware- and implementation-dependent. The 3×
+  figure is our wall on this stack, not a theoretical minimum.
+- This briefing does not include unpublished training runs.
 
-**Long AR audit.** 12 chunks ≈ 60 s: sharpness +48%, motion +45%, contrast −16%.
+---
 
-**Cite-128, 30 s V2V.** Self Forcing Dyn 32.8% / 108 s; Always-search
-50.8% / 354 s; Rolling 28.9% / 47 s.
+## Sources (public)
+
+- VBench: [vchitect.github.io/VBench-project](https://vchitect.github.io/VBench-project/)
+- Pathwise Test-Time Correction, arXiv:2602.05871
+- The few-step and streaming baselines we cite are the systems those
+  papers already publish on; we do not restate their internals.

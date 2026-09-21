@@ -6322,3 +6322,19 @@ smokes. Next paragraph is prefix-protect first-8,
 not claimed as a result.
 
 ---
+
+## 2026-09-20 — sponsor report rewritten for disclosure
+**Tags:** writing, sponsor, briefing
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_sponsor_summer_report.md`
+
+User: keep technical methods ambiguous; explain the
+move from parameter space to sampling / distillation
+without naming the intervention; direction without
+the recipe; prose not a bullet dump; mirror
+OpenAI/Anthropic withhold; add charts and
+frame-by-frame. Rewrote the note. Six data figures
+on disk. Frame strips need a Duo scp of cite-128
+0003 / 0001 (`export_sponsor_frame_strips.py`).
+
+---
