@@ -71,13 +71,20 @@ over time, so use an RNN.” It is the
 + count + a threshold that depends on
 rise time.
 
-Irie & Gershman (2026) already connect
-fast-weight matrices to short-term
-synaptic modulation. That occupies
-“\(W_{\text{fast}}\) ≈ fast synapses.”
-It does **not** occupy “the write is a
-coincidence test with a dynamic
-threshold.”
+Irie & Gershman (2026) is a **primer**,
+not a video paper. It unifies linear
+transformers / DeltaNet / Mamba2 / GLA
+as Fast Weight Programmers: every token
+writes a Hebbian or delta outer product,
+optionally with decay. That occupies
+“\(W_{\text{fast}}\) is a short-term
+synapse matrix.” They do **not** run
+video. They do **not** use a coincidence
+window or an Azouz-style rise-time
+threshold as admission. Their own
+§4.2 lists “the time window for
+plasticity” as something ML FWPs still
+lack.
 
 ---
 

@@ -6358,3 +6358,22 @@ cloud can stay as which-pattern. Do not
 port a spiking DiT.
 
 ---
+
+## 2026-09-21 — Irie & Gershman occupy the store, not the write
+**Tags:** method, literature, fast-weights
+**Owner:** agent
+**Refs:** Irie & Gershman 2026 OpenReview TDG8EkNmQR;
+`paper_tables/2026-09-21_temporal_threshold_fast_weights.md`
+
+User: that sounds already published. Correction:
+Irie & Gershman is a primer. Update rules are
+Hebb / delta / decay on **every token**. Cite
+language, RL games, time-series class,
+**image** generation — not long-horizon video.
+Coincidence in their Hebb story is pre×post
+at one step, not König \(W\)+θ. They name
+a plasticity time window as future work.
+Occupancy is the matrix store, not our
+temporal-threshold admission.
+
+---
