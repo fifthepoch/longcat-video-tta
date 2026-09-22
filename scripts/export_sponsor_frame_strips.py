@@ -85,14 +85,14 @@ def main() -> int:
     still_sel = _find(root, "panda_0001", "always")
     if woke_base and woke_sel:
         _sheet(
-            [("Published baseline", woke_base), ("Inference-time selection", woke_sel)],
+            [("Few-step baseline", woke_base), ("Always-on seed search", woke_sel)],
             out / "fig7_frames_became_living.png",
         )
     else:
         print(f"missing living-flip pair under {root}")
     if still_base and still_sel:
         _sheet(
-            [("Published baseline", still_base), ("Inference-time selection", still_sel)],
+            [("Few-step baseline", still_base), ("Always-on seed search", still_sel)],
             out / "fig8_frames_stayed_static.png",
         )
     else:

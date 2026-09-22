@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Sponsor-safe charts for the summer 2026 progress note.
 
-Labels stay generic. No unpublished method names.
+Always-on seed search is a known sampling practice. Do not name
+unpublished methods.
 """
 from __future__ import annotations
 
@@ -120,7 +121,7 @@ def fig_selection_dyn_cost() -> None:
     labels = [
         "Few-step",
         "Streaming",
-        "Selection",
+        "Seed search",
     ]
     dyn = [32.8, 28.9, 50.8]
     wall = [108, 47, 354]
@@ -152,7 +153,7 @@ def fig_transitions() -> None:
     fig, ax = plt.subplots(figsize=(7.0, 4.2))
     ax.bar(labs, vals, color=cols)
     ax.set_ylabel("Clips (N=128)")
-    ax.set_title("Per-clip Dynamic Degree: selection vs. few-step baseline")
+    ax.set_title("Per-clip Dynamic Degree: always-on seed search vs. few-step")
     for i, v in enumerate(vals):
         ax.text(i, v + 1.2, str(v), ha="center")
     _save(fig, "fig5_selection_clip_transitions.png")
@@ -163,7 +164,7 @@ def fig_identity_iq() -> None:
     pts = [
         ("Few-step baseline", 0.666, 72.07, 42),
         ("Streaming baseline", 0.685, 71.52, 37),
-        ("Selection", 0.661, 72.19, 65),
+        ("Always-on seed search", 0.661, 72.19, 65),
     ]
     fig, ax = plt.subplots(figsize=(7.2, 4.4))
     for lab, x, y, k in pts:
@@ -171,7 +172,7 @@ def fig_identity_iq() -> None:
         ax.annotate(lab, (x, y), textcoords="offset points", xytext=(7, 7))
     ax.set_xlabel("Subject consistency (median)")
     ax.set_ylabel("Imaging quality (median)")
-    ax.set_title("Selection holds identity and picture quality while motion rises")
+    ax.set_title("Seed search holds identity and picture quality while motion rises")
     _save(fig, "fig6_identity_vs_picture.png")
 
 
