@@ -6,9 +6,11 @@ Submitted from `6694ca7`. Generate 327 / 328 / 329 /
 FAILED 2:0** (residual-η broadcast). VBench **18234333
 CANCELLED** (`afterok`). Harvest:
 `2026-09-22_t2v_coinc8_harvest.md`.
-Resubmit titans only:
-`wan_experiment/sbatch/submit_t2v_coinc8_titans_fix.sh`.
-Do not remake the five finished arms.
+Titans rerun **18257632** + VBench **18257633**
+afterok (`d0016dc`). Write tape: C≈0.91,
+coinc/meandelta 8 seed + 40 fork. Do not
+retune on this eight. Do not remake the
+five finished arms.
 
 First experiment for the temporal write rule.
 Frozen Wan 1.3B. First-chunk tokens leave the

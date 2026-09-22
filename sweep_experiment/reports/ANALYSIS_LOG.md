@@ -6511,3 +6511,26 @@ skips that path. Fix residual on `W[0]`;
 resubmit titans + VBench only.
 
 ---
+
+## 2026-09-22 — coinc tape: always write, always fork
+**Tags:** harvest, diagnostic, t2v, coinc
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-22_t2v_coinc8_harvest.md`;
+jobs 18257632–633; harvest paste 13:13
+
+User pulled `d0016dc` and submitted titans
+rerun **18257632** + VBench **18257633**.
+Re-harvest still PROTOCOL FAIL (expected).
+Write tape on the five finished arms:
+mean \(C \approx 0.913\); coinc wrote 48/48
+(`seed` 8, `fork/leave_support` 40);
+meandelta the same 8+40; writeevery 48/48
+every-token. Prefix cloud `center>2` on
+every later chunk; coincidence never
+refused. Isolation vs meandelta collapsed
+on the log. With `max_slots=2`, opening
+\(W_{\text{fast}}\) is gone by chunk 2.
+Not a quality call. Do not retune on this
+eight. Do not letter n=2. Do not launch 128.
+
+---
