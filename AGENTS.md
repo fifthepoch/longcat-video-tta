@@ -77,7 +77,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Coincidence-gated FW update** | `sweep_experiment/reports/paper_tables/2026-09-21_coincidence_fastweight_update.md` | Detailed write: event tape, high-pass, spatial \(C\), Azouz \(\theta\), DeltaNet on \(S\) only, no decay. Not a submit. |
 | **Coincidence write publishability** | `sweep_experiment/reports/paper_tables/2026-09-21_coincidence_publishability.md` | Medium novelty. Top venue only if isolation holds on 128. Not on the sentence alone. |
 | **Temporal logic, other uses** | `sweep_experiment/reports/paper_tables/2026-09-21_temporal_logic_other_uses.md` | Same timing rule on freeze / KV split / eviction / flicker / fork / CL. Write stays first. |
-| **Coincidence first-8 spec** | `sweep_experiment/reports/paper_tables/2026-09-21_t2v_coinc8_spec.md` | MovieGen T2V 30 s. `notta` / `sf_window` / `sf_coinc` / writeevery / titans / meandelta. **IN FLIGHT 18234327–333.** |
+| **Coincidence first-8 spec** | `sweep_experiment/reports/paper_tables/2026-09-21_t2v_coinc8_spec.md` | MovieGen T2V 30 s. `notta` / `sf_window` / `sf_coinc` / writeevery / titans / meandelta. **PROTOCOL FAIL.** Titans 18234331 crash; VBench 333 cancelled. Harvest: `2026-09-22_t2v_coinc8_harvest.md`. |
 | **Leftover / well / memory glossary** | `sweep_experiment/reports/paper_tables/2026-09-20_leftover_well_memory_glossary.md` | **SAY:** context frames, KV cache, context-frame representation. Well ≠ fast weights. Old slang stays in old files only. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
@@ -371,18 +371,18 @@ Per-method `merged_summary.json` lives at:
   **context frames**, **KV cache**, **fast weights**.
   Do not say leftover / well / memory. Rule:
   `.cursor/rules/field-language.mdc`.
-- **Current next (2026-09-22):** Coincidence-gated
-  fast-weight first-8 **IN FLIGHT**.
-  `notta` **18234327** / `sf_window` **18234328** /
-  `sf_coinc` **18234329** / `sf_writeevery` **18234330** /
-  `sf_titans` **18234331** / `sf_meandelta` **18234332** /
-  VBench **18234333** afterok. Series
-  `t2v_moviegen_coinc_8v`. Submitted PD (Priority).
-  When they leave `squeue`, `sacct` + harvest
-  (`harvest_t2v_coinc.py`) before any quality call.
-  Do not letter n=2. Do not launch 128. No I2V.
-  No TTC. Spec:
-  `paper_tables/2026-09-21_t2v_coinc8_spec.md`.
+- **Current next (2026-09-22):** Coincidence
+  first-8 **PROTOCOL FAIL**. Five generate
+  arms 8/8 (327–330, 332 COMPLETED 0:0).
+  `sf_titans` **18234331 FAILED 2:0**
+  (residual-η broadcast). VBench **18234333
+  CANCELLED**. No quality call. Pull the
+  eta fix, resubmit titans + VBench only
+  (`submit_t2v_coinc8_titans_fix.sh`). Do
+  not remake the five finished arms. Do
+  not letter n=2. Do not launch 128. No
+  I2V. No TTC. Harvest:
+  `paper_tables/2026-09-22_t2v_coinc8_harvest.md`.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official
@@ -557,13 +557,15 @@ Per-method `merged_summary.json` lives at:
   native AR long-horizon drifts; AdaSteer delta + routing closed;
   BoN k=4 N=8 passed credibility gate as always-on search, not a hard
   incoming-context gate.
-- **In-flight cluster jobs** (as of 2026-09-22 02:32):
-  Coincidence first-8 **18234327–333** PD
-  (`h200_cour` Priority; VBench Dependency).
-  Series `t2v_moviegen_coinc_8v`. Do not harvest
-  until they leave `squeue`. Then `sacct` +
-  `harvest_t2v_coinc.py`. Do not letter n=2.
-  Do not launch 128. Prior closed:
+- **In-flight cluster jobs** (as of 2026-09-22 13:03):
+  Coincidence first-8 **PROTOCOL FAIL**.
+  18234327–330 + 332 COMPLETED 0:0.
+  titans **18234331 FAILED 2:0**. VBench
+  **18234333 CANCELLED**. Series
+  `t2v_moviegen_coinc_8v`. Resubmit titans
+  + VBench only; then harvest. Do not
+  letter n=2. Do not launch 128. Prior
+  closed:
   Pwarp amp leftover n=2 **HARVESTED**
   17172470–483 COMPLETED 0:0. All five **NO**.
   Do not letter n=2. Do not launch 128.

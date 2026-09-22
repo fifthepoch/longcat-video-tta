@@ -1,7 +1,14 @@
-# Coincidence-gated fast weights first-8 — IN FLIGHT (2026-09-22)
+# Coincidence-gated fast weights first-8 — PROTOCOL FAIL (2026-09-22)
 
 **Jobs:** 18234327–333 (`t2v_moviegen_coinc_8v`).
-Submitted from `6694ca7`. All PD at paste.
+Submitted from `6694ca7`. Generate 327 / 328 / 329 /
+330 / 332 **COMPLETED 0:0**. `sf_titans` **18234331
+FAILED 2:0** (residual-η broadcast). VBench **18234333
+CANCELLED** (`afterok`). Harvest:
+`2026-09-22_t2v_coinc8_harvest.md`.
+Resubmit titans only:
+`wan_experiment/sbatch/submit_t2v_coinc8_titans_fix.sh`.
+Do not remake the five finished arms.
 
 First experiment for the temporal write rule.
 Frozen Wan 1.3B. First-chunk tokens leave the

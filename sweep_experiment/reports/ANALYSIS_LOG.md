@@ -6490,3 +6490,24 @@ are now on the laptop at
 `/tmp/sponsor_clips/`.
 
 ---
+
+## 2026-09-22 — coinc first-8 protocol FAIL (titans crash)
+**Tags:** harvest, protocol, t2v, coinc
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-22_t2v_coinc8_harvest.md`;
+`experiment_outputs/2026-09-22.md`;
+jobs 18234327–333
+
+User pasted sacct + harvest. Protocol
+**FAIL**. Five generate arms 8/8
+(COMPLETED 0:0, ~15 min). `sf_titans`
+**18234331 FAILED 2:0** at 3:46.
+VBench **18234333 CANCELLED** (`afterok`).
+No quality call. No 128. No n=2 letter.
+Cause: `eta()` for titans did
+`v.unsqueeze(0) - pred` with pred
+`[I, L, H, D]` (I=1560, L=8). Write-every
+skips that path. Fix residual on `W[0]`;
+resubmit titans + VBench only.
+
+---

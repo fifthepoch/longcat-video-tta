@@ -7,7 +7,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from coincidence_fastweight import CoincidenceTape, decide_write, pool_to_patches
+from coincidence_fastweight import (
+    N_CELLS,
+    CoincidenceTape,
+    FastWeightSession,
+    decide_write,
+    pool_to_patches,
+)
 
 
 def _torch():
@@ -84,6 +90,28 @@ def main() -> int:
     ev = decide_write("writeevery", still_tape, still_obs, "protect")
     if not ev["do_write"]:
         print("FAIL writeevery always writes")
+        return 2
+
+    sess = FastWeightSession(
+        mode="titans", n_layers=2, n_heads=2, head_dim=4,
+    )
+    sess.reset(device="cpu")
+    B, S, H, D = 1, N_CELLS, 2, 4
+    k = torch.randn(B, S, H, D)
+    v = torch.randn(B, S, H, D)
+    sess.stash(0, k, v)
+    sess.stash(1, k, v)
+    mask = torch.ones(N_CELLS, dtype=torch.bool)
+    log = sess.write_from_stash(mask, 0.1)
+    print(
+        f"titans write wrote={int(log['wrote'])} n_tok={log['n_tok']} "
+        f"eta={log['eta']:.4f} reason={log['reason']}"
+    )
+    if not log["wrote"] or log["n_tok"] != N_CELLS:
+        print("FAIL titans should write every token")
+        return 2
+    if not (0.0 < float(log["eta"]) <= float(sess.eta_max) + 1e-8):
+        print("FAIL titans eta out of range")
         return 2
     print("PASS")
     return 0

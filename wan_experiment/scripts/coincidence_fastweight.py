@@ -232,9 +232,13 @@ class FastWeightSession:
         torch = _torch()
         if self.mode == "titans" and k is not None and v is not None:
             self._ensure(k)
+            # k, v are one layer's selected tokens [I, H, D]. Score
+            # residual on W[0] (same tokens write_from_stash passed).
+            # The old unsqueeze(0) broadcast [1,I,H,D] vs [I,L,H,D]
+            # crashed sf_titans 18234331 on the first write.
             phi = silu(k.float())
-            pred = torch.einsum("lhdk,ihk->ilhd", self.W, phi)
-            resid = v.float().unsqueeze(0) - pred
+            pred = torch.einsum("hdk,ihk->ihd", self.W[0], phi)
+            resid = v.float() - pred
             num = torch.linalg.vector_norm(resid, dim=-1).mean().item()
             den = torch.linalg.vector_norm(v.float(), dim=-1).mean().item() + 1e-6
             return float(min(self.eta_max, num / den))
