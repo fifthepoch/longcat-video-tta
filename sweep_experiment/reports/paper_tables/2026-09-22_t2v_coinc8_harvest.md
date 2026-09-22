@@ -65,4 +65,8 @@ coinc and meandelta already match on the write log. Isolation vs the energy gate
 
 ## Quality
 
-None. No `vbench_full/joined.json`. Do not eye-call the five finished mp4s. Re-run harvest after titans + VBench leave `squeue`.
+None yet. Official numbers are full-clip VBench, not the sidecar
+search score (k=1). Preliminary table: score the five finished
+dirs now (`submit_t2v_coinc8_vbench5.sh`). Leave titans rerun
+**18257632** / VBench **18257633** in the queue. Do not letter
+n=2. Do not launch 128.

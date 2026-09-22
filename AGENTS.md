@@ -379,8 +379,10 @@ Per-method `merged_summary.json` lives at:
   both 8 seed + 40 fork (leave-support).
   Coincidence did not refuse. Isolation vs
   meandelta collapsed on the log. No
-  quality call until 18257632–633 leave
-  `squeue`, then `sacct` + harvest. Do not
+  quality call until a five-arm VBench
+  (`submit_t2v_coinc8_vbench5.sh`) or
+  18257632–633 leave `squeue`, then
+  `sacct` + harvest. Do not
   remake the five finished arms. Do not
   letter n=2. Do not launch 128. No I2V.
   No TTC. Harvest:
