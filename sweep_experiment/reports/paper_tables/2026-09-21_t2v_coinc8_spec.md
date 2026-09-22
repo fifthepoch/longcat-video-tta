@@ -1,4 +1,7 @@
-# Coincidence-gated fast weights first-8 — SUBMIT-READY (2026-09-21)
+# Coincidence-gated fast weights first-8 — IN FLIGHT (2026-09-22)
+
+**Jobs:** 18234327–333 (`t2v_moviegen_coinc_8v`).
+Submitted from `6694ca7`. All PD at paste.
 
 First experiment for the temporal write rule.
 Frozen Wan 1.3B. First-chunk tokens leave the

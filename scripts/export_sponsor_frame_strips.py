@@ -17,10 +17,19 @@ def _grab(mp4: Path, t: float):
     import numpy as np
 
     r = imageio.get_reader(str(mp4))
-    fps = float(r.get_meta_data().get("fps") or 16.0)
+    fps = 16.0
+    try:
+        meta = r.get_meta_data() or {}
+        if meta.get("fps"):
+            fps = float(meta["fps"])
+    except Exception:
+        pass
     idx = int(round(t * fps))
-    n = r.count_frames()
-    idx = min(max(idx, 0), n - 1)
+    try:
+        n = r.count_frames()
+        idx = min(max(idx, 0), n - 1)
+    except Exception:
+        idx = max(idx, 0)
     frame = r.get_data(idx)
     r.close()
     return np.asarray(frame)

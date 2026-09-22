@@ -6469,3 +6469,24 @@ ready. Not launched. Do not letter n=2.
 Do not launch 128.
 
 ---
+
+## 2026-09-22 — coincidence first-8 launched
+**Tags:** jobs, t2v, coinc
+**Owner:** agent
+**Refs:** `experiment_outputs/2026-09-22.md`;
+`paper_tables/2026-09-21_t2v_coinc8_spec.md`
+
+User pulled `6694ca7` on torch-login-b-0 and
+ran `submit_t2v_coinc8.sh`. Jobs **18234327
+notta / 328 window / 329 coinc / 330
+writeevery / 331 titans / 332 meandelta /
+333 VBench afterok**. All PD (Priority /
+Dependency). Prompt source Self-Forcing
+MovieGen extended, n=8. Do not harvest
+until they leave squeue. Do not letter
+n=2. Do not launch 128. Sponsor
+`panda_0003` notta + always-search mp4s
+are now on the laptop at
+`/tmp/sponsor_clips/`.
+
+---
