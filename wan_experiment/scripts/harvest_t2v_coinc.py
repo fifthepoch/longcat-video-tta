@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
-"""Protocol harvest for t2v_moviegen_coinc_8v. No quality call."""
+"""Protocol + VBench dump for t2v_moviegen_coinc_8v.
+
+Protocol first. Quality numbers print only after 8/8 + coinc logs.
+Do not letter n=2. Do not launch 128.
+"""
 from __future__ import annotations
 
 import argparse
 import json
+import statistics
 from pathlib import Path
 
 
@@ -81,6 +86,69 @@ def main() -> int:
                     print(f"  FAIL {stem} coinc logs {n_logged}/{len(chunks)}")
                     ok = False
     print("\nPROTOCOL", "PASS" if ok else "FAIL")
+    print("\n--- write tape ---")
+    for method in METHODS:
+        if method not in FW:
+            continue
+        rows = [r for r in _load_rows(series, method) if r.get("ok")]
+        n_ch = n_w = 0
+        cs = []
+        acts = {}
+        for rec in rows:
+            for ch in rec.get("chunks") or []:
+                c = ch.get("coinc") or {}
+                if not c:
+                    continue
+                n_ch += 1
+                n_w += int(bool(c.get("wrote")))
+                if c.get("C") is not None:
+                    cs.append(float(c["C"]))
+                a = f"{c.get('action')}/{c.get('reason')}"
+                acts[a] = acts.get(a, 0) + 1
+        mean_c = statistics.fmean(cs) if cs else None
+        print(
+            f"{method}: wrote={n_w}/{n_ch} mean_C={mean_c} actions={acts}"
+        )
+    print("\n--- VBench full-clip ---")
+    dims = (
+        "imaging_quality",
+        "subject_consistency",
+        "aesthetic_quality",
+        "temporal_flickering",
+        "dynamic_degree",
+    )
+    for method in METHODS:
+        hits = sorted(
+            series.glob(f"{method}_h30s_shard*/vbench_full/joined.json")
+        )
+        if not hits:
+            print(f"{method}: no vbench_full/joined.json")
+            continue
+        data = json.loads(hits[0].read_text())
+        recs = data.get("per_video") or []
+        print(f"{method}: n={len(recs)}")
+        for d in dims:
+            xs = []
+            for rec in recs:
+                v = (rec.get("vbench") or {}).get(d)
+                if v is not None:
+                    xs.append(float(v))
+            if not xs:
+                continue
+            if d == "dynamic_degree":
+                n_live = sum(1 for x in xs if x >= 0.5)
+                print(f"  Dyn {n_live}/{len(xs)}")
+            else:
+                print(
+                    f"  {d} median={statistics.median(xs):.4f} "
+                    f"mean={statistics.fmean(xs):.4f}"
+                )
+        for rec in recs:
+            vb = rec.get("vbench") or {}
+            stem = rec.get("stem") or rec.get("file_name")
+            dyn = vb.get("dynamic_degree")
+            iq = vb.get("imaging_quality")
+            print(f"    {stem} IQ={iq} Dyn={dyn} flicker={vb.get('temporal_flickering')}")
     return 0 if ok else 2
 
 
