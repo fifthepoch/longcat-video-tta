@@ -379,10 +379,11 @@ Per-method `merged_summary.json` lives at:
   both 8 seed + 40 fork (leave-support).
   Coincidence did not refuse. Isolation vs
   meandelta collapsed on the log. No
-  quality call until a five-arm VBench
-  (`submit_t2v_coinc8_vbench5.sh`) or
-  18257632–633 leave `squeue`, then
-  `sacct` + harvest. Do not
+  quality call until five-arm VBench
+  **18258206** leaves `squeue`, then
+  `sacct` + harvest. Titans **18257632**
+  + six-arm VBench **18257633** still PD.
+  Do not
   remake the five finished arms. Do not
   letter n=2. Do not launch 128. No I2V.
   No TTC. Harvest:
@@ -561,13 +562,16 @@ Per-method `merged_summary.json` lives at:
   native AR long-horizon drifts; AdaSteer delta + routing closed;
   BoN k=4 N=8 passed credibility gate as always-on search, not a hard
   incoming-context gate.
-- **In-flight cluster jobs** (as of 2026-09-22 13:13):
-  Coincidence titans rerun **18257632** +
-  VBench **18257633** afterok. Series
-  `t2v_moviegen_coinc_8v`. When they leave
-  `squeue`, `sacct` + harvest. Do not
-  letter n=2. Do not launch 128. Prior
-  closed:
+- **In-flight cluster jobs** (as of 2026-09-22 13:29):
+  Coincidence five-arm VBench **18258206**
+  PD (`l40s_mren` QOSGrpGRES). Titans
+  rerun **18257632** PD (`h200_cour`).
+  Six-arm VBench **18257633** PD
+  (Dependency). Series
+  `t2v_moviegen_coinc_8v`. When 18258206
+  leaves `squeue`, `sacct` + harvest.
+  Do not letter n=2. Do not launch 128.
+  Prior closed:
   Pwarp amp leftover n=2 **HARVESTED**
   17172470–483 COMPLETED 0:0. All five **NO**.
   Do not letter n=2. Do not launch 128.

@@ -6534,3 +6534,19 @@ Not a quality call. Do not retune on this
 eight. Do not letter n=2. Do not launch 128.
 
 ---
+
+## 2026-09-22 — five-arm VBench 18258206 queued
+**Tags:** jobs, t2v, coinc
+**Owner:** agent
+**Refs:** `experiment_outputs/2026-09-22.md`;
+`submit_t2v_coinc8_vbench5.sh`
+
+User pulled `a1a94b4` and submitted five-arm
+VBench **18258206** (PD, `l40s_mren`,
+`QOSGrpGRES`). Titans **18257632** still PD
+on H200. Six-arm VBench **18257633** still
+Dependency. Do not harvest until 18258206
+leaves squeue. Do not letter n=2. Do not
+launch 128.
+
+---
