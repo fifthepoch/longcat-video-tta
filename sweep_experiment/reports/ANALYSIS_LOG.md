@@ -6658,3 +6658,24 @@ which tokens enter the KV window. No
 \(W\). Do not retune \(\beta\).
 
 ---
+
+## 2026-09-22 — do not implement KV admission yet
+**Tags:** methodology, decision, t2v
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-22_kv_admission_scrutiny.md`
+
+User asked for scrutiny of gating what
+enters the KV cache, not a slide. Push
+back: (1) per-cell admission punches
+holes the DiT/RoPE/packer never saw —
+other teams keep/drop/rebuild **whole
+frames**; (2) keep-movers/drop-stills
+is the inverse of Rolling/RF sinks;
+(3) \(C\approx 0.91\) on Dyn=0 clips —
+the tape cannot be the gate until an
+offline check says it sees freeze;
+(4) `sf_window` already is mild KV
+gating and held IQ. No impl. Sensor
+first, zero new generate.
+
+---

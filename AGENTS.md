@@ -389,8 +389,11 @@ Per-method `merged_summary.json` lives at:
   156 H100-h, no launch until signed):
   `paper_tables/2026-09-22_competitor_fw_settings.md`.
   Scrutiny (wrong object was \(W\);
-  next cheap test is KV admission):
-  `paper_tables/2026-09-22_coinc8_what_we_did_wrong.md`.
+  do **not** impl per-cell KV gate):
+  `paper_tables/2026-09-22_coinc8_what_we_did_wrong.md`,
+  `paper_tables/2026-09-22_kv_admission_scrutiny.md`.
+  Offline: does chunk \(C\) fall on
+  still tails? If not, drop the tape.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official
