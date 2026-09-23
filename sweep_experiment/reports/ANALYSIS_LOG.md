@@ -6638,3 +6638,23 @@ launch until the user signs compute.
 Do not retune coinc-8.
 
 ---
+
+## 2026-09-22 — coinc-8 used the wrong object
+**Tags:** methodology, decision, t2v, coinc
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-22_coinc8_what_we_did_wrong.md`
+
+User: other teams do not test intuition
+with a weird fast-weight write; maybe
+gate the KV cache. Agreed. LongLive /
+Rolling / ARL² cheap-test the KV or one
+attention layer. We attached coincidence
+to a zero-init \(W\) the frozen student
+cannot read. The eight measured “untrained
+add dies,” not “does coincidence select.”
+`sf_window` already showed eviction is
+safe. Next cheap test: coincidence as
+which tokens enter the KV window. No
+\(W\). Do not retune \(\beta\).
+
+---

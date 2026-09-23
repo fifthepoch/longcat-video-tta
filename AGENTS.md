@@ -388,6 +388,9 @@ Per-method `merged_summary.json` lives at:
   Competitor settings (match ARL²,
   156 H100-h, no launch until signed):
   `paper_tables/2026-09-22_competitor_fw_settings.md`.
+  Scrutiny (wrong object was \(W\);
+  next cheap test is KV admission):
+  `paper_tables/2026-09-22_coinc8_what_we_did_wrong.md`.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official
