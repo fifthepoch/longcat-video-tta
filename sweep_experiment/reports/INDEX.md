@@ -9,7 +9,7 @@ update the Status / Findings columns when re-merged. NEVER delete rows
 even if results are superseded — mark them `superseded` and keep them
 for audit trail.
 
-**Owners:** Wenchen (PI) and any active agent. Last updated: 2026-09-20.
+**Owners:** Wenchen (PI) and any active agent. Last updated: 2026-09-22.
 Week talk: [`weekly_recap_2026-09-08.md`](../../weekly_recap_2026-09-08.md).
 
 ---
@@ -169,6 +169,7 @@ Timing: [`paper_tables/2026-08-16_wan_i2v_smoke.md`](paper_tables/2026-08-16_wan
 | Coinc-8 what we did wrong | Wrong object: untrained \(W\) vs field tests on KV. | Gate KV admission next, not \(\beta\) on coinc-8. | [`2026-09-22_coinc8_what_we_did_wrong.md`](paper_tables/2026-09-22_coinc8_what_we_did_wrong.md). |
 | KV admission scrutiny | Do not impl per-cell KV gate. Tape may not see freeze. | Sensor offline first. Whole-chunk 3-way only if \(C\) tracks stills. | [`2026-09-22_kv_admission_scrutiny.md`](paper_tables/2026-09-22_kv_admission_scrutiny.md). |
 | Whole-latent KV gate | User meant full latent in/out, not holes. | coinc-8 cloud left support 40/40; gate would cache only the opening. Dump `center` before impl. | [`2026-09-22_kv_whole_latent_gate.md`](paper_tables/2026-09-22_kv_whole_latent_gate.md). |
+| Search vs KV open challenges | Drop coinc / KV-admission. Lit review of remaining TTA holes. | Seven still-open rows after 2024–26. Live frozen holes: honest temporal judge; mid-horizon / occlusion memory; 4-step cheapen. AdaState occupies evolve-the-sink. No GPU until user picks a row. | [`2026-09-22_search_kv_open_challenges.md`](paper_tables/2026-09-22_search_kv_open_challenges.md). |
 | `t2v_moviegen_pprot_8v` | notta / sf_window / sf_pprot. MovieGen first-8, 30 s. | **NOT LAUNCHED.** Code on `run_t2v_chunked.py`. Cluster `wan_experiment/results/t2v_moviegen_pprot_8v/`. | Spec above. Harvest: `wan_experiment/scripts/harvest_t2v_pprot.py`. |
 | Leftover / well / memory glossary | User rejected our slang. Field language lock. | Say context frames, KV cache, context-frame representation. Well ≠ fast weights. | [`2026-09-20_leftover_well_memory_glossary.md`](paper_tables/2026-09-20_leftover_well_memory_glossary.md). |
 | Failure modes in plain language | What each failed family actually did to the videos. No GPU. | Glossary + nine stories. Imaging Quality 18 is a broken picture, not a −0.6 dip. | [`2026-09-04_failure_modes_plain.md`](paper_tables/2026-09-04_failure_modes_plain.md). |

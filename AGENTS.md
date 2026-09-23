@@ -78,6 +78,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Coincidence write publishability** | `sweep_experiment/reports/paper_tables/2026-09-21_coincidence_publishability.md` | Medium novelty. Top venue only if isolation holds on 128. Not on the sentence alone. |
 | **Temporal logic, other uses** | `sweep_experiment/reports/paper_tables/2026-09-21_temporal_logic_other_uses.md` | Same timing rule on freeze / KV split / eviction / flicker / fork / CL. Write stays first. |
 | **Coincidence first-8 spec** | `sweep_experiment/reports/paper_tables/2026-09-21_t2v_coinc8_spec.md` | MovieGen T2V 30 s. **DONE / NO.** Quality: `2026-09-22_t2v_coinc8_quality.md`. After-NO: `2026-09-22_coinc8_after_no_options.md`. Match ARL² (156 H100-h): `2026-09-22_competitor_fw_settings.md`. |
+| **Search vs KV open challenges** | `sweep_experiment/reports/paper_tables/2026-09-22_search_kv_open_challenges.md` | Coinc / KV-admission **dropped**. Remaining TTA holes after 2024–26. No GPU until user picks a row. |
 | **Leftover / well / memory glossary** | `sweep_experiment/reports/paper_tables/2026-09-20_leftover_well_memory_glossary.md` | **SAY:** context frames, KV cache, context-frame representation. Well ≠ fast weights. Old slang stays in old files only. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
@@ -372,32 +373,26 @@ Per-method `merged_summary.json` lives at:
   Do not say leftover / well / memory. Rule:
   `.cursor/rules/field-language.mdc`.
 - **Current next (2026-09-22):** Coincidence
-  first-8 **DONE / NO**. Protocol PASS.
-  Cite `notta` IQ 72.96 / Dyn 2/8.
-  `sf_coinc` IQ **56.29** / subject
-  **0.558** / Dyn **8/8** twitch (flicker
-  0.90). Window ≈ notta. All four
-  fast-weight arms NO; coinc ≈ meandelta;
-  titans = writeevery. Do not letter n=2.
-  Do not launch 128. Do not retune on
-  this eight. No I2V. No TTC. No GPU
-  until the user picks. Quality:
+  first-8 and whole-latent KV admission
+  are **dropped**. Search vs KV
+  remaining-challenge review is the
+  live note:
+  `paper_tables/2026-09-22_search_kv_open_challenges.md`.
+  Still-open after 2024–26: honest
+  temporal judge; mid-horizon /
+  occlusion memory; 4-step search
+  cheapen; training-free 30 s that
+  holds IQ and Dyn (Deep Forcing /
+  Relax claim, unreproduced).
+  AdaState occupies evolve-the-sink.
+  No GPU until the user picks a
+  row. Do not letter n=2. Do not
+  launch 128. No I2V. No TTC. Do
+  not re-impl coinc-8 or KV-admission.
+  coinc-8 harvest stays **DONE / NO**
+  (IQ 56.29 / Dyn 8/8 twitch vs
+  notta 72.96 / 2/8). Quality:
   `paper_tables/2026-09-22_t2v_coinc8_quality.md`.
-  Options after NO:
-  `paper_tables/2026-09-22_coinc8_after_no_options.md`.
-  Competitor settings (match ARL²,
-  156 H100-h, no launch until signed):
-  `paper_tables/2026-09-22_competitor_fw_settings.md`.
-  Scrutiny (wrong object was \(W\);
-  do **not** impl per-cell KV gate):
-  `paper_tables/2026-09-22_coinc8_what_we_did_wrong.md`,
-  `paper_tables/2026-09-22_kv_admission_scrutiny.md`.
-  Offline: does chunk \(C\) fall on
-  still tails? Whole-latent gate
-  (not holes): coinc-8 cloud left
-  support 40/40 — dump `center`
-  before impl.
-  `paper_tables/2026-09-22_kv_whole_latent_gate.md`.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official

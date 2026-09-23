@@ -6699,3 +6699,46 @@ sink. Dump per-chunk `center` /
 `scale_ratio` offline before any impl.
 
 ---
+
+## 2026-09-22 — drop coinc / KV-admission; search vs KV holes
+**Tags:** paper-narrative, decision, literature
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-22_search_kv_open_challenges.md`
+
+User dropped coincidence-gated
+fast weights and whole-latent KV
+admission. Asked for remaining
+challenges in search-based and
+KV-cache TTA (last ~3 years,
+mostly conclusions).
+
+Search still fails on the judge
+(Video-T1 motion/flicker; CachedSearch
+judges prefer damped motion; EFD
+ViCLIP; SDVG ImageReward per-frame),
+on \(O(TN)\) / 4-step hosts (ToF,
+CachedSearch few-step boundary),
+and cannot invent capability
+(Video-T1 hands; TBS needs a clean
+prefix). Occupied cheapen: CachedSearch,
+ToF, LatSearch, EFD, SDVG, TBS.
+
+KV still names mid-history /
+occlusion (Rolling, Deep Forcing,
+SF++, AdaState future work).
+Static sink vs motion is diagnosed
+by RF and occupied by freeze / EMA /
+Deep Sink / Relax sparse / AdaState
+evolve-position-0. More memory
+kills motion (Relax). Training-free
+30 s that holds IQ and Dyn is
+claimed by Deep Forcing / Relax,
+unreproduced here; LongLive /
+AdaState pay GPU-days.
+
+Seven still-open rows in the
+table. No GPU until the user
+picks. Do not letter n=2. Do
+not launch 128.
+
+---
