@@ -393,7 +393,11 @@ Per-method `merged_summary.json` lives at:
   `paper_tables/2026-09-22_coinc8_what_we_did_wrong.md`,
   `paper_tables/2026-09-22_kv_admission_scrutiny.md`.
   Offline: does chunk \(C\) fall on
-  still tails? If not, drop the tape.
+  still tails? Whole-latent gate
+  (not holes): coinc-8 cloud left
+  support 40/40 — dump `center`
+  before impl.
+  `paper_tables/2026-09-22_kv_whole_latent_gate.md`.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official

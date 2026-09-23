@@ -6679,3 +6679,23 @@ gating and held IQ. No impl. Sensor
 first, zero new generate.
 
 ---
+
+## 2026-09-22 — whole-latent KV gate, not holes
+**Tags:** methodology, t2v
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-22_kv_whole_latent_gate.md`
+
+User corrected: gate looks at all
+cells, then writes the **entire**
+latent if motion AND opening
+center/spread pass. That is keep/drop
+a block, like LongLive. Remaining
+hole: coinc-8 cloud was
+`leave_support` on 40/40 later chunks
+and \(C\) stayed high on Dyn=0. Same
+thresholds would cache only chunk 0,
+then empty window or a first-chunk
+sink. Dump per-chunk `center` /
+`scale_ratio` offline before any impl.
+
+---
