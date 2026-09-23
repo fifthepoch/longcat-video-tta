@@ -1,5 +1,11 @@
 # Coincidence first-8 harvest — PROTOCOL FAIL (2026-09-22)
 
+**Superseded for the quality call** by
+[`2026-09-22_t2v_coinc8_quality.md`](2026-09-22_t2v_coinc8_quality.md)
+(**PROTOCOL PASS / NO**). This file is the
+afternoon crash + write-tape note. Do not cite
+these rows as the table.
+
 **Jobs:** generate **18234327–332**, VBench **18234333**.
 Titans rerun **18257632** + VBench **18257633** afterok
 (submitted from `d0016dc`).

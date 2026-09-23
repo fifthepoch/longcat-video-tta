@@ -77,7 +77,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | **Coincidence-gated FW update** | `sweep_experiment/reports/paper_tables/2026-09-21_coincidence_fastweight_update.md` | Detailed write: event tape, high-pass, spatial \(C\), Azouz \(\theta\), DeltaNet on \(S\) only, no decay. Not a submit. |
 | **Coincidence write publishability** | `sweep_experiment/reports/paper_tables/2026-09-21_coincidence_publishability.md` | Medium novelty. Top venue only if isolation holds on 128. Not on the sentence alone. |
 | **Temporal logic, other uses** | `sweep_experiment/reports/paper_tables/2026-09-21_temporal_logic_other_uses.md` | Same timing rule on freeze / KV split / eviction / flicker / fork / CL. Write stays first. |
-| **Coincidence first-8 spec** | `sweep_experiment/reports/paper_tables/2026-09-21_t2v_coinc8_spec.md` | MovieGen T2V 30 s. **PROTOCOL FAIL.** Titans rerun **18257632** + VBench **18257633**. Tape: coinc/meandelta 48/48 write, 40/40 fork. Harvest: `2026-09-22_t2v_coinc8_harvest.md`. |
+| **Coincidence first-8 spec** | `sweep_experiment/reports/paper_tables/2026-09-21_t2v_coinc8_spec.md` | MovieGen T2V 30 s. **DONE / NO.** coinc IQ 56.29 / Dyn 8/8 twitch vs notta 72.96 / 2/8. Quality: `2026-09-22_t2v_coinc8_quality.md`. |
 | **Leftover / well / memory glossary** | `sweep_experiment/reports/paper_tables/2026-09-20_leftover_well_memory_glossary.md` | **SAY:** context frames, KV cache, context-frame representation. Well ≠ fast weights. Old slang stays in old files only. |
 | **Pwarp failure points** | `sweep_experiment/reports/paper_tables/2026-09-06_pwarp_failure_points.md` | Harvest named F3 (1 cell/strip on 0007) + F6 (dust pan on 0002). |
 | **Gate neighbors + publishability** | `sweep_experiment/reports/paper_tables/2026-09-01_gate_neighbors_publishability.md` | EFD / SDVG / Video-T1 / CachedSearch / LatSearch. 13% vs Always is not a quality paper. |
@@ -372,22 +372,17 @@ Per-method `merged_summary.json` lives at:
   Do not say leftover / well / memory. Rule:
   `.cursor/rules/field-language.mdc`.
 - **Current next (2026-09-22):** Coincidence
-  first-8 **PROTOCOL FAIL**. Titans rerun
-  **18257632** + VBench **18257633** afterok
-  (from `d0016dc`). Five generate arms 8/8.
-  Write tape: C≈0.91; coinc and meandelta
-  both 8 seed + 40 fork (leave-support).
-  Coincidence did not refuse. Isolation vs
-  meandelta collapsed on the log. No
-  quality call until five-arm VBench
-  **18258206** leaves `squeue`, then
-  `sacct` + harvest. Titans **18257632**
-  + six-arm VBench **18257633** still PD.
-  Do not
-  remake the five finished arms. Do not
-  letter n=2. Do not launch 128. No I2V.
-  No TTC. Harvest:
-  `paper_tables/2026-09-22_t2v_coinc8_harvest.md`.
+  first-8 **DONE / NO**. Protocol PASS.
+  Cite `notta` IQ 72.96 / Dyn 2/8.
+  `sf_coinc` IQ **56.29** / subject
+  **0.558** / Dyn **8/8** twitch (flicker
+  0.90). Window ≈ notta. All four
+  fast-weight arms NO; coinc ≈ meandelta;
+  titans = writeevery. Do not letter n=2.
+  Do not launch 128. Do not retune on
+  this eight. No I2V. No TTC. No GPU
+  until the user picks. Quality:
+  `paper_tables/2026-09-22_t2v_coinc8_quality.md`.
   Prior Wan-teacher leftover still stands:
 - **Current next (2026-09-07):** Clean Wan-teacher
   host. Portable ideas cite `wan_notta` (official
@@ -562,16 +557,14 @@ Per-method `merged_summary.json` lives at:
   native AR long-horizon drifts; AdaSteer delta + routing closed;
   BoN k=4 N=8 passed credibility gate as always-on search, not a hard
   incoming-context gate.
-- **In-flight cluster jobs** (as of 2026-09-22 13:29):
-  Coincidence five-arm VBench **18258206**
-  PD (`l40s_mren` QOSGrpGRES). Titans
-  rerun **18257632** PD (`h200_cour`).
-  Six-arm VBench **18257633** PD
-  (Dependency). Series
-  `t2v_moviegen_coinc_8v`. When 18258206
-  leaves `squeue`, `sacct` + harvest.
-  Do not letter n=2. Do not launch 128.
-  Prior closed:
+- **In-flight cluster jobs** (as of 2026-09-22 20:55):
+  Coincidence first-8 **DONE / NO**.
+  18258206 COMPLETED 0:0. Titans rerun
+  and six-arm VBench left `squeue`
+  (disk 8/8 + VBench on all six). Series
+  `t2v_moviegen_coinc_8v`. No GPU until
+  the user picks. Do not letter n=2.
+  Do not launch 128. Prior closed:
   Pwarp amp leftover n=2 **HARVESTED**
   17172470–483 COMPLETED 0:0. All five **NO**.
   Do not letter n=2. Do not launch 128.

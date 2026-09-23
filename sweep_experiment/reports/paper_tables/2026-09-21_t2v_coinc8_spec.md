@@ -1,16 +1,14 @@
-# Coincidence-gated fast weights first-8 — PROTOCOL FAIL (2026-09-22)
+# Coincidence-gated fast weights first-8 — **DONE / NO** (2026-09-22)
 
-**Jobs:** 18234327–333 (`t2v_moviegen_coinc_8v`).
-Submitted from `6694ca7`. Generate 327 / 328 / 329 /
-330 / 332 **COMPLETED 0:0**. `sf_titans` **18234331
-FAILED 2:0** (residual-η broadcast). VBench **18234333
-CANCELLED** (`afterok`). Harvest:
-`2026-09-22_t2v_coinc8_harvest.md`.
-Titans rerun **18257632** + VBench **18257633**
-afterok (`d0016dc`). Write tape: C≈0.91,
-coinc/meandelta 8 seed + 40 fork. Do not
-retune on this eight. Do not remake the
-five finished arms.
+**Jobs:** 18234327–333, titans rerun **18257632**,
+VBench **18257633** / five-arm **18258206**
+COMPLETED 0:0. Protocol PASS. Quality
+**NO**. Cite `notta` IQ 72.96 / Dyn 2/8.
+coinc IQ **56.29** / subject **0.558** /
+Dyn **8/8** twitch. Table:
+`2026-09-22_t2v_coinc8_quality.md`.
+Do not letter n=2. Do not launch 128.
+Do not retune on this eight.
 
 First experiment for the temporal write rule.
 Frozen Wan 1.3B. First-chunk tokens leave the

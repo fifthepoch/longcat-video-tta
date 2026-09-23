@@ -6550,3 +6550,25 @@ leaves squeue. Do not letter n=2. Do not
 launch 128.
 
 ---
+
+## 2026-09-22 — coinc first-8 DONE / NO
+**Tags:** harvest, quality, negative-result, t2v, coinc
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-22_t2v_coinc8_quality.md`;
+jobs 18258206 COMPLETED 0:0; harvest paste 20:55
+
+Protocol PASS (6/6 arms 8/8). Cite `notta`
+IQ 72.96 / subject 0.897 / Dyn 2/8 /
+flicker 0.981. `sf_coinc` IQ **56.29**
+(−16.7) / subject **0.558** (−0.34) /
+Dyn **8/8** / flicker 0.897. Extra Dyn
+is twitch (still notta clips all go live;
+IQ clustered 53–57). Window −0.49 IQ /
+Dyn 1/8 — eviction is not the death.
+writeevery / titans identical clip-for-clip
+(η saturates at 0.3). meandelta ≈ coinc
+(8 seed + 40 fork). All four FW arms
+**NO**. Do not letter n=2. Do not launch
+128. Do not retune on this eight.
+
+---
