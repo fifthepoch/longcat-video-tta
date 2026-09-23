@@ -33,6 +33,17 @@ selection among futures is safe; editing
 the trajectory or the host sampler is not.
 This eight is that law again.
 
+\(W_{\text{fast}}\) here is **not**
+AdaSteer. AdaSteer takes a test-time
+loss and gradient-steps parameters.
+This matrix never sees a video loss.
+It is filled by a fixed DeltaNet write
+from generated \(k,v\). Titans/TTT use
+similar inner algebra only after the
+rest of the net is trained to expect
+it. AdaSteer N=8 on this host already
+**NO**.
+
 ---
 
 ## What the eight actually killed

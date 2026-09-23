@@ -6594,3 +6594,22 @@ drop the write, use timing on KV/read;
 θ/β on this eight; do not launch 128.
 
 ---
+
+## 2026-09-22 — fast weights were not AdaSteer-trained
+**Tags:** methodology, t2v, coinc
+**Owner:** agent
+**Refs:** `coincidence_fastweight.py` `write_from_stash`;
+AdaSteer N=8 NO (`2026-08-25_wan_v2v_caption_always_adasteer.md`)
+
+User thought \(W_{\text{fast}}\) was trained
+like AdaSteer (test-time loss → gradient
+step). It was not. The matrix starts at
+0. A write is DeltaNet:
+\(W \leftarrow W + \eta\,(v-W\phi(k))\otimes\phi(k)\).
+No video loss. No backprop through the
+1.3B. Titans/TTT use that inner algebra
+**after** training the rest of the net
+to expect it. AdaSteer-style TTA on this
+host already NO’d (N=8).
+
+---
