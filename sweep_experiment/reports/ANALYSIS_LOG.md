@@ -6613,3 +6613,28 @@ to expect it. AdaSteer-style TTA on this
 host already NO’d (N=8).
 
 ---
+
+## 2026-09-22 — competitor FW settings; match ARL²
+**Tags:** methodology, literature, t2v
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-22_competitor_fw_settings.md`;
+TTT-Video 2504.05298; Titans 2501.00663;
+ARL² 2605.16579
+
+User asked if they train the whole net
+and how pricey test-time is, and to match
+competitor settings with our write.
+Outer loop (once) trains gates /
+projections / some backbone. Inner loop
+(every video) updates session \(W\) with
+an associative loss — not IQ, not
+AdaSteer. TTT-Video: 50 h × 256 H100
+after adding gated TTT layers to
+CogVideo-X 5B. ARL²: **156 H100-h**,
+<2% params, Causal Forcing Wan 1.3B,
+learned headwise gate, write after clean
+pass. That is the host to match. Do not
+launch until the user signs compute.
+Do not retune coinc-8.
+
+---
