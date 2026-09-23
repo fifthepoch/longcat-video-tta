@@ -6572,3 +6572,25 @@ writeevery / titans identical clip-for-clip
 128. Do not retune on this eight.
 
 ---
+
+## 2026-09-22 — coinc-8 NO: Titans arm is not Titans
+**Tags:** decision, method, t2v, coinc
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-22_coinc8_after_no_options.md`
+
+User asked why Titans “doesn’t work”
+and what is left. `sf_titans` was a
+zero-init session DeltaNet with η
+clamped to 0.3 — write-every, not
+Behrouz / TTT-Video (those train the
+memory). The eight killed untrained
+additive \(W_{\text{fast}}\) on a
+frozen student, not the published
+method. Options: (1) stay frozen,
+drop the write, use timing on KV/read;
+(2) train a student that has
+\(W_{\text{fast}}\) in the loop
+(occupied, 8-GPU); do not retune
+θ/β on this eight; do not launch 128.
+
+---
