@@ -4,10 +4,11 @@
 Cursor, etc.) picking up work on this project. Read it FIRST before any
 substantive task. Update it whenever a new persistent artifact is created.
 
-**Live task (2026-09-26):** Artificial Individuality, §7. That is the
-work to implement. The video-generation record in §3 stays frozen.
-Do not launch Wan / Self-Forcing GPU jobs unless the user explicitly
-reopens that line.
+**Live task (2026-09-26):** Artificial Individuality, §7. Implement it
+in `/scratch/wc3013/artificial-individuality`. This repo stays the
+cluster-operations context (SSH, sbatch, conda, login-node rules).
+The video-generation record in §3 stays frozen. Do not launch Wan /
+Self-Forcing GPU jobs unless the user explicitly reopens that line.
 
 ---
 
@@ -16,7 +17,7 @@ reopens that line.
 | What | Path | Notes |
 |---|---|---|
 | **This index file** | `AGENTS.md` | Updated as artifacts are added |
-| **Artificial Individuality (LIVE)** | `AGENTS.md` §7 | DINO / ImageNet-100 history experiment. 1× H200, ≤48 h. First milestone only until Exp. 1–2 gates pass. |
+| **Artificial Individuality (LIVE)** | `/scratch/wc3013/artificial-individuality` | DINO / ImageNet-100 history experiment. Protocol is §7 of this file. 1× H200, ≤48 h. First milestone only until Exp. 1–2 gates pass. |
 | **Cluster & sbatch onboarding guide** | `docs/CLUSTER_SBATCH_GUIDE.md` | Self-contained guide for a brand-new agent: cluster quirks (account flag, /scratch, conda/PYTHONHOME), how to write sbatch jobs, and ready-to-use fine-tune + long-horizon continuation recipes. |
 | **Master experiment index** | `sweep_experiment/reports/INDEX.md` | **Single source of truth** for what experiments exist + cluster paths. Read this first when picking up work. |
 | **Analysis log (decisions/findings)** | `sweep_experiment/reports/ANALYSIS_LOG.md` | Append-only log of paper-relevant findings and decisions. NEVER edit past entries. |
@@ -112,7 +113,8 @@ reopens that line.
 | **Paper LaTeX** | `paper/main.tex`, `paper/sections/*.tex`, `paper/refs.bib` | Real submission source |
 | **Run registry** | `experiment_tracker/run_registry.yaml` | Job-ID ↔ result-dir mapping |
 | **Laptop → cluster SSH/SCP** | **`wc3013@torch`** | **LOCKED. From this Mac, the host is `torch` (SSH config alias). Never invent `torch-login-a-*.hpc.nyu.edu` or `torch-login-b-*` as the scp/ssh target. Prompt `[wc3013@torch-login-a-1]` is the node after login, not the host you type.** |
-| **Cluster repo root** | `/scratch/wc3013/longcat-video-tta/` | All results & raw data live here. Local repo is mostly views. |
+| **Cluster repo root (this repo)** | `/scratch/wc3013/longcat-video-tta/` | Video-generation results and this operating manual. Local repo is mostly views. |
+| **Artificial Individuality root** | `/scratch/wc3013/artificial-individuality` | Live project. Code, manifests, schedules, checkpoints, and logs go here. Read cluster procedure from this repo; do not write the new experiment into it. |
 | **Wan 1.3B / Self-Forcing setup** | `wan_experiment/README.md` | I2V-32 is **discovery only**. Official VBench **DONE** (full-clip tie). **Do not scale I2V-32.** Current next: V2V Panda bake-off (`2026-08-20_wan_v2v_sampling_bakeoff_spec.md`). T2V 128 is optional. Do **not** add TTC. |
 
 ## 2. CRITICAL workflow rules
@@ -329,9 +331,11 @@ Per-method `merged_summary.json` lives at:
 
 **Date:** Updated 2026-09-26.
 
-**Live task:** Artificial Individuality (§7). Video bullets below are
-the frozen record. Do not submit Wan, Self-Forcing, nwarp, pwarp,
-coincidence, or DMD jobs from this section.
+**Live task:** Artificial Individuality (§7), rooted at
+`/scratch/wc3013/artificial-individuality`. This checkout is context
+for how Torch works. Video bullets below are the frozen record. Do
+not submit Wan, Self-Forcing, nwarp, pwarp, coincidence, or DMD jobs
+from this section.
 
 - **Paper target:** CVPR 2027.
 - **Paper method (2026-09-04):** Pseudo-future Search is **dropped**
@@ -681,13 +685,37 @@ Steps:
 
 ## 7. Artificial Individuality — experiment implementation (LIVE)
 
-**Version:** 2026-09-23. Incorporated 2026-09-26.
-**Code home:** `individuality_experiment/` (create it; do not put this
-inside `wan_experiment/` or `sweep_experiment/`).
+**Version:** 2026-09-23. Incorporated 2026-09-26. Path corrected the same day.
+
+**Two directories, one cluster.**
+
+| Role | Path |
+|---|---|
+| Cluster context (this repo) | `/scratch/wc3013/longcat-video-tta` |
+| Live project | `/scratch/wc3013/artificial-individuality` |
+
+Agents that already know this cluster keep using that knowledge:
+`wc3013@torch`, `docs/CLUSTER_SBATCH_GUIDE.md` (account flag, `/scratch`,
+conda/`PYTHONHOME`), `sbatch` only, no training on a login node. New
+code, manifests, graphs, schedules, checkpoints, Slurm scripts, and
+result logs are written only under
+`/scratch/wc3013/artificial-individuality`. Do not create
+`individuality_experiment/` inside this repo.
+
+**Worker.** On a Torch login node, after `agent login`, start one
+worker that can see both trees:
+
+```bash
+agent worker start --name torch \
+  --worker-dir /scratch/wc3013/longcat-video-tta \
+  --worker-dir /scratch/wc3013/artificial-individuality
+```
+
+Read this file before editing. Implement §7 in the artificial-individuality
+tree. Leave the video-generation line frozen.
+
 **Hardware:** 1× NVIDIA H200 per job, ≤48 h wall time. Request
 ≤47:30. Checkpoint at least once per epoch and support resume.
-Follow `docs/CLUSTER_SBATCH_GUIDE.md` for the account flag, `/scratch`,
-and conda/`PYTHONHOME`. Submit with `sbatch`. Do not train on a login node.
 **SSH from the laptop:** `wc3013@torch` only.
 
 ### Core causal chain
@@ -840,5 +868,6 @@ Deliver these, in order, before any full 100-epoch training:
 Do **not** add generative or creativity stages until Experiment 1 and
 then Experiment 2 pass their decision gates. One run per trajectory until a measurable
 effect appears. Record hashes, the git commit, and the resolved config
-with every job. Append outcomes to `sweep_experiment/reports/experiment_outputs/`
-and, when a run finishes, add a row to `sweep_experiment/reports/INDEX.md`.
+with every job. Write those records under
+`/scratch/wc3013/artificial-individuality`, not into
+`sweep_experiment/` in this repo.
