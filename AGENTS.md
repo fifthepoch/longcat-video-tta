@@ -4,6 +4,11 @@
 Cursor, etc.) picking up work on this project. Read it FIRST before any
 substantive task. Update it whenever a new persistent artifact is created.
 
+**Live task (2026-09-26):** Artificial Individuality, §7. That is the
+work to implement. The video-generation record in §3 stays frozen.
+Do not launch Wan / Self-Forcing GPU jobs unless the user explicitly
+reopens that line.
+
 ---
 
 ## 1. Persistent files & where to find them
@@ -11,6 +16,7 @@ substantive task. Update it whenever a new persistent artifact is created.
 | What | Path | Notes |
 |---|---|---|
 | **This index file** | `AGENTS.md` | Updated as artifacts are added |
+| **Artificial Individuality (LIVE)** | `AGENTS.md` §7 | DINO / ImageNet-100 history experiment. 1× H200, ≤48 h. First milestone only until Exp. 1–2 gates pass. |
 | **Cluster & sbatch onboarding guide** | `docs/CLUSTER_SBATCH_GUIDE.md` | Self-contained guide for a brand-new agent: cluster quirks (account flag, /scratch, conda/PYTHONHOME), how to write sbatch jobs, and ready-to-use fine-tune + long-horizon continuation recipes. |
 | **Master experiment index** | `sweep_experiment/reports/INDEX.md` | **Single source of truth** for what experiments exist + cluster paths. Read this first when picking up work. |
 | **Analysis log (decisions/findings)** | `sweep_experiment/reports/ANALYSIS_LOG.md` | Append-only log of paper-relevant findings and decisions. NEVER edit past entries. |
@@ -321,7 +327,11 @@ Per-method `merged_summary.json` lives at:
 
 ## 3. Active project state (snapshot — keep current)
 
-**Date:** Updated 2026-09-22.
+**Date:** Updated 2026-09-26.
+
+**Live task:** Artificial Individuality (§7). Video bullets below are
+the frozen record. Do not submit Wan, Self-Forcing, nwarp, pwarp,
+coincidence, or DMD jobs from this section.
 
 - **Paper target:** CVPR 2027.
 - **Paper method (2026-09-04):** Pseudo-future Search is **dropped**
@@ -668,3 +678,167 @@ Steps:
   Each Monday a fresh `weekly_recap_YYYY-MM-DD.md` is generated.
 - **Thursdays/Fridays:** PI updates as needed.
 - **Paper deadline (target):** CVPR 2027 submission window (~Nov 2026).
+
+## 7. Artificial Individuality — experiment implementation (LIVE)
+
+**Version:** 2026-09-23. Incorporated 2026-09-26.
+**Code home:** `individuality_experiment/` (create it; do not put this
+inside `wan_experiment/` or `sweep_experiment/`).
+**Hardware:** 1× NVIDIA H200 per job, ≤48 h wall time. Request
+≤47:30. Checkpoint at least once per epoch and support resume.
+Follow `docs/CLUSTER_SBATCH_GUIDE.md` for the account flag, `/scratch`,
+and conda/`PYTHONHOME`. Submit with `sbatch`. Do not train on a login node.
+**SSH from the laptop:** `wc3013@torch` only.
+
+### Core causal chain
+
+`Visual history → learned representation → associative structure → perception under ambiguity → imagination → creative behavior`
+
+Test one arrow at a time. Competence is measured separately from
+individuality/creativity. Matched competence is not assumed.
+
+### Scientific invariants
+
+- All designed observers receive the same underlying image multiset. The current pilot does **not** use partial experience.
+- The manipulated variable is temporal organization / relational adjacency of experience.
+- Architecture, initialization, exposures, optimizer family, LR schedule, augmentation policy, and update count remain fixed.
+- First pass: one run per trajectory. Replicate only if a measurable effect appears.
+- Track competence separately and test for competence–individuality / competence–creativity trade-offs.
+
+### Experiment 1 — visual history → learned representation
+
+**Hypothesis.** Different temporal organizations of the same visual
+experiences cause initially identical models to develop systematically
+different internal representations.
+
+**Observers.**
+
+| Observer | Trajectory | Relation emphasized |
+|---|---|---|
+| I_IID | globally shuffled | none deliberately imposed |
+| I_Tax | taxonomy/commonality | same kind / category / superclass |
+| I_Rel | thematic/relational | co-occurs / participates in same scene, event, function |
+| I_Struct | structural/analogical | similar visual structure despite semantic distance |
+
+**Default learner.**
+
+- DINO, ViT-S/16, trained from a shared initialization checkpoint θ0.
+- 100 epochs, AdamW.
+- Base LR 5e-4 at batch 256, scaled linearly with actual batch.
+- Warmup 10 epochs; cosine LR to ~1e-6.
+- Weight decay 0.04 → 0.4; teacher momentum starts ~0.996 and moves toward 1.
+- Standard DINO 2 global + 8 local crops.
+- BF16 on H200 if stable; otherwise official AMP/FP16.
+- Save epochs 0, 10, 25, 50, 75, 100 and a resumable latest checkpoint.
+
+**Dataset.**
+
+- Fixed ImageNet-100 or a fixed 100-class ImageNet-derived subset.
+- Freeze class and image manifests before training.
+- All observers see identical image identities and exposure counts.
+- Common held-out natural validation set X for every observer.
+
+**Experience graphs.** All observers share node set V. Designed
+histories differ in edges.
+
+`V_IID = V_Tax = V_Rel = V_Struct`
+
+`E_Tax ≠ E_Rel ≠ E_Struct`
+
+- **Taxonomy graph:** derive from WordNet/BREEDS hierarchy. Example weight: `exp(-hierarchy_distance/τ)`.
+- **Relational graph:** derive from Visual Genome or comparable scene-graph/co-occurrence data; map labels to ImageNet concepts. Default weighted association is PPMI: `w_Rel(a,b) = max(0, log(P(a,b)/(P(a)P(b))))`.
+- **Structural graph:** use a frozen external vision encoder for class centroids and independent semantic similarity. Normalize both and score `S_V(i,j) = cos(μ_i, μ_j)`, `A(i,j) = S_V(i,j) - λ S_S(i,j)`. Start `λ=1` after normalization. Prefer high visual similarity and low semantic similarity.
+
+**Schedule generation.** Each macro-epoch contains every training image
+exactly once. Only order and local batch composition change.
+
+1. Build deterministic image lists per concept.
+2. Traverse each designed graph along high-weight edges to create a concept path.
+3. Group the path into sustained episodes spanning multiple minibatches.
+4. Shuffle images inside each episode deterministically.
+5. Rotate the starting point across epochs so concepts do not always occur at the same LR position.
+6. IID observer globally shuffles all images each epoch.
+7. Save schedule JSONL files or reproducible hashes.
+
+`multiset(D_IID^e) = multiset(D_Tax^e) = multiset(D_Rel^e) = multiset(D_Struct^e)`
+
+**H200 protocol.**
+
+- Benchmark 1,000 steps at batch 64/128/256 first.
+- Select the largest stable batch and scale LR linearly.
+- Log software versions, git commit, dataset/graph/schedule hashes, and the full resolved config.
+
+**Evaluation.** Extract features at several layers (ViT blocks 3/6/9/12)
+and checkpoints.
+
+- Linear CKA; `d_CKA = 1 - CKA`.
+- Representational similarity matrices; compare with Spearman correlation.
+- Top-k nearest-neighbor overlap (default k=20 at image level).
+- Layerwise and training-time divergence curves.
+
+**Competence is a separate axis.**
+
+- Frozen-backbone k-NN accuracy.
+- Frozen-backbone linear probe.
+- Optional generalization/transfer set.
+- Plot competence versus representational/relational divergence. Do not assume they are equal.
+
+**Replication plan.**
+
+- Stage A: four exploratory runs (IID, Tax, Rel, Struct).
+- Stage B: if an effect exists, rerun IID plus the two most divergent designed trajectories with new seed(s).
+- Primary confirmatory quantity: `Δ_history = E[d | different trajectory] - E[d | same trajectory, different seed]`.
+
+### Experiment 2 — learned representation → associative structure
+
+- Build concept centroids from held-out images for each observer.
+- Retrieve top-k concept neighbors and form learned graph G_hat_i.
+- Compare G_hat_i to each designed graph using edge recovery, adjacency correlation, Jaccard, and label-permutation nulls.
+- Key prediction: `sim(G_hat_i, G_i) > sim(G_hat_i, G_j)` for `i ≠ j`.
+
+### Experiment 3 — associative structure → perception under ambiguity
+
+- Select concept pairs on which observer graphs disagree.
+- Build morph / cue-conflict / validated ambiguous stimuli.
+- Read out interpretation with nearest-centroid or the same frozen probe.
+- Estimate each observer’s switch point `α_i*` along the ambiguity continuum.
+- Test whether boundary shifts follow learned association differences.
+
+### Experiment 4 — perception under ambiguity → imagination
+
+Recommended first implementation: freeze observer backbones and attach
+matched inpainting/reconstruction decoders. Do not train large generators
+from scratch.
+
+- Same decoder architecture, init, and training budget for every observer.
+- Use underdetermined masks compatible with multiple completions.
+- Sample multiple completions per stimulus.
+- Measure completion semantics, diversity, between-observer distribution shift, and separate reconstruction competence.
+
+### Experiment 5 — imagination → creative behavior
+
+- Same constrained concept-combination tasks for all observers.
+- Multiple samples under a matched sampling budget.
+- Measure competence/validity, novelty, diversity, and observer-specificity.
+- Plot creativity/diversity against competence. Test for a Pareto frontier. Do not assume matched competence.
+
+### Minimum first milestone
+
+Deliver these, in order, before any full 100-epoch training:
+
+1. Pinned environment.
+2. Frozen ImageNet-100 manifests.
+3. Tax / Rel / Struct graph JSON plus diagnostics.
+4. Deterministic schedule generator plus equality tests (`multiset` equality across the four trajectories).
+5. Shared θ0 checkpoint.
+6. DINO training script with H200 Slurm resume support.
+7. Throughput report (1,000 steps at batch 64/128/256).
+8. CKA / RSA / neighbor analysis.
+9. k-NN / linear-probe competence evaluation.
+10. Tiny end-to-end dry run for all four trajectories.
+
+Do **not** add generative or creativity stages until Experiment 1 and
+then Experiment 2 pass their decision gates. One run per trajectory until a measurable
+effect appears. Record hashes, the git commit, and the resolved config
+with every job. Append outcomes to `sweep_experiment/reports/experiment_outputs/`
+and, when a run finishes, add a row to `sweep_experiment/reports/INDEX.md`.
