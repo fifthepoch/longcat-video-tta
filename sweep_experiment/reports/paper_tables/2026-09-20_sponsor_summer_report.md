@@ -2,7 +2,7 @@
 
 **Long-horizon video generation**
 May–September 2026 · confidential partner briefing
-Updated 28 September 2026 (late-September checks added; no recipes)
+Updated 29 September 2026 (figure set rebuilt; no recipes)
 
 This note follows the disclosure style of commercial lab technical
 reports (for example OpenAI’s GPT-4 report and Anthropic’s Claude 3
@@ -15,7 +15,16 @@ Official quality is full-clip [VBench](https://vchitect.github.io/VBench-project
 **Dynamic Degree** is the share of clips that still contain living
 motion, not a median. Small protocol checks are not treated as results.
 
-Figures live in `sponsor_summer_2026_figures/` next to this file.
+Figures live in `sponsor_summer_2026_figures/` next to this file
+(PNG for reading, PDF for print).
+
+![Full-clip VBench on the 128-clip, 30 s continuation table](sponsor_summer_2026_figures/fig01_overview_vbench128.png)
+
+**Figure 1 |** Full-clip VBench on 30 s video continuation (128 clips).
+Six quality dimensions are medians; Dynamic Degree is the share of
+clips with living motion. Always-on seed search matches the published
+baselines on every quality dimension to within about three points and
+raises living clips from 32.8% to 50.8%.
 
 ---
 
@@ -54,12 +63,19 @@ method is not a product lever.
 
 Always-on parameter-space adaptation sits on the do-nothing mean
 (PSNR 17.93 → 17.94 dB). A larger adapter trades picture quality for
-aesthetic and motion (Imaging Quality −0.034). About a quarter of
-videos improve by more than 0.1 dB and about a quarter get worse. A
-hindsight oracle that knew which videos to touch is +0.19 dB — real
-headroom that requires a skip rule we do not have.
+aesthetic and motion (Imaging Quality −0.034). The mean hides a wide
+split: about a quarter of videos improve by more than 0.1 dB and about
+a quarter get worse by the same margin. A hindsight oracle that knew
+which videos to touch is +0.19 dB — real headroom that requires a skip
+rule we do not have.
 
-![Short in-domain continuation: always-on parameter TTA versus a hindsight skip](sponsor_summer_2026_figures/fig1_tta_mean_vs_oracle.png)
+![Parameter-space TTA: population mean versus per-video spread](sponsor_summer_2026_figures/fig02_param_tta_mean_and_spread.png)
+
+**Figure 2 |** Short in-domain continuation, 1,000 videos. **(a)**
+Always-on parameter-space adaptation leaves mean PSNR unchanged; a
+hindsight oracle that skips the videos it would hurt gains 0.19 dB.
+**(b)** Per-video change. Gains (blue) and losses (red) are nearly
+symmetric, so the mean is a cancellation, not an absence of effect.
 
 We tried to learn that skip rule from the opening alone: pixel
 statistics, caption features, compressed-clip fingerprints, and the
@@ -71,11 +87,25 @@ on average (lowest-surprise quintile +0.11 dB, highest −0.13 dB). Every
 bucket still had large winners and large losers. A router that looked
 useful on a 200-video pilot flipped sign at N=1000.
 
-![Parameter-space TTA gain versus how much the opening surprised the frozen model](sponsor_summer_2026_figures/fig2_tta_surprise_quintiles.png)
+![Parameter-space TTA gain versus how much the opening surprised the frozen model](sponsor_summer_2026_figures/fig03_param_tta_surprise.png)
+
+**Figure 3 |** Mean PSNR change from parameter-space adaptation, split
+by how surprising the observed opening was to the frozen model. The
+videos a router would most want to help are the ones adaptation hurts.
 
 The same class of update remained null on native long-horizon
-autoregressive rollout (paired test p ≥ 0.26). A global activation
-nudge can shift population statistics. It does not cut per-video drift.
+autoregressive rollout. Across two update variants and seven drift
+signals, no paired test reached significance (sign-flip p ≥ 0.25), and
+every confidence interval spans zero or points the wrong way. A global
+activation nudge can shift population statistics. It does not cut
+per-video drift.
+
+![Parameter-space update versus no update on ~60 s rollout](sponsor_summer_2026_figures/fig04_param_update_long_horizon_null.png)
+
+**Figure 4 |** Drift reduction from a test-time parameter update on
+native ~60 s rollout (8 videos, paired). Positive means the update
+reduced drift. Bars are 95% confidence intervals, expressed as a
+percentage of the no-update drift.
 
 This is not only our measurement. Pathwise Test-Time Correction
 (February 2026, [arXiv:2602.05871](https://arxiv.org/abs/2602.05871))
@@ -92,12 +122,18 @@ is long self-conditioning, and weight tweaks are the wrong handle.
 ## Why sampling space — and why distillation is on the table
 
 Once each chunk is conditioned on the model’s own previous output,
-error compounds with length. On a native ~60 s rollout (N=8),
+error compounds with length. On a native ~60 s rollout (N=8), mean
 sharpness rose about 48% and temporal motion about 45% by the last
-chunk, while contrast fell about 16%. The 30 s read understated the
-problem.
+chunk, while contrast fell about 16%. The direction is shared by most
+videos (sharpness rose in 6 of 8, contrast fell in 7 of 8), but the
+per-video spread is large. The 30 s read understated the problem.
 
-![Native ~60 s autoregressive drift (percent versus the first chunk)](sponsor_summer_2026_figures/fig3_long_horizon_drift.png)
+![Native ~60 s autoregressive drift](sponsor_summer_2026_figures/fig05_long_horizon_drift.png)
+
+**Figure 5 |** Drift on native ~60 s autoregressive rollout. Each thin
+line is one video; the bold line is the mean over videos and the band
+is the inter-quartile range. All values are relative to the mean of
+the first chunk.
 
 Sampling-space work means: keep the backbone frozen, and intervene on
 the *draw* — try several random seeds and keep one; change what later
@@ -136,14 +172,46 @@ The tradeoff is cost: about **3×** the few-step baseline. The
 published streaming system is cheaper (47 s) and *loses* living
 motion while gaining identity — the two fight.
 
-![Living-clip rate and generation time on the 128-clip, 30 s table](sponsor_summer_2026_figures/fig4_selection_dyn_and_cost.png)
+![Living-clip rate versus generation time](sponsor_summer_2026_figures/fig06_quality_cost_frontier.png)
+
+**Figure 6 |** Motion versus cost on the 128-clip table. **(a)** Share
+of living clips against wall time per 30 s clip (log scale). **(b)**
+Wall time on our hardware.
 
 The win is not a uniform lift. Twenty-five clips became living, two
 lost living, forty were already living, and sixty-one stayed still.
 
-![Per-clip Dynamic Degree transitions under always-on seed search](sponsor_summer_2026_figures/fig5_selection_clip_transitions.png)
+![Per-clip Dynamic Degree transitions under always-on seed search](sponsor_summer_2026_figures/fig07_clip_transition_matrix.png)
 
-![Seed search sits with the few-step baseline on identity and picture quality](sponsor_summer_2026_figures/fig6_identity_vs_picture.png)
+**Figure 7 |** Per-clip living/still call, few-step baseline (rows)
+versus always-on seed search (columns). The net gain of 23 clips comes
+almost entirely from the upper-right cell.
+
+Clip-level distributions tell the same story. Seed search does not
+shift the typical clip’s picture quality or identity. Its lower tail
+on Imaging Quality is shorter than either baseline’s, and its lower
+tail on temporal flickering is longer.
+
+![Per-clip distributions of Imaging Quality, subject consistency and flickering](sponsor_summer_2026_figures/fig08_per_clip_distributions.png)
+
+**Figure 8 |** Per-clip distributions over the 128 clips. White dot is
+the median; the black bar is the inter-quartile range.
+
+That flickering tail matters for how the headline should be read.
+Dynamic Degree is a binary motion call, and flicker can trip it. Five
+of the twenty-five newly living clips also lost more than 0.02 in
+temporal flickering; in the worst case, Imaging Quality fell by 18
+points. We keep the official number and flag the caveat: roughly one
+in five of the new living calls owes something to flicker rather than
+to motion the opening implied.
+
+![Paired per-clip picture quality and flicker](sponsor_summer_2026_figures/fig09_paired_quality_and_flicker.png)
+
+**Figure 9 |** **(a)** Imaging Quality per clip, few-step baseline
+against seed search; points on the diagonal are unchanged. **(b)**
+Change in flickering against change in Imaging Quality. Blue points
+became living under seed search; the shaded region is where the
+steadiness score dropped by more than 0.02.
 
 **Other sampling-space classes did not give a quality win.** Rewarding
 a continuation that stays close to the opening raises subject
@@ -180,6 +248,13 @@ motion the opening contained. Evicting old frames *without* writing
 the extra store left picture quality essentially unchanged. We did
 not scale that table.
 
+![Session-local store written at test time on a frozen student](sponsor_summer_2026_figures/fig10_session_store_veto.png)
+
+**Figure 10 |** Quality veto on a frozen student (text-to-video, 8
+clips, 30 s, full-clip VBench). Evicting old frames alone is harmless;
+writing the session-local store at test time costs about 17 points of
+Imaging Quality, and the “living” calls it earns are flicker.
+
 A related idea — changing which later blocks may enter the attention
 cache, instead of writing a second store — was dropped after
 scrutiny, without a scaled run. The published fact still stands:
@@ -196,24 +271,26 @@ expensive conversation. We are not specifying either recipe here.
 ## Frame-by-frame examples
 
 The strips below are matched clips from the 128-clip table. Each row is
-one system; columns are 1 s, 10 s, 20 s, and 29 s. Top is the published
-few-step baseline. Bottom is always-on seed search.
+one system; the first column is real context footage shared by both
+rows, and the remaining columns are generated. The panel on the left
+of each row gives that clip’s full-clip VBench scores. Top is the
+published few-step baseline. Bottom is always-on seed search.
 
-**Clip A — a different seed woke a still continuation.** The few-step
-baseline stays near-static through the tail. Always-on seed search
-starts living motion without a visible identity rewrite.
+![Clip A film strip](sponsor_summer_2026_figures/fig11_filmstrip_clip_a.png)
 
-![Clip A. Top: few-step baseline. Bottom: always-on seed search](sponsor_summer_2026_figures/fig7_frames_became_living.png)
+**Figure 11 |** Clip A — a different seed started motion, but did not
+rescue the picture. The few-step baseline is called still; seed search
+is called living. By 20–29 s both rows show the same high-frequency
+texture collapse, and seed search’s Imaging Quality is about two
+points lower. Selection changes *which* continuation you get, not the
+failure modes the student shares across seeds.
 
-**Clip B — both stay still.** Seed search does not invent motion on
-every prompt. Sixty-one of 128 clips remain static under both systems.
-The randomness helps a minority of borderline clips, not the whole set.
+![Clip B film strip](sponsor_summer_2026_figures/fig12_filmstrip_clip_b.png)
 
-![Clip B. Both rows stay static to 30 s](sponsor_summer_2026_figures/fig8_frames_stayed_static.png)
-
-If a strip is missing in a local checkout, it is produced on the
-cluster by `scripts/export_sponsor_frame_strips.py` after the 128-clip
-videos are present.
+**Figure 12 |** Clip B — both stay still. Seed search does not invent
+motion on every prompt; sixty-one of 128 clips remain static under
+both systems. Both rows also show the slow warm-and-darken exposure
+drift that compounds with length (compare the 1 s and 29 s frames).
 
 ---
 
@@ -222,18 +299,22 @@ videos are present.
 The summer’s usable conclusion is a map, not a named gadget.
 
 Parameter-space test-time updates are the wrong handle on a saturated
-short task and do not flatten long-horizon drift. Always-on seed search is the only class in the 128-clip table that raised
-living motion without breaking picture quality, and it is expensive.
-We treat that as a known sampling fact, not a contribution. Frozen
-path edits, permanently pinning the opening, and an untrained
-session-local store are unsafe or identity-for-motion trades.
+short task and do not flatten long-horizon drift. Always-on seed
+search is the only class in the 128-clip table that raised living
+motion without breaking picture quality, and it is expensive. Part of
+its motion gain is flicker that the official metric counts. We treat
+it as a known sampling fact, not a contribution. Frozen path edits,
+permanently pinning the opening, and an untrained session-local store
+are unsafe or identity-for-motion trades.
 
 What remains in the published field is still those two test-time
 handles: **select among samples**, or **change what the attention
 cache holds**. Both have open problems that 2024–26 papers name in
 their own conclusions (a temporally honest cheap judge; mid-horizon
 content that left the window; a training-free 30 s that holds
-picture quality and living motion together). We are reading that
+picture quality and living motion together). The flicker caveat in
+Figure 9 is a concrete instance of the first: the official motion
+metric cannot yet tell living motion from twitch. We are reading that
 literature before committing another table. If seed search remains
 the quality lever, a student trained under the same draw could in
 principle pay the extra samples once, at train time. That is a
@@ -250,12 +331,15 @@ hold.
 
 - The 60 s drift audit is N=8. The direction is clear; the exact
   percentages should not be over-read.
-- Dynamic Degree is a binary living/still call. We inspect clips when
-  a Dyn-only lift could be flicker.
+- Dynamic Degree is a binary living/still call. About one in five of
+  seed search’s new living calls come with a flicker drop
+  (Figure 9). We inspect clips when a Dyn-only lift could be flicker.
 - Seed-search cost is hardware- and implementation-dependent. The 3×
   figure is our wall on this stack, not a theoretical minimum.
 - The late-September session-local-store check is 8 clips. It is a
   quality veto, not a 128-clip result.
+- Frame strips are illustrative single clips, chosen to show one
+  motion change and one non-effect. They are not a sample of the set.
 - This briefing does not include unpublished training runs.
 
 ---
