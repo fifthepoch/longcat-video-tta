@@ -6742,3 +6742,26 @@ picks. Do not letter n=2. Do
 not launch 128.
 
 ---
+
+## 2026-09-28 — sponsor report: late-Sep class + writing handoff
+**Tags:** writing, sponsor, briefing
+**Owner:** agent
+**Refs:** `paper_tables/2026-09-20_sponsor_summer_report.md`,
+`paper_tables/2026-09-28_sponsor_report_handoff.md`
+
+User asked to update the external
+progress note with the latest
+experiments, then hand the writing
+project to another agent. Added a
+class-only late-September section:
+untrained session-local store failed
+(IQ ~−17, subject ~−0.34, Dyn twitch);
+cache-admission dropped; no scale.
+Rewrote the next-step paragraph so
+it no longer describes remember-
+opening / refuse-freeze. Handoff
+lists initial + later disclosure
+criteria and the remaining leak
+pass / packaging work.
+
+---

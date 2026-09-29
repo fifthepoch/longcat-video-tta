@@ -2,6 +2,7 @@
 
 **Long-horizon video generation**
 May–September 2026 · confidential partner briefing
+Updated 28 September 2026 (late-September checks added; no recipes)
 
 This note follows the disclosure style of commercial lab technical
 reports (for example OpenAI’s GPT-4 report and Anthropic’s Claude 3
@@ -159,6 +160,39 @@ recipe you will use at test.
 
 ---
 
+## Late September: another frozen test-time class
+
+After the 128-clip table we asked a narrower question. Once early
+frames leave a bounded attention window, can a *session-local* store —
+written during this video and discarded after it — keep living motion
+without permanently pinning those opening frames?
+
+That store is a class already used in published work, usually on a
+**student trained to read it**. We checked the cheaper version: write
+into it at test time on a **frozen** few-step student. Official
+quality was still full-clip VBench.
+
+On a small text-to-video check (8 clips, 30 s) the write failed the
+quality bar. Imaging Quality fell by about 17 points and subject
+consistency by about 0.34 versus the same student with no extra store.
+Every clip was marked living; frame inspection showed flicker, not
+motion the opening contained. Evicting old frames *without* writing
+the extra store left picture quality essentially unchanged. We did
+not scale that table.
+
+A related idea — changing which later blocks may enter the attention
+cache, instead of writing a second store — was dropped after
+scrutiny, without a scaled run. The published fact still stands:
+permanently pinning the opening buys identity and taxes living
+motion. We do not have a frozen substitute that holds both Imaging
+Quality and living motion.
+
+Those checks close that class on a frozen student. Training a new
+student so a new cache rule is legal at test is a different, more
+expensive conversation. We are not specifying either recipe here.
+
+---
+
 ## Frame-by-frame examples
 
 The strips below are matched clips from the 128-clip table. Each row is
@@ -188,25 +222,27 @@ videos are present.
 The summer’s usable conclusion is a map, not a named gadget.
 
 Parameter-space test-time updates are the wrong handle on a saturated
-short task and do not flatten long-horizon drift. Always-on seed search is the only class in this table that raised
+short task and do not flatten long-horizon drift. Always-on seed search is the only class in the 128-clip table that raised
 living motion without breaking picture quality, and it is expensive.
 We treat that as a known sampling fact, not a contribution. Frozen
-path edits and permanently pinning the opening are unsafe or
-identity-for-motion trades.
+path edits, permanently pinning the opening, and an untrained
+session-local store are unsafe or identity-for-motion trades.
 
-What we will work on next sits in the gap those facts leave. Long
-sessions need some way to remember the opening after early frames leave
-a bounded attention window — without copying those frames forever,
-which published streaming systems already show collapses motion. They
-also need a way to refuse a freeze or a scene rewrite so it is not
-written back into whatever outlives the window. Separately, if seed
-search remains the quality lever, a student trained under the same
-draw could in principle pay the extra samples once, at train time.
+What remains in the published field is still those two test-time
+handles: **select among samples**, or **change what the attention
+cache holds**. Both have open problems that 2024–26 papers name in
+their own conclusions (a temporally honest cheap judge; mid-horizon
+content that left the window; a training-free 30 s that holds
+picture quality and living motion together). We are reading that
+literature before committing another table. If seed search remains
+the quality lever, a student trained under the same draw could in
+principle pay the extra samples once, at train time. That is a
+direction, not a recipe.
 
 We are not specifying an unpublished mechanism here. The forthcoming
-academic paper is the place for that design. The first empirical check
-is intentionally small; we will not scale a table until quality holds
-on the official full-clip metrics.
+academic paper is the place for a design, if one survives a quality
+gate. We will not scale a table until official full-clip metrics
+hold.
 
 ---
 
@@ -218,6 +254,8 @@ on the official full-clip metrics.
   a Dyn-only lift could be flicker.
 - Seed-search cost is hardware- and implementation-dependent. The 3×
   figure is our wall on this stack, not a theoretical minimum.
+- The late-September session-local-store check is 8 clips. It is a
+  quality veto, not a 128-clip result.
 - This briefing does not include unpublished training runs.
 
 ---
